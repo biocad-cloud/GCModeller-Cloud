@@ -1,6 +1,6 @@
 # GCModeller-Cloud
 
-<img src="logo.png" style="width:80%" />
+<img src="logo.png" width="30%" />
 
 This repository join these two github project:
 
