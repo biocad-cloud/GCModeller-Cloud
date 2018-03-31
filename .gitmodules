@@ -1,3 +1,6 @@
 [submodule "php"]
 	path = php
 	url = https://github.com/GCModeller-Cloud/GCModeller-php.git
+[submodule "biostack"]
+	path = biostack
+	url = https://github.com/GCModeller-Cloud/GCModeller-biostack.git
