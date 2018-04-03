@@ -1,1 +1,1 @@
-reflector /MySQL.Markdown /sql ./bioCAD.sql > ./bioCAD.dev.md
+reflector /MySQL.Markdown /sql ./bioCAD.sql > ./README.md
