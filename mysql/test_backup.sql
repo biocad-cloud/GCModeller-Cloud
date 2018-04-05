@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `biocad` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `biocad`;
+CREATE DATABASE  IF NOT EXISTS `metacardio` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `metacardio`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: biocad
+-- Host: localhost    Database: metacardio
 -- ------------------------------------------------------
 -- Server version	5.5.53
 
@@ -18,67 +18,87 @@ USE `biocad`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `data_files`
+-- Dumping data for table `analyst`
 --
 
-LOCK TABLES `data_files` WRITE;
-/*!40000 ALTER TABLE `data_files` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_files` ENABLE KEYS */;
+LOCK TABLES `analyst` WRITE;
+/*!40000 ALTER TABLE `analyst` DISABLE KEYS */;
+INSERT INTO `analyst` VALUES (10000,'admin0',0,'81dc9bdb52d04dc20036dbd8313ed055','gg.xie@bionovogene.com'),(10001,'admin1',1,'81dc9bdb52d04dc20036dbd8313ed055','gg.xie@bionovogene.com');
+/*!40000 ALTER TABLE `analyst` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `exception`
+-- Dumping data for table `customers`
 --
 
-LOCK TABLES `exception` WRITE;
-/*!40000 ALTER TABLE `exception` DISABLE KEYS */;
-/*!40000 ALTER TABLE `exception` ENABLE KEYS */;
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `project`
+-- Dumping data for table `experimental_batches`
 --
 
-LOCK TABLES `project` WRITE;
-/*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,1,'A','A',1,'1/1','2018-04-01 05:05:05'),(2,1,'B','B',1,'1/2','2018-04-01 05:05:05'),(3,1,'C','C',1,'1/3','2018-04-01 05:05:05'),(4,1,'D','D',1,'1/4','2018-04-01 05:05:05'),(5,1,'E','E',1,'1/5','2018-04-01 05:05:05');
-/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+LOCK TABLES `experimental_batches` WRITE;
+/*!40000 ALTER TABLE `experimental_batches` DISABLE KEYS */;
+INSERT INTO `experimental_batches` VALUES (1,10001,'2018-01-31 07:24:07','2018/01/31/07-24-07/','2018-01-31 07:24:07','',2),(2,10001,'2018-01-31 09:10:06','2018/01/31/09-10-06/','2018-01-31 09:10:06','',2),(3,10001,'2018-01-31 10:18:27','2018/01/31/10-18-27/','2018-01-31 10:18:27','',-1);
+/*!40000 ALTER TABLE `experimental_batches` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `task`
+-- Dumping data for table `frs_tracking`
 --
 
-LOCK TABLES `task` WRITE;
-/*!40000 ALTER TABLE `task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+LOCK TABLES `frs_tracking` WRITE;
+/*!40000 ALTER TABLE `frs_tracking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `frs_tracking` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `health_tracking`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `health_tracking` WRITE;
+/*!40000 ALTER TABLE `health_tracking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `health_tracking` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `user_activity`
+-- Dumping data for table `history`
 --
 
-LOCK TABLES `user_activity` WRITE;
-/*!40000 ALTER TABLE `user_activity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_activity` ENABLE KEYS */;
+LOCK TABLES `history` WRITE;
+/*!40000 ALTER TABLE `history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `user_settings`
+-- Dumping data for table `medical_examination`
 --
 
-LOCK TABLES `user_settings` WRITE;
-/*!40000 ALTER TABLE `user_settings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_settings` ENABLE KEYS */;
+LOCK TABLES `medical_examination` WRITE;
+/*!40000 ALTER TABLE `medical_examination` DISABLE KEYS */;
+/*!40000 ALTER TABLE `medical_examination` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `mrm_raw_files`
+--
+
+LOCK TABLES `mrm_raw_files` WRITE;
+/*!40000 ALTER TABLE `mrm_raw_files` DISABLE KEYS */;
+INSERT INTO `mrm_raw_files` VALUES (1,1,'day3.wiff.scan','2018-01-31 07:24:33',1932284,'a3113de1067f22be694c520d3d851837'),(2,1,'day3.wiff','2018-01-31 07:24:34',5521408,'ab8470fae0e436dbe04914b921b3df93'),(3,2,'day3.wiff.scan','2018-01-31 09:10:14',1932284,'a3113de1067f22be694c520d3d851837'),(4,2,'day3.wiff','2018-01-31 09:10:14',5521408,'ab8470fae0e436dbe04914b921b3df93');
+/*!40000 ALTER TABLE `mrm_raw_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `user_sample`
+--
+
+LOCK TABLES `user_sample` WRITE;
+/*!40000 ALTER TABLE `user_sample` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_sample` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -90,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-05 11:11:17
+-- Dump completed on 2018-04-05 22:32:15
