@@ -1,0 +1,11 @@
+id,suffix,content_type,description
+1,csv,foldchange/iTraq-matrix,"iTraq foldchange data matrix"
+2,fna,sequence/nucleotide,"DNA/RNA sequence in fasta format"
+3,faa,sequence/peptide,"Protein peptide sequence in fasta format"
+4,fasta,sequence/general,"General biological sequence in fasta format"
+5,gff,context/genome,"The genome context data"
+6,ptt,context/ORF,"The ORF context data in genome"
+7,gb,database/genbank,"The NCBI genbank database file"
+8,sbml,model/metabolism,"Metabolism system model file"
+9,biom,model/metagenomics,"Metagenome matrix"
+10,obo,model/ontology,"Ontology data model"
