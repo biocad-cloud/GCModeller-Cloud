@@ -9,4 +9,4 @@ This repository join these two github project:
 
 Web site art design from the original work: https://www.apachefriends.org/index.html
 
-![](./WeChat Image_20180513122709.png)
+![](./design/index.png)
