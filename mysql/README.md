@@ -11,7 +11,7 @@ MySql database field attributes notes in this development document:
 > + **UN**: Unsigned;
 > + **ZF**: Zero Fill
 
-Generate time: 4/6/2018 2:21:49 PM<br />
+Generate time: 6/18/2018 2:48:35 AM<br />
 By: ``mysqli.vb`` reflector tool ([https://github.com/xieguigang/mysqli.vb](https://github.com/xieguigang/mysqli.vb))
 
 <div style="page-break-after: always;"></div>
@@ -29,6 +29,9 @@ By: ``mysqli.vb`` reflector tool ([https://github.com/xieguigang/mysqli.vb](http
 |content_type|Int64 (11)|``NN``||
 |note|Text ()|||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `accept_file_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,7 +40,7 @@ CREATE TABLE `accept_file_type` (
   `note` mediumtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -61,6 +64,9 @@ CREATE TABLE `accept_file_type` (
 |create_time|DateTime ()|``NN``||
 |update_time|DateTime ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `analysis` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,7 +80,7 @@ CREATE TABLE `analysis` (
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -92,6 +98,10 @@ CREATE TABLE `analysis` (
 |description|Text ()|``NN``||
 |project_type|Int64 (11)|``NN``||
 |update_time|DateTime ()|``NN``||
+|version|VarChar (32)|``NN``||
+
+
+#### SQL Declare
 
 ```SQL
 CREATE TABLE `analysis_app` (
@@ -99,9 +109,10 @@ CREATE TABLE `analysis_app` (
   `description` mediumtext NOT NULL,
   `project_type` int(11) NOT NULL,
   `update_time` datetime NOT NULL,
+  `version` varchar(32) NOT NULL DEFAULT '1.0.0.0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -120,6 +131,9 @@ CREATE TABLE `analysis_app` (
 |content_type|VarChar (128)|``NN``||
 |description|Text ()|||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `content_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -128,7 +142,7 @@ CREATE TABLE `content_types` (
   `description` mediumtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -153,6 +167,11 @@ CREATE TABLE `content_types` (
 |md5|VarChar (32)|``NN``||
 |description|Text ()|||
 
+<div style="page-break-after: always;"></div>
+
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `data_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -167,7 +186,7 @@ CREATE TABLE `data_files` (
   `description` mediumtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享文件池';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享文件池';
 ```
 
 
@@ -185,6 +204,9 @@ CREATE TABLE `data_files` (
 |expression|Text ()|``NN``|产生这个错误所需要的表达式，包括：<br /><br />+ SQL查询语句<br />+ 命令行命令|
 |stack_trace|Text ()|``NN``|堆栈追踪信息|
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `exception` (
   `id` int(11) NOT NULL COMMENT '(user_activity id for code 500) 当在用户活动表之中出现500错误的时候，所记录下的对应的用于程序调试的错误信息，这个id是对应的用户活动表的记录id',
@@ -192,7 +214,7 @@ CREATE TABLE `exception` (
   `stack_trace` longtext NOT NULL COMMENT '堆栈追踪信息',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序的错误信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序的错误信息表';
 ```
 
 
@@ -214,6 +236,9 @@ CREATE TABLE `exception` (
 |workspace|VarChar (256)|``NN``||
 |create_time|DateTime ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -225,7 +250,7 @@ CREATE TABLE `project` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -245,6 +270,9 @@ CREATE TABLE `project` (
 |file_id|Int64 (11)|``NN``||
 |join_time|DateTime ()|``NN``|将用户的项目和文件这两个实体之间建立起关联的时间|
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `project_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -254,7 +282,7 @@ CREATE TABLE `project_files` (
   `join_time` datetime NOT NULL COMMENT '将用户的项目和文件这两个实体之间建立起关联的时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分析项目和文件池之中的文件的关联关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分析项目和文件池之中的文件的关联关系';
 ```
 
 
@@ -272,6 +300,9 @@ CREATE TABLE `project_files` (
 |name|VarChar (128)|``NN``||
 |note|Text ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `project_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -279,7 +310,7 @@ CREATE TABLE `project_types` (
   `note` mediumtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -299,6 +330,9 @@ CREATE TABLE `project_types` (
 |create_time|DateTime ()|``NN``||
 |analysis_list|Text ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `report` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -308,7 +342,7 @@ CREATE TABLE `report` (
   `analysis_list` mediumtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
@@ -323,27 +357,39 @@ CREATE TABLE `report` (
 |field|type|attributes|description|
 |-----|----|----------|-----------|
 |id|Int64 (11)|``AI``, ``NN``, ``PK``||
+|guid|VarChar (32)|``NN``, ``PK``||
 |user_id|Int64 (11)|``NN``||
 |project_id|Int64 (11)|``NN``||
+|app_id|Int64 (11)|``NN``|这个任务所使用到的分析程序的编号，后台任务系统会需要这个编号来调用相应的数据分析程序|
 |title|VarChar (128)|``NN``||
-|note|Text ()|||
 |create_time|DateTime ()|``NN``||
-|status|Int64 (11)|``NN``||
-|parameters|Text ()|``NN``||
+|finish_time|DateTime ()|||
+|status|Int64 (11)|``NN``|任务状态或者任务的执行结果|
+|note|Text ()|||
+|parameters|Text ()|``NN``|参数json|
+
+<div style="page-break-after: always;"></div>
+
+
+#### SQL Declare
 
 ```SQL
 CREATE TABLE `task` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guid` char(32) NOT NULL,
   `user_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
+  `app_id` int(11) NOT NULL COMMENT '这个任务所使用到的分析程序的编号，后台任务系统会需要这个编号来调用相应的数据分析程序',
   `title` varchar(128) NOT NULL,
-  `note` tinytext,
   `create_time` datetime NOT NULL,
-  `status` int(11) NOT NULL,
-  `parameters` longtext NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `finish_time` datetime DEFAULT NULL,
+  `status` int(11) NOT NULL COMMENT '任务状态或者任务的执行结果',
+  `note` tinytext,
+  `parameters` longtext NOT NULL COMMENT '参数json',
+  PRIMARY KEY (`id`,`guid`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `guid_UNIQUE` (`guid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 ```
 
 
@@ -364,6 +410,9 @@ CREATE TABLE `task` (
 |role|Int64 (11)|``NN``|用户在这个网站上面的角色类型|
 |create_time|DateTime ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -376,7 +425,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `account_UNIQUE` (`account`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户的基本信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户的基本信息表';
 ```
 
 
@@ -386,7 +435,7 @@ CREATE TABLE `user` (
 
 ## user_activity
 
-用于统计分析用户的使用习惯以及程序错误信息的记录表
+用于统计分析用户的使用习惯，安全性检测以及程序错误信息的记录表
 
 |field|type|attributes|description|
 |-----|----|----------|-----------|
@@ -397,6 +446,9 @@ CREATE TABLE `user` (
 |method|VarChar (16)|``NN``|GET/POST/PUT/DELETE, etc|
 |status_code|Int64 (11)|``NN``|200: api call success<br />500: api call throw exception<br />403: access denied<br />404: app not found|
 |time|DateTime ()|``NN``||
+
+
+#### SQL Declare
 
 ```SQL
 CREATE TABLE `user_activity` (
@@ -409,7 +461,7 @@ CREATE TABLE `user_activity` (
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于统计分析用户的使用习惯以及程序错误信息的记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于统计分析用户的使用习惯，安全性检测以及程序错误信息的记录表';
 ```
 
 
@@ -432,6 +484,9 @@ CREATE TABLE `user_activity` (
 |email_notify.task.error|Int64 (11)|``NN``||
 |update_time|DateTime ()|``NN``||
 
+
+#### SQL Declare
+
 ```SQL
 CREATE TABLE `user_settings` (
   `user_id` int(11) NOT NULL,
@@ -443,7 +498,7 @@ CREATE TABLE `user_settings` (
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='1: boolean TRUE\n0: boolean FALSE';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='1: boolean TRUE\n0: boolean FALSE';
 ```
 
 
