@@ -11,7 +11,7 @@ MySql database field attributes notes in this development document:
 > + **UN**: Unsigned;
 > + **ZF**: Zero Fill
 
-Generate time: 6/18/2018 2:48:35 AM<br />
+Generate time: 6/24/2018 7:54:54 PM<br />
 By: ``mysqli.vb`` reflector tool ([https://github.com/xieguigang/mysqli.vb](https://github.com/xieguigang/mysqli.vb))
 
 <div style="page-break-after: always;"></div>
@@ -357,14 +357,14 @@ CREATE TABLE `report` (
 |field|type|attributes|description|
 |-----|----|----------|-----------|
 |id|Int64 (11)|``AI``, ``NN``, ``PK``||
-|guid|VarChar (32)|``NN``, ``PK``||
+|sha1|VarChar (32)|``NN``, ``PK``|对id的md5哈希值|
 |user_id|Int64 (11)|``NN``||
 |project_id|Int64 (11)|``NN``||
 |app_id|Int64 (11)|``NN``|这个任务所使用到的分析程序的编号，后台任务系统会需要这个编号来调用相应的数据分析程序|
 |title|VarChar (128)|``NN``||
 |create_time|DateTime ()|``NN``||
 |finish_time|DateTime ()|||
-|status|Int64 (11)|``NN``|任务状态或者任务的执行结果|
+|status|Int64 (11)|``NN``|任务状态或者任务的执行结果<br /><br />0: 任务等待被执行<br />1: 任务执行中<br />200: 执行成功<br />500: 出错|
 |note|Text ()|||
 |parameters|Text ()|``NN``|参数json|
 
@@ -376,20 +376,20 @@ CREATE TABLE `report` (
 ```SQL
 CREATE TABLE `task` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `guid` char(32) NOT NULL,
+  `sha1` varchar(32) NOT NULL COMMENT '对id的md5哈希值',
   `user_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `app_id` int(11) NOT NULL COMMENT '这个任务所使用到的分析程序的编号，后台任务系统会需要这个编号来调用相应的数据分析程序',
   `title` varchar(128) NOT NULL,
   `create_time` datetime NOT NULL,
   `finish_time` datetime DEFAULT NULL,
-  `status` int(11) NOT NULL COMMENT '任务状态或者任务的执行结果',
+  `status` int(11) NOT NULL COMMENT '任务状态或者任务的执行结果\n\n0: 任务等待被执行\n1: 任务执行中\n200: 执行成功\n500: 出错',
   `note` tinytext,
   `parameters` longtext NOT NULL COMMENT '参数json',
-  PRIMARY KEY (`id`,`guid`),
+  PRIMARY KEY (`id`,`sha1`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `guid_UNIQUE` (`guid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `sha1_UNIQUE` (`sha1`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 
