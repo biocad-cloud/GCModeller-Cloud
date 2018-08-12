@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `metacardio` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `metacardio`;
+CREATE DATABASE  IF NOT EXISTS `biocad` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `biocad`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: metacardio
+-- Host: 127.0.0.1    Database: biocad
 -- ------------------------------------------------------
 -- Server version	5.5.53
 
@@ -18,87 +18,142 @@ USE `metacardio`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `analyst`
+-- Dumping data for table `accept_file_type`
 --
 
-LOCK TABLES `analyst` WRITE;
-/*!40000 ALTER TABLE `analyst` DISABLE KEYS */;
-INSERT INTO `analyst` VALUES (10000,'admin0',0,'81dc9bdb52d04dc20036dbd8313ed055','gg.xie@bionovogene.com'),(10001,'admin1',1,'81dc9bdb52d04dc20036dbd8313ed055','gg.xie@bionovogene.com');
-/*!40000 ALTER TABLE `analyst` ENABLE KEYS */;
+LOCK TABLES `accept_file_type` WRITE;
+/*!40000 ALTER TABLE `accept_file_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accept_file_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `customers`
+-- Dumping data for table `analysis`
 --
 
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+LOCK TABLES `analysis` WRITE;
+/*!40000 ALTER TABLE `analysis` DISABLE KEYS */;
+/*!40000 ALTER TABLE `analysis` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `experimental_batches`
+-- Dumping data for table `analysis_app`
 --
 
-LOCK TABLES `experimental_batches` WRITE;
-/*!40000 ALTER TABLE `experimental_batches` DISABLE KEYS */;
-INSERT INTO `experimental_batches` VALUES (1,10001,'2018-01-31 07:24:07','2018/01/31/07-24-07/','2018-01-31 07:24:07','',2),(2,10001,'2018-01-31 09:10:06','2018/01/31/09-10-06/','2018-01-31 09:10:06','',2),(3,10001,'2018-01-31 10:18:27','2018/01/31/10-18-27/','2018-01-31 10:18:27','',-1);
-/*!40000 ALTER TABLE `experimental_batches` ENABLE KEYS */;
+LOCK TABLES `analysis_app` WRITE;
+/*!40000 ALTER TABLE `analysis_app` DISABLE KEYS */;
+/*!40000 ALTER TABLE `analysis_app` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `frs_tracking`
+-- Dumping data for table `content_types`
 --
 
-LOCK TABLES `frs_tracking` WRITE;
-/*!40000 ALTER TABLE `frs_tracking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `frs_tracking` ENABLE KEYS */;
+LOCK TABLES `content_types` WRITE;
+/*!40000 ALTER TABLE `content_types` DISABLE KEYS */;
+INSERT INTO `content_types` VALUES (1,'csv','foldchange/iTraq-matrix','iTraq foldchange data matrix',3),(2,'fna','sequence/nucleotide','DNA/RNA sequence in fasta format',4),(3,'faa','sequence/peptide','Protein peptide sequence in fasta format',4),(4,'fasta','sequence/general','General biological sequence in fasta format',4),(5,'gff','context/genome','The genome context data',1),(6,'ptt','context/ORF','The ORF context data in genome',1),(7,'gb','database/genbank','The NCBI genbank database file',1),(8,'sbml','model/metabolism','Metabolism system model file',1),(9,'biom','model/metagenomics','Metagenome matrix',1),(10,'obo','model/ontology','Ontology data model',1),(11,'txt','text/general','General text file',1);
+/*!40000 ALTER TABLE `content_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `health_tracking`
+-- Dumping data for table `data_files`
 --
 
-LOCK TABLES `health_tracking` WRITE;
-/*!40000 ALTER TABLE `health_tracking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `health_tracking` ENABLE KEYS */;
+LOCK TABLES `data_files` WRITE;
+/*!40000 ALTER TABLE `data_files` DISABLE KEYS */;
+INSERT INTO `data_files` VALUES (1,1,'test.fasta','fasta',4,'/1/data_files/2018/08/12/B666G2gwHF0Fqqxd.dat',669,'2018-08-12 03:01:30','40c46e3fe4e3584a28e526679e4103d1',NULL),(2,1,'blastxtop.blastx.hits_id.list-proteins-uniprot-annotations-blastx.ORF.csv','csv',1,'/1/data_files/2018/08/12/Ii6eCnW3iGX7pMMG.dat',2028003,'2018-08-12 03:02:02','804bdaa293fa3904a7fb25227a9726e2',NULL),(3,1,'blastxtop.blastx.hits_id.list.txt','txt',11,'/1/data_files/2018/08/12/k6CTiB4ezplDtNB4.dat',170956,'2018-08-12 03:02:14','5456223d651afcb05a666afec201268e',NULL);
+/*!40000 ALTER TABLE `data_files` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `history`
+-- Dumping data for table `exception`
 --
 
-LOCK TABLES `history` WRITE;
-/*!40000 ALTER TABLE `history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `history` ENABLE KEYS */;
+LOCK TABLES `exception` WRITE;
+/*!40000 ALTER TABLE `exception` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exception` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `medical_examination`
+-- Dumping data for table `file_class`
 --
 
-LOCK TABLES `medical_examination` WRITE;
-/*!40000 ALTER TABLE `medical_examination` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medical_examination` ENABLE KEYS */;
+LOCK TABLES `file_class` WRITE;
+/*!40000 ALTER TABLE `file_class` DISABLE KEYS */;
+INSERT INTO `file_class` VALUES (0,'unknown'),(1,'text'),(2,'image'),(3,'matrix'),(4,'bioSequence');
+/*!40000 ALTER TABLE `file_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `mrm_raw_files`
+-- Dumping data for table `project`
 --
 
-LOCK TABLES `mrm_raw_files` WRITE;
-/*!40000 ALTER TABLE `mrm_raw_files` DISABLE KEYS */;
-INSERT INTO `mrm_raw_files` VALUES (1,1,'day3.wiff.scan','2018-01-31 07:24:33',1932284,'a3113de1067f22be694c520d3d851837'),(2,1,'day3.wiff','2018-01-31 07:24:34',5521408,'ab8470fae0e436dbe04914b921b3df93'),(3,2,'day3.wiff.scan','2018-01-31 09:10:14',1932284,'a3113de1067f22be694c520d3d851837'),(4,2,'day3.wiff','2018-01-31 09:10:14',5521408,'ab8470fae0e436dbe04914b921b3df93');
-/*!40000 ALTER TABLE `mrm_raw_files` ENABLE KEYS */;
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `user_sample`
+-- Dumping data for table `project_files`
 --
 
-LOCK TABLES `user_sample` WRITE;
-/*!40000 ALTER TABLE `user_sample` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_sample` ENABLE KEYS */;
+LOCK TABLES `project_files` WRITE;
+/*!40000 ALTER TABLE `project_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `project_types`
+--
+
+LOCK TABLES `project_types` WRITE;
+/*!40000 ALTER TABLE `project_types` DISABLE KEYS */;
+INSERT INTO `project_types` VALUES (1,'Proteomics','The study of proteins expressed by genes within an organism, with applications in the understanding of disease and in drug development');
+/*!40000 ALTER TABLE `project_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `report`
+--
+
+LOCK TABLES `report` WRITE;
+/*!40000 ALTER TABLE `report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `user_activity`
+--
+
+LOCK TABLES `user_activity` WRITE;
+/*!40000 ALTER TABLE `user_activity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `user_settings`
+--
+
+LOCK TABLES `user_settings` WRITE;
+/*!40000 ALTER TABLE `user_settings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -110,4 +165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-05 22:32:15
+-- Dump completed on 2018-08-12 11:06:23

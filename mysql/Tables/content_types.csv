@@ -9,3 +9,4 @@ id,suffix,content_type,description,class
 8,sbml,model/metabolism,"Metabolism system model file",1
 9,biom,model/metagenomics,"Metagenome matrix",1
 10,obo,model/ontology,"Ontology data model",1
+11,txt,text/general,"General text file",1
