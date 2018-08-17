@@ -1,4 +1,5 @@
 id,suffix,content_type,description,class
+0,*,unknown/NA,"Unknown file",0
 1,csv,foldchange/iTraq-matrix,"iTraq foldchange data matrix",3
 2,fna,sequence/nucleotide,"DNA/RNA sequence in fasta format",4
 3,faa,sequence/peptide,"Protein peptide sequence in fasta format",4
