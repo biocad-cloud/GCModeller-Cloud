@@ -1,9 +1,6 @@
 [submodule "php"]
 	path = src
 	url = https://github.com/GCModeller-Cloud/GCModeller-php.git
-[submodule "biostack"]
-	path = biostack
-	url = https://github.com/GCModeller-Cloud/GCModeller-biostack.git
 [submodule "framework/php.NET"]
 	path = framework/php.NET
 	url = https://github.com/biocad-cloud/php-dotnet.git
