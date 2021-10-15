@@ -7,3 +7,6 @@
 [submodule "framework/php.NET"]
 	path = framework/php.NET
 	url = https://github.com/biocad-cloud/php-dotnet.git
+[submodule "framework/LINQ"]
+	path = framework/LINQ
+	url = https://github.com/biocad-cloud/data.ts.git
