@@ -7,3 +7,6 @@
 [submodule "framework/LINQ"]
 	path = framework/LINQ
 	url = https://github.com/biocad-cloud/data.ts.git
+[submodule "framework/biocad_webcore"]
+	path = framework/biocad_webcore
+	url = https://github.com/biocad-cloud/biocad_webcore.git
