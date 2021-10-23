@@ -10,3 +10,6 @@
 [submodule "framework/biocad_webcore"]
 	path = framework/biocad_webcore
 	url = https://github.com/biocad-cloud/biocad_webcore.git
+[submodule "framework/pathway_cad"]
+	path = framework/pathway_cad
+	url = https://github.com/biocad-cloud/pathway_cad.git
