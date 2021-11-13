@@ -76,13 +76,23 @@ var KEGG;
         }
         function parseIDEntry(text) {
             var list = text.split(/\s{2,}/g);
-            var id = list[0];
-            var names = $from(list)
-                .Skip(1)
-                .Select(function (s) { return s.split(/;\s*/g); })
-                .Unlist(function (x) { return x; })
-                .ToArray();
-            return new brite.IDEntry(id, names);
+            if (text.indexOf(" ") == -1) {
+                return new brite.IDEntry(text, text);
+            }
+            if (list.length > 1) {
+                var id = list[0];
+                var names = $from(list)
+                    .Skip(1)
+                    .Select(function (s) { return s.split(/;\s*/g); })
+                    .Unlist(function (x) { return x; })
+                    .ToArray();
+                return new brite.IDEntry(id, names);
+            }
+            else {
+                var id = text.match(/\d{4,}\s/ig)[0];
+                var name_1 = text.substr(id.length);
+                return new brite.IDEntry(Strings.Trim(id, " "), Strings.Trim(name_1, " "));
+            }
         }
         brite.parseIDEntry = parseIDEntry;
         function isLeaf(node) {
@@ -100,7 +110,12 @@ var KEGG;
         var IDEntry = /** @class */ (function () {
             function IDEntry(id, names) {
                 this.id = id;
-                this.names = names;
+                if (typeof names == "string") {
+                    this.names = [names];
+                }
+                else {
+                    this.names = names;
+                }
             }
             Object.defineProperty(IDEntry.prototype, "commonName", {
                 get: function () {

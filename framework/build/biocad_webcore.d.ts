@@ -37,9 +37,9 @@ declare namespace KEGG.brite {
     */
     class IDEntry {
         id: string;
-        names: string[];
         readonly commonName: string;
-        constructor(id: string, names: string[]);
+        names: string[];
+        constructor(id: string, names: string[] | string);
         toString(): string;
     }
     interface IBriteEntry {
