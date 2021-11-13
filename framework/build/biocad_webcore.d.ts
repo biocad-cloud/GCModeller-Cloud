@@ -22,6 +22,7 @@ declare namespace KEGG.brite {
      * 将目标brite json文件或者对象解析为对象entry枚举
     */
     function parse(briteText: string | IKEGGBrite): IEnumerator<IBriteEntry>;
+    function parseIDEntry(text: string): IDEntry;
 }
 declare namespace KEGG.brite {
     /**

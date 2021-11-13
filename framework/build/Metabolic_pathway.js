@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 /// <reference path="../../build/linq.d.ts" />
 /// <reference path="../../layer.d.ts" />
+/// <reference path="../../build/biocad_webcore.d.ts" />
 var biodeep;
 (function (biodeep) {
     var app;
@@ -204,6 +205,30 @@ var apps;
     }(Bootstrap));
     apps.Metabolic_pathway = Metabolic_pathway;
 })(apps || (apps = {}));
+var PathwayNavigator;
+(function (PathwayNavigator) {
+    function parseJsTree(kegg_tree) {
+        var name = KEGG.brite.parseIDEntry(kegg_tree.name);
+        var commonName = name.commonName || "KEGG";
+        if (isNullOrEmpty(kegg_tree.children)) {
+            return {
+                id: name.id,
+                text: commonName,
+                children: null
+            };
+        }
+        else {
+            return {
+                id: name.id,
+                text: commonName,
+                children: $from(kegg_tree.children)
+                    .Select(parseJsTree)
+                    .ToArray()
+            };
+        }
+    }
+    PathwayNavigator.parseJsTree = parseJsTree;
+})(PathwayNavigator || (PathwayNavigator = {}));
 var dataAdapter;
 (function (dataAdapter) {
     var parseDunnart = /** @class */ (function () {

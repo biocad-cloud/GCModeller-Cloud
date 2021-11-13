@@ -84,6 +84,7 @@ var KEGG;
                 .ToArray();
             return new brite.IDEntry(id, names);
         }
+        brite.parseIDEntry = parseIDEntry;
         function isLeaf(node) {
             return $ts.isNullOrEmpty(node.children);
         }
