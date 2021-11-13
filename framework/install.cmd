@@ -9,6 +9,8 @@ SET jump=linq_js
 echo "Google GCC engine found at:"
 echo %jscompress%
 
+goto :%jump%
+
 REM ----===== google gcc function =====----
 :exec_gcc
 SETLOCAL
@@ -50,5 +52,8 @@ REM ----===== end of function =====----
 SET jump=linq_end
 CALL :exec_gcc linq
 :linq_end
+
+echo "all done!"
+pause
 
 exit 0
