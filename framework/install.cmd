@@ -57,6 +57,10 @@ SET jump=biocad_core
 CALL :exec_gcc biocad_webcore
 :biocad_core
 
+SET jump=Metabolic_pathway
+CALL :exec_gcc Metabolic_pathway
+:Metabolic_pathway
+
 echo "all done!"
 pause
 

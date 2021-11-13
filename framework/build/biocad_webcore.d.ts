@@ -24,15 +24,22 @@ declare namespace KEGG.brite {
     function parse(briteText: string | IKEGGBrite): IEnumerator<IBriteEntry>;
 }
 declare namespace KEGG.brite {
+    /**
+     * The raw json tree of the kegg brite data
+    */
     interface IKEGGBrite {
         name: string;
         children: IKEGGBrite[];
     }
+    /**
+     * key-value mapping of [ID => names]
+    */
     class IDEntry {
         id: string;
         names: string[];
         readonly commonName: string;
         constructor(id: string, names: string[]);
+        toString(): string;
     }
     interface IBriteEntry {
         entry: IDEntry;

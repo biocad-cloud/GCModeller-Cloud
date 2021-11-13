@@ -93,6 +93,9 @@ var KEGG;
 (function (KEGG) {
     var brite;
     (function (brite) {
+        /**
+         * key-value mapping of [ID => names]
+        */
         var IDEntry = /** @class */ (function () {
             function IDEntry(id, names) {
                 this.id = id;
@@ -106,6 +109,9 @@ var KEGG;
                 configurable: true
             });
             ;
+            IDEntry.prototype.toString = function () {
+                return this.commonName;
+            };
             return IDEntry;
         }());
         brite.IDEntry = IDEntry;
@@ -121,7 +127,9 @@ var MIME;
             .ToArray();
         var header;
         var seqBuffer = "";
-        var isnull = function () { return Strings.Empty(header) && Strings.Empty(seqBuffer); };
+        var isnull = function () {
+            return Strings.Empty(header) && Strings.Empty(seqBuffer);
+        };
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
             if (line.charAt(0) == ">") {
