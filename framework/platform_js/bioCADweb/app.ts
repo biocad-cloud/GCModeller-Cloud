@@ -1,9 +1,11 @@
 ﻿/// <reference path="../../build/linq.d.ts" />
 
-/// <reference path="./WebApp/LogInScript.ts" />
+/// <reference path="WebApp/Passport/LogInScript.ts" />
+/// <reference path="WebApp/Passport/RecoverScript.ts" />
+/// <reference path="WebApp/Passport/RegisterScript.ts" />
 
-var dev: Console;
-var logo = [`%c
+const dev: Console = console;
+const logo = [`%c
 
   .Ci     .bi           oDDDi    iDi   .CDDDDl             .Ci                     .C.
   .Ci     .bi         .bo  .c.   oCo   .Cl  .Cb.           .Ci                     .C.
@@ -21,11 +23,18 @@ var logo = [`%c
 
 `].concat(["color:#084B8A"]);
 
-(dev = console).log.apply(dev, logo);
+console.log.apply(dev, logo);
 
-Router.AddAppHandler(new bioCAD.WebApp.LogInScript(), "passport");
-Router.AddAppHandler(new bioCAD.WebApp.RegisterScript(), "passport");
-Router.AddAppHandler(new bioCAD.WebApp.RecoverScript(), "passport");
+namespace bioCAD.WebApp {
 
-$ts.FrameworkDebug = true;
-$ts(() => Router.RunApp($ts.windowLocation().fileName));
+    export function start() {
+        Router.AddAppHandler(new LogInScript());
+        Router.AddAppHandler(new RegisterScript());
+        Router.AddAppHandler(new RecoverScript());
+
+        Router.RunApp();
+    }
+}
+
+$ts.mode = Modes.debug;
+$ts(bioCAD.WebApp.start);

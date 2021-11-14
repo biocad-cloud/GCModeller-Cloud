@@ -61,6 +61,10 @@ SET jump=Metabolic_pathway
 CALL :exec_gcc Metabolic_pathway
 :Metabolic_pathway
 
+SET jump=biocad_cloud
+CALL :exec_gcc biocad
+:biocad_cloud
+
 echo "all done!"
 pause
 
