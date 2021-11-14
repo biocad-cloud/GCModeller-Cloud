@@ -243,7 +243,7 @@ var apps;
             var target = $ts("@app:explorer");
             $("#" + target).jstree({
                 'core': {
-                    data: [tree]
+                    data: tree.children
                 }
             });
         };
