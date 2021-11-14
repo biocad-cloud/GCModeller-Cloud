@@ -19,7 +19,6 @@ var biodeep;
     var app;
     (function (app) {
         function start() {
-            Router.AddAppHandler(new apps.Metabolic_pathway());
             Router.AddAppHandler(new apps.PathwayExplorer());
             Router.RunApp();
         }
@@ -77,25 +76,15 @@ var apps;
 })(apps || (apps = {}));
 var apps;
 (function (apps) {
-    var Metabolic_pathway = /** @class */ (function (_super) {
-        __extends(Metabolic_pathway, _super);
+    var Metabolic_pathway = /** @class */ (function () {
         function Metabolic_pathway() {
-            var _this = _super.call(this) || this;
-            _this.width = 800;
-            _this.height = 520;
-            _this.margin = 6;
-            _this.pad = 12;
-            _this.width = parseFloat($ts("@width"));
-            _this.height = parseFloat($ts("@height"));
-            return _this;
+            this.width = 800;
+            this.height = 520;
+            this.margin = 6;
+            this.pad = 12;
+            this.width = parseFloat($ts("@width"));
+            this.height = parseFloat($ts("@height"));
         }
-        Object.defineProperty(Metabolic_pathway.prototype, "appName", {
-            get: function () {
-                return "Pathway_explorer";
-            },
-            enumerable: true,
-            configurable: true
-        });
         Metabolic_pathway.prototype.redraw = function () {
             this.vis.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
         };
@@ -128,7 +117,8 @@ var apps;
             else {
                 $ts.getText(graph_url, function (json) { return _this.d3cola.on("tick", _this.loadGraph(JSON.parse(json)).tick()); });
             }
-            console.log("intialization job done!");
+            TypeScript.logging.log("intialization job done!", TypeScript.ConsoleColors.DarkBlue);
+            return this;
         };
         /**
          * load network graph model and then
@@ -203,7 +193,7 @@ var apps;
             }
         };
         return Metabolic_pathway;
-    }(Bootstrap));
+    }());
     apps.Metabolic_pathway = Metabolic_pathway;
 })(apps || (apps = {}));
 var apps;
@@ -213,6 +203,7 @@ var apps;
         function PathwayExplorer() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.assemblyKey = "ko00001-assembly";
+            _this.canvas = new apps.Metabolic_pathway();
             return _this;
         }
         Object.defineProperty(PathwayExplorer.prototype, "appName", {
@@ -237,6 +228,7 @@ var apps;
             else {
                 vm.loadCache();
             }
+            vm.canvas.init();
         };
         PathwayExplorer.prototype.loadUITree = function (obj) {
             var tree = PathwayNavigator.parseJsTree(obj);

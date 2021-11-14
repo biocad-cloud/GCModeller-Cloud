@@ -17,8 +17,7 @@ declare namespace apps {
     }
 }
 declare namespace apps {
-    class Metabolic_pathway extends Bootstrap {
-        readonly appName: string;
+    class Metabolic_pathway {
         private width;
         private height;
         margin: number;
@@ -29,7 +28,7 @@ declare namespace apps {
         constructor();
         private redraw;
         savePng(): void;
-        protected init(): void;
+        init(): Metabolic_pathway;
         /**
          * load network graph model and then
          * initialize data visualization
@@ -43,6 +42,7 @@ declare namespace apps {
     class PathwayExplorer extends Bootstrap {
         readonly appName: string;
         readonly assemblyKey: string;
+        readonly canvas: Metabolic_pathway;
         protected init(): void;
         private loadUITree;
         private saveCache;
