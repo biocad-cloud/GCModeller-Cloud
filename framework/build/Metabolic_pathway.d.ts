@@ -39,6 +39,16 @@ declare namespace apps {
         private static insertLinebreaks;
     }
 }
+declare namespace apps {
+    class PathwayExplorer extends Bootstrap {
+        readonly appName: string;
+        readonly assemblyKey: string;
+        protected init(): void;
+        private loadUITree;
+        private saveCache;
+        private loadCache;
+    }
+}
 declare namespace PathwayNavigator {
     function parseJsTree(kegg_tree: KEGG.brite.IKEGGBrite): jsTree;
 }
