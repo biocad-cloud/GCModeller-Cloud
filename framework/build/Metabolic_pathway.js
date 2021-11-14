@@ -91,7 +91,7 @@ var apps;
         }
         Object.defineProperty(Metabolic_pathway.prototype, "appName", {
             get: function () {
-                return "Metabolic_pathway";
+                return "Pathway_explorer";
             },
             enumerable: true,
             configurable: true
@@ -104,7 +104,7 @@ var apps;
         };
         Metabolic_pathway.prototype.init = function () {
             var _this = this;
-            var graph_url = $ts("@graph");
+            var graph_url = $ts("@url:graph");
             this.d3cola = cola.d3adaptor(d3)
                 .linkDistance(60)
                 .avoidOverlaps(true)
