@@ -4,6 +4,7 @@
 declare namespace biodeep.app {
     function start(): void;
 }
+declare const __indexOf: (searchElement: any, fromIndex?: number) => number;
 declare namespace apps {
     class Cola_graph {
         node: any;
@@ -39,12 +40,66 @@ declare namespace apps {
     }
 }
 declare namespace apps {
+    class GraphEditor {
+        width: number;
+        height: number;
+        /**
+         * SELECTION - store the selected node
+         * EDITING - store the drag mode (either 'drag' or 'add_link')
+        */
+        private selection;
+        private vis;
+        colorify: any;
+        private force;
+        private tool;
+        private new_link_source;
+        private drag;
+        private drag_link;
+        private graph;
+        /**
+         * update nodes and links
+        */
+        private tick;
+        /**
+         * SELECTION
+        */
+        private click;
+        private zoom;
+        init(): void;
+        /**
+         * TOOLBAR
+        */
+        private toolbar;
+        private tool_click;
+        /**
+         * SELECTION
+        */
+        private node_click;
+        /**
+         * SELECTION
+        */
+        private link_click;
+        /**
+         * update the layout
+        */
+        update(): any;
+        drag_add_link(selection: any): any;
+    }
+}
+declare namespace apps {
+    function buttonHtml(global: GraphEditor, type: string): string;
+    const add_link: string;
+    const add_node: string;
+    const pointer: string;
+}
+declare namespace apps {
     class PathwayExplorer extends Bootstrap {
         readonly appName: string;
         readonly assemblyKey: string;
         readonly canvas: Metabolic_pathway;
         protected init(): void;
         private loadUITree;
+        private static addReactor;
         private saveCache;
         private loadCache;
     }
@@ -97,15 +152,33 @@ declare namespace PathwayNavigator {
         a_attr?: {};
     }
 }
-interface graph {
+declare class graph {
     nodes: node[];
     links?: link[];
     constraints?: constraint[];
     groups?: group[];
+    private last_index;
+    /**
+     * resolve node IDs (not optimized at all!)
+    */
+    objectify(): any[];
+    /**
+     * remove the given node or link from the graph, also deleting dangling links if a node is removed
+    */
+    remove(condemned: any): link[];
+    add_node(type: string): node;
+    add_link(source: number, target: number): link;
 }
 interface node {
+    /**
+     * the display label text
+    */
     label: string;
+    /**
+     * the unique id
+    */
     dunnartid: string;
+    type: string;
     index: number;
     width: number;
     height: number;
@@ -117,6 +190,10 @@ interface node {
 interface link {
     source: number;
     target: number;
+}
+interface graphLink {
+    source: node;
+    target: node;
 }
 interface constraint {
     axis: "x" | "y";

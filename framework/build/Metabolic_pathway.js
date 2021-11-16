@@ -25,6 +25,13 @@ var biodeep;
         app.start = start;
     })(app = biodeep.app || (biodeep.app = {}));
 })(biodeep || (biodeep = {}));
+var __indexOf = Array.prototype.indexOf || function (item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+        if (i in this && this[i] === item)
+            return i;
+    }
+    return -1;
+};
 $ts.mode = Modes.debug;
 $ts(biodeep.app.start);
 var apps;
@@ -198,6 +205,255 @@ var apps;
 })(apps || (apps = {}));
 var apps;
 (function (apps) {
+    var GraphEditor = /** @class */ (function () {
+        function GraphEditor() {
+            this.width = 960;
+            this.height = 500;
+            /**
+             * SELECTION - store the selected node
+             * EDITING - store the drag mode (either 'drag' or 'add_link')
+            */
+            this.selection = null;
+            this.vis = null;
+            this.colorify = null;
+            this.force = null;
+            this.new_link_source = null;
+            this.drag = null;
+            this.drag_link = null;
+        }
+        /**
+         * update nodes and links
+        */
+        GraphEditor.prototype.tick = function () {
+            this.vis
+                .selectAll('.node')
+                .attr('transform', function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+            return this.vis.selectAll('.link').attr('x1', function (d) {
+                return d.source.x;
+            }).attr('y1', function (d) {
+                return d.source.y;
+            }).attr('x2', function (d) {
+                return d.target.x;
+            }).attr('y2', function (d) {
+                return d.target.y;
+            });
+        };
+        /**
+         * SELECTION
+        */
+        GraphEditor.prototype.click = function (d) {
+            var vm = this;
+            vm.selection = null;
+            d3.selectAll('.node').classed('selected', false);
+            return d3.selectAll('.link').classed('selected', false);
+        };
+        GraphEditor.prototype.zoom = function () {
+            return this.vis.attr('transform', "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        };
+        GraphEditor.prototype.init = function () {
+            var _this = this;
+            // create the SVG                     
+            var svg = d3.select('body').append('svg').attr('width', this.width).attr('height', this.height);
+            // ZOOM and PAN
+            // create container elements            
+            var container = svg.append('g');
+            var vm = this;
+            this.graph.objectify();
+            container.call(d3.behavior.zoom().scaleExtent([0.5, 8]).on('zoom', function () { return vm.zoom(); }));
+            vm.vis = container.append('g');
+            /* create a rectangular overlay to catch events
+            */
+            /* WARNING rect size is huge but not infinite. this is a dirty hack
+            */
+            vm.vis.append('rect').attr('class', 'overlay')
+                .attr('x', -500000)
+                .attr('y', -500000)
+                .attr('width', 1000000)
+                .attr('height', 1000000)
+                .on('click', function (d) { return _this.click(d); });
+            // END ZOOM and PAN
+            vm.colorify = d3.scale.category10();
+            // initialize the force layout
+            vm.force = d3.layout.force()
+                .size([this.width, this.height])
+                .charge(-400)
+                .linkDistance(60)
+                .on('tick', function () { return vm.tick(); });
+            /* DRAG
+            */
+            vm.drag = vm.force.drag().on('dragstart', function (d) { return d.fixed = true; });
+            /* DELETION - pressing DEL deletes the selection
+            */
+            d3.select(window).on('keydown', function () {
+                if (d3.event.keyCode === 46) {
+                    if (vm.selection != null) {
+                        vm.graph.remove(vm.selection);
+                        vm.selection = null;
+                        return vm.update();
+                    }
+                }
+            });
+            this.update();
+            this.toolbar();
+        };
+        /**
+         * TOOLBAR
+        */
+        GraphEditor.prototype.toolbar = function () {
+            var toolbar = $("<div class='toolbar'></div>");
+            var vm = this;
+            var library = $("<div class='library'></div></div>");
+            $('body').append(toolbar);
+            toolbar.append($(apps.pointer));
+            toolbar.append($(apps.add_node));
+            toolbar.append($(apps.add_link));
+            toolbar.append(library);
+            ['X', 'Y', 'Z', 'W'].forEach(function (type) {
+                var new_btn = $(apps.buttonHtml(vm, type));
+                new_btn.bind('click', function () {
+                    vm.graph.add_node(type);
+                    return vm.update();
+                });
+                library.append(new_btn);
+                return library.hide();
+            });
+            vm.tool = 'pointer';
+            vm.new_link_source = null;
+            vm.vis.on('mousemove.add_link', (function (d) {
+                /* check if there is a new link in creation
+                */
+                if (vm.new_link_source != null) {
+                    /* update the draggable link representation
+                    */
+                    var p = d3.mouse(vm.vis.node());
+                    return vm.drag_link.attr('x1', vm.new_link_source.x).attr('y1', vm.new_link_source.y).attr('x2', p[0]).attr('y2', p[1]);
+                }
+            })).on('mouseup.add_link', (function (d) {
+                vm.new_link_source = null;
+                /* remove the draggable link representation, if exists
+                */
+                if (vm.drag_link != null)
+                    return vm.drag_link.remove();
+            }));
+            return d3.selectAll('.tool').on('click', function () { return vm.tool_click(library); });
+        };
+        GraphEditor.prototype.tool_click = function (library) {
+            var vm = this;
+            d3.selectAll('.tool').classed('active', false);
+            d3.select(this).classed('active', true);
+            var new_tool = $(this).data('tool');
+            var nodes = vm.vis.selectAll('.node');
+            if (new_tool === 'add_link' && vm.tool !== 'add_link') {
+                /* remove drag handlers from nodes
+                */
+                nodes.on('mousedown.drag', null).on('touchstart.drag', null);
+                /* add drag handlers for the add_link tool
+                */
+                nodes.call(vm.drag_add_link);
+            }
+            else if (new_tool !== 'add_link' && vm.tool === 'add_link') {
+                /* remove drag handlers for the add_link tool
+                */
+                nodes.on('mousedown.add_link', null).on('mouseup.add_link', null);
+                /* add drag behavior to nodes
+                */
+                nodes.call(vm.drag);
+            }
+            if (new_tool === 'add_node') {
+                library.show();
+            }
+            else {
+                library.hide();
+            }
+            return vm.tool = new_tool;
+        };
+        /**
+         * SELECTION
+        */
+        GraphEditor.prototype.node_click = function (d) {
+            var vm = this;
+            vm.selection = d;
+            d3.selectAll('.node').classed('selected', function (d2) { return d2 === d; });
+            return d3.selectAll('.link').classed('selected', false);
+        };
+        /**
+         * SELECTION
+        */
+        GraphEditor.prototype.link_click = function (d) {
+            var vm = this;
+            vm.selection = d;
+            d3.selectAll('.link').classed('selected', function (d2) { return d2 === d; });
+            return d3.selectAll('.node').classed('selected', false);
+        };
+        /**
+         * update the layout
+        */
+        GraphEditor.prototype.update = function () {
+            var graph = this.graph;
+            var vm = this;
+            vm.force.nodes(graph.nodes).links(graph.links).start();
+            // create nodes and links
+            // (links are drawn with insert to make them appear under the nodes)
+            // also define a drag behavior to drag nodes
+            // dragged nodes become fixed
+            var nodes = vm.vis.selectAll('.node').data(graph.nodes, function (d) { return d.id; });
+            var new_nodes = nodes.enter().append('g').attr('class', 'node').on('click', function (d) { return vm.node_click(d); });
+            var links = vm.vis.selectAll('.link').data(graph.links, function (d) { return "" + d.source.id + "->" + d.target.id; });
+            links.enter().insert('line', '.node').attr('class', 'link').on('click', function (d) { return vm.link_click(d); });
+            links.exit().remove();
+            // TOOLBAR - add link tool initialization for new nodes
+            if (vm.tool === 'add_link') {
+                new_nodes.call(this.drag_add_link);
+            }
+            else {
+                new_nodes.call(vm.drag);
+            }
+            new_nodes.append('circle').attr('r', 18)
+                .attr('stroke', function (d) { return vm.colorify(d.type); })
+                .attr('fill', function (d) { return d3.hcl(vm.colorify(d.type)).brighter(3); });
+            // draw the label            
+            new_nodes.append('text')
+                .text(function (d) { return d.id; })
+                .attr('dy', '0.35em')
+                .attr('fill', function (d) { return vm.colorify(d.type); });
+            return nodes.exit().remove();
+        };
+        ;
+        GraphEditor.prototype.drag_add_link = function (selection) {
+            var vm = this;
+            var graph = this.graph;
+            return selection.on('mousedown.add_link', (function (d) {
+                vm.new_link_source = d;
+                // create the draggable link representation
+                var p = d3.mouse(vm.vis.node());
+                vm.drag_link = vm.vis.insert('line', '.node').attr('class', 'drag_link').attr('x1', d.x).attr('y1', d.y).attr('x2', p[0]).attr('y2', p[1]);
+                // prevent pan activation
+                d3.event.stopPropagation();
+                // prevent text selection
+                return d3.event.preventDefault();
+            })).on('mouseup.add_link', (function (d) {
+                // add link and update, but only if a link is actually added
+                if (graph.add_link(vm.new_link_source, d) != null)
+                    return vm.update();
+            }));
+        };
+        ;
+        return GraphEditor;
+    }());
+    apps.GraphEditor = GraphEditor;
+})(apps || (apps = {}));
+var apps;
+(function (apps) {
+    function buttonHtml(global, type) {
+        return "\n            <svg width='42' height='42'>\n                <g class='node'>\n                    <circle cx = '21' cy = '21' r = '18'\n                        stroke = '" + global.colorify(type) + "'\n                        fill = '" + d3.hcl(global.colorify(type)).brighter(3) + "'\n                    />\n                </g>\n            </svg>\n        ";
+    }
+    apps.buttonHtml = buttonHtml;
+    apps.add_link = "\n        <svg class='tool' data-tool='add_link' xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='32' viewBox='0 0 128 128'>\n            <g transform='translate(557.53125,-356.22543)'>\n                <g transform='translate(20,0)'>\n                    <path d='m -480.84375,360 c -15.02602,0 -27.375,12.31773 -27.375,27.34375 0,4.24084 1.00221,8.28018 2.75,11.875 l -28.875,28.875 c -3.59505,-1.74807 -7.6338,-2.75 -11.875,-2.75 -15.02602,0 -27.34375,12.34898 -27.34375,27.375 0,15.02602 12.31773,27.34375 27.34375,27.34375 15.02602,0 27.375,-12.31773 27.375,-27.34375 0,-4.26067 -0.98685,-8.29868 -2.75,-11.90625 L -492.75,411.96875 c 3.60156,1.75589 7.65494,2.75 11.90625,2.75 15.02602,0 27.34375,-12.34898 27.34375,-27.375 C -453.5,372.31773 -465.81773,360 -480.84375,360 z m 0,14 c 7.45986,0 13.34375,5.88389 13.34375,13.34375 0,7.45986 -5.88389,13.375 -13.34375,13.375 -7.45986,0 -13.375,-5.91514 -13.375,-13.375 0,-7.45986 5.91514,-13.34375 13.375,-13.34375 z m -65.375,65.34375 c 7.45986,0 13.34375,5.91514 13.34375,13.375 0,7.45986 -5.88389,13.34375 -13.34375,13.34375 -7.45986,0 -13.34375,-5.88389 -13.34375,-13.34375 0,-7.45986 5.88389,-13.375 13.34375,-13.375 z'/>\n                    <path d='m -484.34375,429.25 c -1.95543,0.19978 -3.60373,2.03442 -3.59375,4 l 0,12.40625 -12.40625,0 c -2.09434,2.1e-4 -3.99979,1.90566 -4,4 l 0,10 c -0.007,0.1353 -0.007,0.27095 0,0.40625 0.19978,1.95543 2.03442,3.60373 4,3.59375 l 12.40625,0 0,12.4375 c 2.1e-4,2.09434 1.90566,3.99979 4,4 l 10,0 c 2.09434,-2.1e-4 3.99979,-1.90566 4,-4 l 0,-12.4375 12.4375,0 c 2.09434,-2.1e-4 3.99979,-1.90566 4,-4 l 0,-10 c -2.1e-4,-2.09434 -1.90566,-3.99979 -4,-4 l -12.4375,0 0,-12.40625 c -2.1e-4,-2.09434 -1.90566,-3.99979 -4,-4 l -10,0 c -0.1353,-0.007 -0.27095,-0.007 -0.40625,0 z'/>\n                </g>\n            </g>\n        </svg>\n    ";
+    apps.add_node = "\n        <svg class='tool' data-tool='add_node' xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='32' viewBox='0 0 128 128'>\n            <g transform='translate(720.71649,-356.22543)'>\n                <g transform='translate(-3.8571429,146.42857)'>\n                    <path d='m -658.27638,248.37149 c -1.95543,0.19978 -3.60373,2.03442 -3.59375,4 l 0,12.40625 -12.40625,0 c -2.09434,2.1e-4 -3.99979,1.90566 -4,4 l 0,10 c -0.007,0.1353 -0.007,0.27095 0,0.40625 0.19978,1.95543 2.03442,3.60373 4,3.59375 l 12.40625,0 0,12.4375 c 2.1e-4,2.09434 1.90566,3.99979 4,4 l 10,0 c 2.09434,-2.1e-4 3.99979,-1.90566 4,-4 l 0,-12.4375 12.4375,0 c 2.09434,-2.1e-4 3.99979,-1.90566 4,-4 l 0,-10 c -2.1e-4,-2.09434 -1.90566,-3.99979 -4,-4 l -12.4375,0 0,-12.40625 c -2.1e-4,-2.09434 -1.90566,-3.99979 -4,-4 l -10,0 c -0.1353,-0.007 -0.27095,-0.007 -0.40625,0 z'/>\n                    <path d='m -652.84375,213.9375 c -32.97528,0 -59.875,26.86847 -59.875,59.84375 0,32.97528 26.89972,59.875 59.875,59.875 32.97528,0 59.84375,-26.89972 59.84375,-59.875 0,-32.97528 -26.86847,-59.84375 -59.84375,-59.84375 z m 0,14 c 25.40911,0 45.84375,20.43464 45.84375,45.84375 0,25.40911 -20.43464,45.875 -45.84375,45.875 -25.40911,0 -45.875,-20.46589 -45.875,-45.875 0,-25.40911 20.46589,-45.84375 45.875,-45.84375 z'/>\n                </g>\n            </g>\n        </svg>\n    ";
+    apps.pointer = "\n        <svg class='active tool' data-tool='pointer' xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='32' viewBox='0 0 128 128'>\n            <g transform='translate(881.10358,-356.22543)'>\n                <g transform='matrix(0.8660254,-0.5,0.5,0.8660254,-266.51112,-215.31898)'>\n                    <path d='m -797.14902,212.29589 a 5.6610848,8.6573169 0 0 0 -4.61823,4.3125 l -28.3428,75.0625 a 5.6610848,8.6573169 0 0 0 4.90431,13 l 56.68561,0 a 5.6610848,8.6573169 0 0 0 4.9043,-13 l -28.3428,-75.0625 a 5.6610848,8.6573169 0 0 0 -5.19039,-4.3125 z m 0.28608,25.96875 18.53419,49.09375 -37.06838,0 18.53419,-49.09375 z'/>\n                    <path d='m -801.84375,290.40625 c -2.09434,2.1e-4 -3.99979,1.90566 -4,4 l 0,35.25 c 2.1e-4,2.09434 1.90566,3.99979 4,4 l 10,0 c 2.09434,-2.1e-4 3.99979,-1.90566 4,-4 l 0,-35.25 c -2.1e-4,-2.09434 -1.90566,-3.99979 -4,-4 z'/>\n                </g>\n            </g>\n        </svg>\n    ";
+})(apps || (apps = {}));
+var apps;
+(function (apps) {
     var PathwayExplorer = /** @class */ (function (_super) {
         __extends(PathwayExplorer, _super);
         function PathwayExplorer() {
@@ -236,8 +492,27 @@ var apps;
             $("#" + target).jstree({
                 'core': {
                     data: tree.children
+                },
+                'plugins': ["contextmenu"],
+                'contextmenu': {
+                    'items': {
+                        "add_reactor": {
+                            label: "Add Reactor",
+                            action: PathwayExplorer.addReactor
+                        }
+                    }
                 }
             });
+        };
+        PathwayExplorer.addReactor = function (data) {
+            var id = data.reference[0].id;
+            var kid = id.match(/K\d{4,}/g);
+            if (kid.length > 0) {
+                // K00000
+            }
+            else {
+                // do nothing?
+            }
         };
         PathwayExplorer.prototype.saveCache = function (obj) {
             var cacheKeys = [];
@@ -301,6 +576,89 @@ var PathwayNavigator;
     }
     PathwayNavigator.parseJsTree = parseJsTree;
 })(PathwayNavigator || (PathwayNavigator = {}));
+var graph = /** @class */ (function () {
+    function graph() {
+        this.last_index = 0;
+    }
+    /**
+     * resolve node IDs (not optimized at all!)
+    */
+    graph.prototype.objectify = function () {
+        var vm = this;
+        var _ref = vm.links;
+        var _results = [];
+        var _loop_1 = function (_i, _len) {
+            var l = _ref[_i];
+            _results.push((function () {
+                var _j, _len2, _ref2, _results2;
+                _ref2 = vm.nodes;
+                _results2 = [];
+                for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                    var n = _ref2[_j];
+                    if (l.source === n.id) {
+                        l.source = n;
+                        continue;
+                    }
+                    if (l.target === n.id) {
+                        l.target = n;
+                        continue;
+                    }
+                    else {
+                        _results2.push(void 0);
+                    }
+                }
+                return _results2;
+            })());
+        };
+        for (var _i = 0, _len = _ref.length; _i < _len; _i++) {
+            _loop_1(_i, _len);
+        }
+        return _results;
+    };
+    /**
+     * remove the given node or link from the graph, also deleting dangling links if a node is removed
+    */
+    graph.prototype.remove = function (condemned) {
+        if (__indexOf.call(this.nodes, condemned) >= 0) {
+            this.nodes = this.nodes.filter(function (n) { return n !== condemned; });
+            return this.links = this.links.filter(function (l) { return l.source.id !== condemned.id && l.target.id !== condemned.id; });
+        }
+        else if (__indexOf.call(this.links, condemned) >= 0) {
+            return this.links = this.links.filter(function (l) { return l !== condemned; });
+        }
+    };
+    graph.prototype.add_node = function (type) {
+        var n = {
+            dunnartid: (this.last_index++).toString(),
+            x: 0,
+            y: 0,
+            type: type
+        };
+        this.nodes.push(n);
+        return n;
+    };
+    graph.prototype.add_link = function (source, target) {
+        /* avoid links to self
+        */
+        if (source === target)
+            return null;
+        /* avoid link duplicates
+        */
+        var _ref = this.links;
+        for (var _i = 0, _len = _ref.length; _i < _len; _i++) {
+            var link = _ref[_i];
+            if (link.source === source && link.target === target)
+                return null;
+        }
+        var l = {
+            source: source,
+            target: target
+        };
+        this.links.push(l);
+        return l;
+    };
+    return graph;
+}());
 var dataAdapter;
 (function (dataAdapter) {
     var parseDunnart = /** @class */ (function () {
