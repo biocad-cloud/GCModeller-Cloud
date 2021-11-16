@@ -41,6 +41,7 @@ declare namespace apps {
 }
 declare namespace apps {
     class GraphEditor {
+        graph: Graph;
         width: number;
         height: number;
         /**
@@ -55,7 +56,7 @@ declare namespace apps {
         private new_link_source;
         private drag;
         private drag_link;
-        private graph;
+        constructor(graph: Graph);
         /**
          * update nodes and links
         */
@@ -152,12 +153,13 @@ declare namespace PathwayNavigator {
         a_attr?: {};
     }
 }
-declare class graph {
+declare class Graph {
     nodes: node[];
     links?: link[];
     constraints?: constraint[];
     groups?: group[];
     private last_index;
+    constructor(graph?: Graph);
     /**
      * resolve node IDs (not optimized at all!)
     */
@@ -214,7 +216,7 @@ declare namespace dataAdapter {
         private graph;
         private sbsvg;
         constructor(svgObjId?: string);
-        getGraph(): graph;
+        getGraph(): Graph;
         private loadNodes;
     }
 }

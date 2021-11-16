@@ -206,7 +206,8 @@ var apps;
 var apps;
 (function (apps) {
     var GraphEditor = /** @class */ (function () {
-        function GraphEditor() {
+        function GraphEditor(graph) {
+            this.graph = graph;
             this.width = 960;
             this.height = 500;
             /**
@@ -220,6 +221,12 @@ var apps;
             this.new_link_source = null;
             this.drag = null;
             this.drag_link = null;
+            if (graph instanceof Graph) {
+                // do nothing
+            }
+            else {
+                this.graph = new Graph(graph);
+            }
         }
         /**
          * update nodes and links
@@ -340,8 +347,8 @@ var apps;
         GraphEditor.prototype.tool_click = function (library) {
             var vm = this;
             d3.selectAll('.tool').classed('active', false);
-            d3.select(this).classed('active', true);
-            var new_tool = $(this).data('tool');
+            d3.select(library).classed('active', true);
+            var new_tool = $(library).data('tool');
             var nodes = vm.vis.selectAll('.node');
             if (new_tool === 'add_link' && vm.tool !== 'add_link') {
                 /* remove drag handlers from nodes
@@ -576,14 +583,19 @@ var PathwayNavigator;
     }
     PathwayNavigator.parseJsTree = parseJsTree;
 })(PathwayNavigator || (PathwayNavigator = {}));
-var graph = /** @class */ (function () {
-    function graph() {
+var Graph = /** @class */ (function () {
+    function Graph(graph) {
+        if (graph === void 0) { graph = null; }
         this.last_index = 0;
+        if (!isNullOrUndefined(graph)) {
+            this.nodes = graph.nodes;
+            this.links = graph.links;
+        }
     }
     /**
      * resolve node IDs (not optimized at all!)
     */
-    graph.prototype.objectify = function () {
+    Graph.prototype.objectify = function () {
         var vm = this;
         var _ref = vm.links;
         var _results = [];
@@ -618,7 +630,7 @@ var graph = /** @class */ (function () {
     /**
      * remove the given node or link from the graph, also deleting dangling links if a node is removed
     */
-    graph.prototype.remove = function (condemned) {
+    Graph.prototype.remove = function (condemned) {
         if (__indexOf.call(this.nodes, condemned) >= 0) {
             this.nodes = this.nodes.filter(function (n) { return n !== condemned; });
             return this.links = this.links.filter(function (l) { return l.source.id !== condemned.id && l.target.id !== condemned.id; });
@@ -627,7 +639,7 @@ var graph = /** @class */ (function () {
             return this.links = this.links.filter(function (l) { return l !== condemned; });
         }
     };
-    graph.prototype.add_node = function (type) {
+    Graph.prototype.add_node = function (type) {
         var n = {
             dunnartid: (this.last_index++).toString(),
             x: 0,
@@ -637,7 +649,7 @@ var graph = /** @class */ (function () {
         this.nodes.push(n);
         return n;
     };
-    graph.prototype.add_link = function (source, target) {
+    Graph.prototype.add_link = function (source, target) {
         /* avoid links to self
         */
         if (source === target)
@@ -657,7 +669,7 @@ var graph = /** @class */ (function () {
         this.links.push(l);
         return l;
     };
-    return graph;
+    return Graph;
 }());
 var dataAdapter;
 (function (dataAdapter) {
