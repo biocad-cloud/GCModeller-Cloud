@@ -8545,19 +8545,19 @@ var Internal;
                 var name_noclick = publicMethodName
                     .replace("_click", "")
                     .replace("_onclick", "");
-                if (!tryHookClickEvent(app, elements, publicMethodName, type.class)) {
-                    tryHookClickEvent(app, elements, name_noclick, type.class);
+                if (!tryHookClickEvent(app, elements, publicMethodName, publicMethodName)) {
+                    tryHookClickEvent(app, elements, name_noclick, publicMethodName);
                 }
             }
         }
-        function tryHookClickEvent(app, elements, publicMethodName, typeName) {
+        function tryHookClickEvent(app, elements, publicMethodName, eventRawName) {
             if (elements.indexOf(publicMethodName) > -1) {
                 var arguments_1 = parseFunctionArgumentNames(app[publicMethodName]);
                 if (arguments_1.length == 0 || arguments_1.length == 2) {
                     $ts("#" + publicMethodName).onclick = function (handler, evt) {
-                        return app[publicMethodName](handler, evt);
+                        return app[eventRawName](handler, evt);
                     };
-                    TypeScript.logging.log("[" + typeName + "] hook onclick for #" + publicMethodName + "...", TypeScript.ConsoleColors.Green);
+                    TypeScript.logging.log("[EVENT " + eventRawName + "] hook onclick for #" + publicMethodName + "...", TypeScript.ConsoleColors.Green);
                     return true;
                 }
             }
