@@ -8627,13 +8627,18 @@ var Internal;
         var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         var ARGUMENT_NAMES = /([^\s,]+)/g;
         function parseFunctionArgumentNames(func) {
-            var fnStr = func.toString().replace(STRIP_COMMENTS, '');
-            var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-            if (result === null) {
+            if (isNullOrUndefined(func)) {
                 return [];
             }
             else {
-                return result;
+                var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+                var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+                if (result === null) {
+                    return [];
+                }
+                else {
+                    return result;
+                }
             }
         }
         EventHandles.parseFunctionArgumentNames = parseFunctionArgumentNames;
