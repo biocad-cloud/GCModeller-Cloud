@@ -40,58 +40,42 @@ declare namespace apps {
     }
 }
 declare namespace apps {
-    class GraphEditor {
-        graph: Graph;
-        width: number;
-        height: number;
+    class FlowEditor extends Bootstrap {
+        readonly appName: string;
         /**
-         * SELECTION - store the selected node
-         * EDITING - store the drag mode (either 'drag' or 'add_link')
+         * SD is a global variable, to avoid polluting global namespace and to make the global
+         * nature of the individual variables obvious.
         */
-        private selection;
-        private vis;
-        colorify: any;
-        private force;
-        private tool;
-        private new_link_source;
-        private drag;
-        private drag_link;
-        constructor(graph: Graph);
-        /**
-         * update nodes and links
-        */
-        private tick;
-        /**
-         * SELECTION
-        */
-        private click;
-        private zoom;
+        readonly SD: {
+            mode: string;
+            itemType: string;
+            nodeCounter: {
+                stock: number;
+                cloud: number;
+                variable: number;
+                valve: number;
+            };
+        };
+        private myDiagram;
+        private config;
         init(): void;
-        /**
-         * TOOLBAR
-        */
-        private toolbar;
-        private tool_click;
-        /**
-         * SELECTION
-        */
-        private node_click;
-        /**
-         * SELECTION
-        */
-        private link_click;
-        /**
-         * update the layout
-        */
-        update(): any;
-        drag_add_link(selection: any): any;
+        buildTemplates(): void;
+        setMode(mode: any, itemType: any): void;
+        save(): void;
+        load(): void;
     }
 }
-declare namespace apps {
-    function buttonHtml(global: GraphEditor, type: string): string;
-    const add_link: string;
-    const add_node: string;
-    const pointer: string;
+declare namespace apps.EditorTemplates {
+    function nodeStyle(): any[];
+    function shapeStyle(): {
+        name: string;
+        stroke: string;
+        fill: string;
+        portId: string;
+        fromLinkable: boolean;
+        toLinkable: boolean;
+    };
+    function textStyle(): any[];
 }
 declare namespace apps {
     class PathwayExplorer extends Bootstrap {
