@@ -8537,21 +8537,28 @@ var Internal;
          * handle on clicks
         */
         function hookOnClicks(app, elements, type) {
-            var _loop_1 = function (publicMethodName) {
-                if (elements.indexOf(publicMethodName) > -1) {
-                    var arguments_1 = parseFunctionArgumentNames(app[publicMethodName]);
-                    if (arguments_1.length == 0 || arguments_1.length == 2) {
-                        $ts("#" + publicMethodName).onclick = function (handler, evt) {
-                            return app[publicMethodName](handler, evt);
-                        };
-                        TypeScript.logging.log("[" + type.class + "] hook onclick for #" + publicMethodName + "...", TypeScript.ConsoleColors.Green);
-                    }
-                }
-            };
             for (var _i = 0, _a = type.methods; _i < _a.length; _i++) {
                 var publicMethodName = _a[_i];
-                _loop_1(publicMethodName);
+                var name_noclick = publicMethodName
+                    .replace("_click", "")
+                    .replace("_onclick", "");
+                if (!tryHookClickEvent(app, elements, publicMethodName, type.class)) {
+                    tryHookClickEvent(app, elements, name_noclick, type.class);
+                }
             }
+        }
+        function tryHookClickEvent(app, elements, publicMethodName, typeName) {
+            if (elements.indexOf(publicMethodName) > -1) {
+                var arguments_1 = parseFunctionArgumentNames(app[publicMethodName]);
+                if (arguments_1.length == 0 || arguments_1.length == 2) {
+                    $ts("#" + publicMethodName).onclick = function (handler, evt) {
+                        return app[publicMethodName](handler, evt);
+                    };
+                    TypeScript.logging.log("[" + typeName + "] hook onclick for #" + publicMethodName + "...", TypeScript.ConsoleColors.Green);
+                    return true;
+                }
+            }
+            return false;
         }
         var onchangeToken = "_onchange";
         // <input id="email" />
@@ -8560,7 +8567,7 @@ var Internal;
         // }
         function hookOnChange(app, elements, type) {
             elements = $from(elements).Select(function (id) { return "" + id + onchangeToken; }).ToArray();
-            var _loop_2 = function (publicMethodName) {
+            var _loop_1 = function (publicMethodName) {
                 if (elements.indexOf(publicMethodName) == -1) {
                     return "continue";
                 }
@@ -8603,7 +8610,7 @@ var Internal;
             };
             for (var _i = 0, _a = type.methods; _i < _a.length; _i++) {
                 var publicMethodName = _a[_i];
-                _loop_2(publicMethodName);
+                _loop_1(publicMethodName);
             }
         }
         function hookEventHandles(app) {
