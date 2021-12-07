@@ -221,6 +221,7 @@ var apps;
                 nodeCounter: { stock: 0, cloud: 0, variable: 0, valve: 0 }
             };
             return _this;
+            //#end region
         }
         Object.defineProperty(FlowEditor.prototype, "appName", {
             get: function () {
@@ -376,11 +377,30 @@ var apps;
         // Show the diagram's model in JSON format that the user may edit
         FlowEditor.prototype.save = function () {
             var myDiagram = this.myDiagram;
-            document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+            var modelJson = myDiagram.model.toJson();
             myDiagram.isModified = false;
         };
         FlowEditor.prototype.load = function () {
-            this.myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+            this.myDiagram.model = go.Model.fromJson($ts.text("#demo-system"));
+        };
+        //#region "button events"
+        FlowEditor.prototype.pointer_click = function () {
+            this.setMode('pointer', 'pointer');
+        };
+        FlowEditor.prototype.stock_click = function () {
+            this.setMode('node', 'stock');
+        };
+        FlowEditor.prototype.cloud_click = function () {
+            this.setMode('node', 'cloud');
+        };
+        FlowEditor.prototype.variable_click = function () {
+            this.setMode('node', 'variable');
+        };
+        FlowEditor.prototype.flow_click = function () {
+            this.setMode('link', 'flow');
+        };
+        FlowEditor.prototype.influence_click = function () {
+            this.setMode('link', 'influence');
         };
         return FlowEditor;
     }(Bootstrap));

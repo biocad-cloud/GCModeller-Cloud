@@ -63,6 +63,12 @@ declare namespace apps {
         setMode(mode: any, itemType: any): void;
         save(): void;
         load(): void;
+        pointer_click(): void;
+        stock_click(): void;
+        cloud_click(): void;
+        variable_click(): void;
+        flow_click(): void;
+        influence_click(): void;
     }
 }
 declare namespace apps.EditorTemplates {
