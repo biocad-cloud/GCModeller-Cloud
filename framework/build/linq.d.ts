@@ -2696,6 +2696,10 @@ declare module Router {
     function getAppSummary(app: Bootstrap, module?: string): IAppInfo;
     /**
      * 从这个函数开始执行整个Web应用程序
+     *
+     * @description appName orders:
+     *
+     *    meta(app) -> url app=... -> /
     */
     function RunApp(module?: string): void;
     function queryKey(argName: string): (link: string) => string;

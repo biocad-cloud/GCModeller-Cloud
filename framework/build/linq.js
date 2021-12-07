@@ -8228,6 +8228,10 @@ var Router;
     Router.getAppSummary = getAppSummary;
     /**
      * 从这个函数开始执行整个Web应用程序
+     *
+     * @description appName orders:
+     *
+     *    meta(app) -> url app=... -> /
     */
     function RunApp(module) {
         if (module === void 0) { module = "/"; }
@@ -8408,7 +8412,7 @@ var Bootstrap = /** @class */ (function () {
          * @returns 如果没有定义app参数，则默认是返回``/``作为名称
         */
         get: function () {
-            return getAllUrlParams().Item("app") || Router.appName || "/";
+            return Router.appName || getAllUrlParams().Item("app") || "/";
         },
         enumerable: true,
         configurable: true
