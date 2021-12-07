@@ -8539,6 +8539,9 @@ var Internal;
         function hookOnClicks(app, elements, type) {
             for (var _i = 0, _a = type.methods; _i < _a.length; _i++) {
                 var publicMethodName = _a[_i];
+                if (Strings.Empty(publicMethodName, false)) {
+                    continue;
+                }
                 var name_noclick = publicMethodName
                     .replace("_click", "")
                     .replace("_onclick", "");
