@@ -1,9 +1,13 @@
 /// <reference path="linq.d.ts" />
 declare namespace bioCAD.WebApp {
-    class LogInScript extends Bootstrap {
+    /**
+     * script module for user login
+    */
+    class LoginScript extends Bootstrap {
         readonly appName: string;
         protected init(): void;
-        static login(): void;
+        login_click(): void;
+        static do_login(): void;
     }
 }
 declare namespace bioCAD.WebApp {

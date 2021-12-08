@@ -15,24 +15,29 @@ var bioCAD;
 (function (bioCAD) {
     var WebApp;
     (function (WebApp) {
-        var LogInScript = /** @class */ (function (_super) {
-            __extends(LogInScript, _super);
-            function LogInScript() {
+        /**
+         * script module for user login
+        */
+        var LoginScript = /** @class */ (function (_super) {
+            __extends(LoginScript, _super);
+            function LoginScript() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            Object.defineProperty(LogInScript.prototype, "appName", {
+            Object.defineProperty(LoginScript.prototype, "appName", {
                 get: function () {
                     return "login";
                 },
                 enumerable: true,
                 configurable: true
             });
-            LogInScript.prototype.init = function () {
-                $ts("#login").onclick = LogInScript.login;
+            LoginScript.prototype.init = function () {
             };
-            LogInScript.login = function () {
-                var account = $ts("#username").CType().value;
-                var password = $ts("#password").CType().value;
+            LoginScript.prototype.login_click = function () {
+                LoginScript.do_login();
+            };
+            LoginScript.do_login = function () {
+                var account = $ts.value("#username");
+                var password = $ts.value("#password");
                 var api = $ts("@api:login");
                 $ts.post(api, {
                     account: account, password: md5(password)
@@ -52,9 +57,9 @@ var bioCAD;
                     }
                 });
             };
-            return LogInScript;
+            return LoginScript;
         }(Bootstrap));
-        WebApp.LogInScript = LogInScript;
+        WebApp.LoginScript = LoginScript;
     })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
 })(bioCAD || (bioCAD = {}));
 var bioCAD;
@@ -143,7 +148,7 @@ var bioCAD;
     var WebApp;
     (function (WebApp) {
         function start() {
-            Router.AddAppHandler(new WebApp.LogInScript());
+            Router.AddAppHandler(new WebApp.LoginScript());
             Router.AddAppHandler(new WebApp.RegisterScript());
             Router.AddAppHandler(new WebApp.RecoverScript());
             Router.RunApp();

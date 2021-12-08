@@ -1,26 +1,33 @@
 ﻿namespace bioCAD.WebApp {
 
-    export class LogInScript extends Bootstrap {
+    /**
+     * script module for user login
+    */
+    export class LoginScript extends Bootstrap {
 
         public get appName(): string {
             return "login";
         }
 
         protected init(): void {
-            $ts("#login").onclick = LogInScript.login;
+
         }
 
-        static login() {
-            var account: string = $ts("#username").CType<HTMLInputElement>().value;
-            var password: string = $ts("#password").CType<HTMLInputElement>().value;
-            var api: string = <any>$ts("@api:login");
+        public login_click() {
+            LoginScript.do_login();
+        }
+
+        static do_login() {
+            const account: string = $ts.value("#username");
+            const password: string = $ts.value("#password");
+            const api: string = <any>$ts("@api:login");
 
             $ts.post(api, {
                 account: account, password: md5(password)
             }, result => {
                 if (result.code == 0) {
-                    var query = $ts.location("goto", false, "/");
-                    var back = decodeURIComponent(query);
+                    const query = $ts.location("goto", false, "/");
+                    const back = decodeURIComponent(query);
 
                     if (Strings.Empty(back, true)) {
                         (<any>parent).gotoURL("/");

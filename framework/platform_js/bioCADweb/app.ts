@@ -28,7 +28,7 @@ console.log.apply(dev, logo);
 namespace bioCAD.WebApp {
 
     export function start() {
-        Router.AddAppHandler(new LogInScript());
+        Router.AddAppHandler(new LoginScript());
         Router.AddAppHandler(new RegisterScript());
         Router.AddAppHandler(new RecoverScript());
 
