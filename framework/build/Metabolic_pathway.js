@@ -402,6 +402,40 @@ var apps;
         FlowEditor.prototype.influence_click = function () {
             this.setMode('link', 'influence');
         };
+        /**
+         * save the current dynamics system
+        */
+        FlowEditor.prototype.run_click = function () {
+            var myDiagram = this.myDiagram;
+            var modelJson = myDiagram.model.toJson();
+            var vm = this;
+            var payload = {
+                guid: $ts("@guid"),
+                model: JSON.parse(modelJson),
+                type: "dynamics"
+            };
+            myDiagram.isModified = false;
+            // save model at first
+            $ts.post("@api:save", payload, function (resp) {
+                if (resp.code != 0) {
+                    console.error(resp.info);
+                }
+                else {
+                    // and then run model
+                    vm.doRunModel(resp.info);
+                }
+            });
+        };
+        FlowEditor.prototype.doRunModel = function (guid) {
+            $ts.post("@api:run/?run=" + guid, { guid: guid }, function (resp) {
+                if (resp.code != 0) {
+                    console.error(resp.info);
+                }
+                else {
+                    $goto(resp.url);
+                }
+            });
+        };
         return FlowEditor;
     }(Bootstrap));
     apps.FlowEditor = FlowEditor;

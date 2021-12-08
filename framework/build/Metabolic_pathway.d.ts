@@ -69,6 +69,11 @@ declare namespace apps {
         variable_click(): void;
         flow_click(): void;
         influence_click(): void;
+        /**
+         * save the current dynamics system
+        */
+        run_click(): void;
+        private doRunModel;
     }
 }
 declare namespace apps.EditorTemplates {
