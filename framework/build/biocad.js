@@ -203,7 +203,7 @@ var bioCAD;
                         .appendElement("\n                        <div class=\"media-body\">\n                            <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                        </div>"));
                     var createTime = $ts("<td>").appendElement(task.create_time);
                     var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
-                    var end_time = $ts("<td>").appendElement(task.finish_time);
+                    var end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
                     var progress = $ts("<td>").appendElement(task_pending);
                     var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
                     return $ts("<tr>")

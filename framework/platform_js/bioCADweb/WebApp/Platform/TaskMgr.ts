@@ -47,7 +47,7 @@ namespace bioCAD.WebApp.Platform {
             );
             const createTime = $ts("<td>").appendElement(task.create_time);
             const status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
-            const end_time = $ts("<td>").appendElement(task.finish_time);
+            const end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
             const progress = $ts("<td>").appendElement(task_pending);
             const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
 
