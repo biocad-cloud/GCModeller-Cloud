@@ -68,11 +68,9 @@ namespace bioCAD.WebApp.Platform {
                 <i class="fas fa-ellipsis-v"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another
-                    action</a>
-                <a class="dropdown-item" href="#">Something else
-                    here</a>
+                <a class="dropdown-item bg-danger" href="#">Delete</a>
+                <a class="dropdown-item" href="/biostack/pathway_design/flowEditor">View Model</a>
+                <a class="dropdown-item" href="#">Help</a>
             </div>
         </div>
     `;
