@@ -151,6 +151,7 @@ var bioCAD;
             Router.AddAppHandler(new WebApp.LoginScript());
             Router.AddAppHandler(new WebApp.RegisterScript());
             Router.AddAppHandler(new WebApp.RecoverScript());
+            Router.AddAppHandler(new WebApp.Platform.TaskMgr());
             Router.RunApp();
         }
         WebApp.start = start;
@@ -158,4 +159,44 @@ var bioCAD;
 })(bioCAD || (bioCAD = {}));
 $ts.mode = Modes.debug;
 $ts(bioCAD.WebApp.start);
+var bioCAD;
+(function (bioCAD) {
+    var WebApp;
+    (function (WebApp) {
+        var Platform;
+        (function (Platform) {
+            var TaskMgr = /** @class */ (function (_super) {
+                __extends(TaskMgr, _super);
+                function TaskMgr() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                Object.defineProperty(TaskMgr.prototype, "appName", {
+                    get: function () {
+                        return "app_task";
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                TaskMgr.prototype.init = function () {
+                    var vm = this;
+                    $ts.get("@data:task_list", function (resp) {
+                        if (resp.code != 0) {
+                            parent.msgbox(resp.info, 1);
+                        }
+                        else {
+                            vm.loadTable(resp.info);
+                        }
+                    });
+                    vm.totalTasks = parseInt($ts("@data:count_task"));
+                    TypeScript.logging.log("You have " + vm.totalTasks + " tasks in total!", TypeScript.ConsoleColors.Magenta);
+                };
+                TaskMgr.prototype.loadTable = function (tasks) {
+                    console.table(tasks);
+                };
+                return TaskMgr;
+            }(Bootstrap));
+            Platform.TaskMgr = TaskMgr;
+        })(Platform = WebApp.Platform || (WebApp.Platform = {}));
+    })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
+})(bioCAD || (bioCAD = {}));
 //# sourceMappingURL=biocad.js.map

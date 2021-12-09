@@ -29,3 +29,13 @@ declare const logo: string[];
 declare namespace bioCAD.WebApp {
     function start(): void;
 }
+declare namespace bioCAD.WebApp.Platform {
+    class TaskMgr extends Bootstrap {
+        private totalTasks;
+        readonly appName: string;
+        protected init(): void;
+        private loadTable;
+    }
+    interface task {
+    }
+}
