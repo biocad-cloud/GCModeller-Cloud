@@ -48,7 +48,7 @@ namespace bioCAD.WebApp.Platform {
             const createTime = $ts("<td>").appendElement(task.create_time);
             const status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
             const end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
-            const progress = $ts("<td>").appendElement(task_pending);
+            const progress = $ts("<td>").appendElement(taskProgress[statusCodeMap(task.status)]);
             const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
 
             return $ts("<tr>")
@@ -75,7 +75,8 @@ namespace bioCAD.WebApp.Platform {
         </div>
     `;
 
-    const task_pending = `<div class="d-flex align-items-center">
+    const taskProgress = {
+        "pending": `<div class="d-flex align-items-center">
                                             <span class="mr-2">60%</span>
                                             <div>
                                                 <div class="progress">
@@ -84,9 +85,9 @@ namespace bioCAD.WebApp.Platform {
                                                         style="width: 60%;"></div>
                                                 </div>
                                             </div>
-                                        </div>`
+                                        </div>`,
 
-    const task_completed = `<div class="d-flex align-items-center">
+        "completed": `<div class="d-flex align-items-center">
                                             <span class="mr-2">100%</span>
                                             <div>
                                                 <div class="progress">
@@ -95,9 +96,9 @@ namespace bioCAD.WebApp.Platform {
                                                         style="width: 100%;"></div>
                                                 </div>
                                             </div>
-                                        </div>`
+                                        </div>`,
 
-    const task_error = `<div class="d-flex align-items-center">
+        "delayed": `<div class="d-flex align-items-center">
                                             <span class="mr-2">72%</span>
                                             <div>
                                                 <div class="progress">
@@ -106,9 +107,9 @@ namespace bioCAD.WebApp.Platform {
                                                         style="width: 72%;"></div>
                                                 </div>
                                             </div>
-                                        </div>`
+                                        </div>`,
 
-    const task_running = `<div class="d-flex align-items-center">
+        "on_schedule": `<div class="d-flex align-items-center">
                                             <span class="mr-2">90%</span>
                                             <div>
                                                 <div class="progress">
@@ -118,6 +119,7 @@ namespace bioCAD.WebApp.Platform {
                                                 </div>
                                             </div>
                                         </div>`
+    }
 
     function statusCodeMap(code: number) {
         switch (code.toString()) {
