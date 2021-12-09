@@ -191,11 +191,51 @@ var bioCAD;
                     TypeScript.logging.log("You have " + vm.totalTasks + " tasks in total!", TypeScript.ConsoleColors.Magenta);
                 };
                 TaskMgr.prototype.loadTable = function (tasks) {
-                    console.table(tasks);
+                    var table = $ts("#tasklist").clear();
+                    for (var _i = 0, tasks_1 = tasks; _i < tasks_1.length; _i++) {
+                        var task = tasks_1[_i];
+                        table.appendElement(this.taskRow(task));
+                    }
+                };
+                TaskMgr.prototype.taskRow = function (task) {
+                    var appTask = $ts("<th>").appendElement($ts("<div>", { class: ["media", "align-items-center"] })
+                        .appendElement("\n                        <a href=\"#\" class=\"avatar rounded-circle mr-3\">\n                            <img alt=\"Image placeholder\"\n                                src=\"/resources/images/icons/" + task.name + ".png\">\n                        </a>")
+                        .appendElement("\n                        <div class=\"media-body\">\n                            <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                        </div>"));
+                    var createTime = $ts("<td>").appendElement(task.create_time);
+                    var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
+                    var end_time = $ts("<td>").appendElement(task.finish_time);
+                    var progress = $ts("<td>").appendElement(task_pending);
+                    var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
+                    return $ts("<tr>")
+                        .appendElement(appTask)
+                        .appendElement(createTime)
+                        .appendElement(status)
+                        .appendElement(end_time)
+                        .appendElement(progress)
+                        .appendElement(menu);
                 };
                 return TaskMgr;
             }(Bootstrap));
             Platform.TaskMgr = TaskMgr;
+            var menuTemplate = "\n        <div class=\"dropdown\">\n            <a class=\"btn btn-sm btn-icon-only text-light\" href=\"#\" role=\"button\"\n                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                <i class=\"fas fa-ellipsis-v\"></i>\n            </a>\n            <div class=\"dropdown-menu dropdown-menu-right dropdown-menu-arrow\">\n                <a class=\"dropdown-item\" href=\"#\">Action</a>\n                <a class=\"dropdown-item\" href=\"#\">Another\n                    action</a>\n                <a class=\"dropdown-item\" href=\"#\">Something else\n                    here</a>\n            </div>\n        </div>\n    ";
+            var task_pending = "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">60%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-warning\" role=\"progressbar\"\n                                                        aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 60%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>";
+            var task_completed = "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">100%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-success\" role=\"progressbar\"\n                                                        aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 100%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>";
+            var task_error = "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">72%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-danger\" role=\"progressbar\"\n                                                        aria-valuenow=\"72\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 72%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>";
+            var task_running = "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">90%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-info\" role=\"progressbar\"\n                                                        aria-valuenow=\"90\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 90%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>";
+            function statusCodeMap(code) {
+                switch (code.toString()) {
+                    case "0": return "pending";
+                    case "200": return "completed";
+                    case "500": return "delayed";
+                    case "1": return "on_schedule";
+                }
+            }
+            var taskStatus = {
+                pending: "<span class=\"badge badge-dot mr-4\">\n                      <i class=\"bg-warning\"></i> pending\n                  </span>",
+                completed: "<span class=\"badge badge-dot\">\n                        <i class=\"bg-success\"></i> completed\n                    </span>",
+                delayed: "<span class=\"badge badge-dot mr-4\">\n                      <i class=\"bg-danger\"></i> error\n                  </span>",
+                on_schedule: "<span class=\"badge badge-dot\">\n                          <i class=\"bg-info\"></i> running\n                      </span>"
+            };
         })(Platform = WebApp.Platform || (WebApp.Platform = {}));
     })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
 })(bioCAD || (bioCAD = {}));

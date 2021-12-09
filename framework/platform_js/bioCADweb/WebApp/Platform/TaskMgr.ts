@@ -25,20 +25,39 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private loadTable(tasks: task[]) {
-            console.table(tasks);
+            const table = $ts("#tasklist").clear();
+
+            for (let task of tasks) {
+                table.appendElement(this.taskRow(task));
+            }
         }
 
         private taskRow(task: task) {
-            const tr: HTMLElement = $ts("<tr>");
             const appTask = $ts("<th>").appendElement(
-                $ts("<div>", { class: ["media", "align-items-center"] }).appendElement(`<a href="#" class="avatar rounded-circle mr-3">
-                                                <img alt="Image placeholder"
-                                                    src="https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/react.jpg">
-                                            </a>`).appendElement(`<div class="media-body">
-                                                <span class="mb-0 text-sm">React Material
-                                                    Dashboard</span>
-                                            </div>`)
-            )
+                $ts("<div>", { class: ["media", "align-items-center"] })
+                    .appendElement(`
+                        <a href="#" class="avatar rounded-circle mr-3">
+                            <img alt="Image placeholder"
+                                src="/resources/images/icons/${task.name}.png">
+                        </a>`)
+                    .appendElement(`
+                        <div class="media-body">
+                            <span class="mb-0 text-sm">${task.title}</span>
+                        </div>`)
+            );
+            const createTime = $ts("<td>").appendElement(task.create_time);
+            const status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
+            const end_time = $ts("<td>").appendElement(task.finish_time);
+            const progress = $ts("<td>").appendElement(task_pending);
+            const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
+
+            return $ts("<tr>")
+                .appendElement(appTask)
+                .appendElement(createTime)
+                .appendElement(status)
+                .appendElement(end_time)
+                .appendElement(progress)
+                .appendElement(menu);
         }
     }
 
@@ -58,22 +77,85 @@ namespace bioCAD.WebApp.Platform {
         </div>
     `;
 
+    const task_pending = `<div class="d-flex align-items-center">
+                                            <span class="mr-2">60%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: 60%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>`
+
+    const task_completed = `<div class="d-flex align-items-center">
+                                            <span class="mr-2">100%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>`
+
+    const task_error = `<div class="d-flex align-items-center">
+                                            <span class="mr-2">72%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger" role="progressbar"
+                                                        aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: 72%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>`
+
+    const task_running = `<div class="d-flex align-items-center">
+                                            <span class="mr-2">90%</span>
+                                            <div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                        aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: 90%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>`
+
+    function statusCodeMap(code: number) {
+        switch (code.toString()) {
+            case "0": return "pending";
+            case "200": return "completed";
+            case "500": return "delayed";
+            case "1": return "on_schedule";
+        }
+    }
+
     const taskStatus = {
         pending: `<span class="badge badge-dot mr-4">
-                                            <i class="bg-warning"></i> pending
-                                        </span>`,
+                      <i class="bg-warning"></i> pending
+                  </span>`,
         completed: `<span class="badge badge-dot">
-                                            <i class="bg-success"></i> completed
-                                        </span>`,
+                        <i class="bg-success"></i> completed
+                    </span>`,
         delayed: `<span class="badge badge-dot mr-4">
-                                            <i class="bg-danger"></i> delayed
-                                        </span>`,
+                      <i class="bg-danger"></i> error
+                  </span>`,
         on_schedule: `<span class="badge badge-dot">
-                                            <i class="bg-info"></i> on schedule
-                                        </span>`
+                          <i class="bg-info"></i> running
+                      </span>`
     };
 
     export interface task {
-
+        /**
+         * the app name
+        */
+        name: string;
+        /**
+         * the task title
+        */
+        title: string;
+        create_time: string;
+        status: number;
+        finish_time: string;
     }
 }

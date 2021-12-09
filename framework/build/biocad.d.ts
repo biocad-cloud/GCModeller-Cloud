@@ -35,7 +35,19 @@ declare namespace bioCAD.WebApp.Platform {
         readonly appName: string;
         protected init(): void;
         private loadTable;
+        private taskRow;
     }
     interface task {
+        /**
+         * the app name
+        */
+        name: string;
+        /**
+         * the task title
+        */
+        title: string;
+        create_time: string;
+        status: number;
+        finish_time: string;
     }
 }
