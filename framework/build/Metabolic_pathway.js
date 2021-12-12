@@ -374,14 +374,39 @@ var apps;
             }
             myDiagram.commitTransaction("mode changed");
         };
-        // Show the diagram's model in JSON format that the user may edit
-        FlowEditor.prototype.save = function () {
-            var myDiagram = this.myDiagram;
-            var modelJson = myDiagram.model.toJson();
-            myDiagram.isModified = false;
+        /**
+         * Show the diagram's model in JSON format
+         * that the user may edit.
+         *
+        */
+        FlowEditor.prototype.save_click = function () {
+            this.dosave();
         };
         FlowEditor.prototype.load = function () {
-            this.myDiagram.model = go.Model.fromJson($ts.text("#demo-system"));
+            var vm = this;
+            $ts.getText("@api:load?model_id=" + $ts("@data:model_id"), function (json) {
+                vm.myDiagram.model = go.Model.fromJson(json);
+            });
+        };
+        FlowEditor.prototype.dosave = function (callback) {
+            if (callback === void 0) { callback = null; }
+            var myDiagram = this.myDiagram;
+            var modelJson = myDiagram.model.toJson();
+            var payload = {
+                guid: $ts("@guid"),
+                model: JSON.parse(modelJson),
+                type: "dynamics"
+            };
+            myDiagram.isModified = false;
+            // save model at first
+            $ts.post("@api:save", payload, function (resp) {
+                if (resp.code != 0) {
+                    console.error(resp.info);
+                }
+                else if (!isNullOrUndefined(resp.info)) {
+                    callback(resp.info);
+                }
+            });
         };
         //#region "button events"
         FlowEditor.prototype.pointer_click = function () {
@@ -406,25 +431,8 @@ var apps;
          * save the current dynamics system
         */
         FlowEditor.prototype.run_click = function () {
-            var myDiagram = this.myDiagram;
-            var modelJson = myDiagram.model.toJson();
-            var vm = this;
-            var payload = {
-                guid: $ts("@guid"),
-                model: JSON.parse(modelJson),
-                type: "dynamics"
-            };
-            myDiagram.isModified = false;
-            // save model at first
-            $ts.post("@api:save", payload, function (resp) {
-                if (resp.code != 0) {
-                    console.error(resp.info);
-                }
-                else {
-                    // and then run model
-                    vm.doRunModel(resp.info);
-                }
-            });
+            var _this = this;
+            this.dosave(function (f) { return _this.doRunModel(f); });
         };
         FlowEditor.prototype.doRunModel = function (guid) {
             $ts.post("@api:run/" + guid, { guid: guid }, function (resp) {

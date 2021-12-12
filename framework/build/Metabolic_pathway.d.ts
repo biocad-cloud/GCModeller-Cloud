@@ -61,8 +61,14 @@ declare namespace apps {
         init(): void;
         buildTemplates(): void;
         setMode(mode: any, itemType: any): void;
-        save(): void;
+        /**
+         * Show the diagram's model in JSON format
+         * that the user may edit.
+         *
+        */
+        save_click(): void;
         load(): void;
+        private dosave;
         pointer_click(): void;
         stock_click(): void;
         cloud_click(): void;
