@@ -201,6 +201,7 @@ var bioCAD;
                     var argvs = Bencode.decode(task["parameters"]);
                     console.log("get task model id for:");
                     console.log(task);
+                    console.log(argvs);
                     for (var _i = 0, _a = ["model", "file"]; _i < _a.length; _i++) {
                         var name_1 = _a[_i];
                         if (name_1 in argvs) {
@@ -218,7 +219,7 @@ var bioCAD;
                     var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
                     var end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
                     var progress = $ts("<td>").appendElement(taskProgress[statusCodeMap(task.status)]);
-                    var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model)url}", model_url));
+                    var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model_url}", model_url));
                     return $ts("<tr>")
                         .appendElement(appTask)
                         .appendElement(createTime)

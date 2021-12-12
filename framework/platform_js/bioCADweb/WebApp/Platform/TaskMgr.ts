@@ -33,10 +33,11 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private getModelId(task: task) {
-            const argvs = Bencode.decode(task["parameters"]);
+            const argvs: {} = Bencode.decode(task["parameters"]);
 
             console.log("get task model id for:");
             console.log(task);
+            console.log(argvs);
 
             for (let name of ["model", "file"]) {
                 if (name in argvs) {
@@ -67,7 +68,7 @@ namespace bioCAD.WebApp.Platform {
             const status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
             const end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
             const progress = $ts("<td>").appendElement(taskProgress[statusCodeMap(task.status)]);
-            const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model)url}", model_url));
+            const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model_url}", model_url));
 
             return $ts("<tr>")
                 .appendElement(appTask)
