@@ -199,6 +199,8 @@ var bioCAD;
                 };
                 TaskMgr.prototype.getModelId = function (task) {
                     var argvs = Bencode.decode(task["parameters"]);
+                    console.log("get task model id for:");
+                    console.log(task);
                     for (var _i = 0, _a = ["model", "file"]; _i < _a.length; _i++) {
                         var name_1 = _a[_i];
                         if (name_1 in argvs) {

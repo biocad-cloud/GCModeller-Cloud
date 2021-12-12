@@ -35,6 +35,9 @@ namespace bioCAD.WebApp.Platform {
         private getModelId(task: task) {
             const argvs = Bencode.decode(task["parameters"]);
 
+            console.log("get task model id for:");
+            console.log(task);
+
             for (let name of ["model", "file"]) {
                 if (name in argvs) {
                     return argvs[name];

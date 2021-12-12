@@ -7817,7 +7817,7 @@ var Bencode;
         }
     }
     function decode(str) {
-        decodeImpl(str)[1];
+        return decodeImpl(str)[1];
     }
     Bencode.decode = decode;
     function encode(object) {
