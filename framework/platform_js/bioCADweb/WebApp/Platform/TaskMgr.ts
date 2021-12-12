@@ -49,7 +49,7 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private taskRow(task: task) {
-            const model_url = `/biostack/pathway_design/flowEditor?guid=${this.getModelId(task)}`;
+            const model_url = `${task.app_view}?guid=${this.getModelId(task)}`;
             const appTask = $ts("<th>").appendElement(
                 $ts("<div>", { class: ["media", "align-items-center"] })
                     .appendElement(`
@@ -177,5 +177,6 @@ namespace bioCAD.WebApp.Platform {
         status: number;
         finish_time: string;
         sha1: string;
+        app_view: string;
     }
 }

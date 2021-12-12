@@ -211,7 +211,7 @@ var bioCAD;
                     return "";
                 };
                 TaskMgr.prototype.taskRow = function (task) {
-                    var model_url = "/biostack/pathway_design/flowEditor?guid=" + this.getModelId(task);
+                    var model_url = task.app_view + "?guid=" + this.getModelId(task);
                     var appTask = $ts("<th>").appendElement($ts("<div>", { class: ["media", "align-items-center"] })
                         .appendElement("\n                        <a href=\"#\" class=\"avatar rounded-circle mr-3\">\n                            <img alt=\"Image placeholder\"\n                                src=\"/resources/images/icons/" + task.name + ".png\">\n                        </a>")
                         .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/app/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                            </a>                            \n                        </div>"));

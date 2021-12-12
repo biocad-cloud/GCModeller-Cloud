@@ -393,7 +393,7 @@ var apps;
             var myDiagram = this.myDiagram;
             var modelJson = myDiagram.model.toJson();
             var payload = {
-                guid: $ts("@guid"),
+                guid: $ts("@data:model_id"),
                 model: JSON.parse(modelJson),
                 type: "dynamics"
             };

@@ -51,5 +51,6 @@ declare namespace bioCAD.WebApp.Platform {
         status: number;
         finish_time: string;
         sha1: string;
+        app_view: string;
     }
 }
