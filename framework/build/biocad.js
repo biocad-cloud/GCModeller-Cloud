@@ -197,15 +197,26 @@ var bioCAD;
                         table.appendElement(this.taskRow(task));
                     }
                 };
+                TaskMgr.prototype.getModelId = function (task) {
+                    var argvs = Bencode.decode(task["parameters"]);
+                    for (var _i = 0, _a = ["model", "file"]; _i < _a.length; _i++) {
+                        var name_1 = _a[_i];
+                        if (name_1 in argvs) {
+                            return argvs[name_1];
+                        }
+                    }
+                    return "";
+                };
                 TaskMgr.prototype.taskRow = function (task) {
+                    var model_url = "/biostack/pathway_design/flowEditor?guid=" + this.getModelId(task);
                     var appTask = $ts("<th>").appendElement($ts("<div>", { class: ["media", "align-items-center"] })
                         .appendElement("\n                        <a href=\"#\" class=\"avatar rounded-circle mr-3\">\n                            <img alt=\"Image placeholder\"\n                                src=\"/resources/images/icons/" + task.name + ".png\">\n                        </a>")
-                        .appendElement("\n                        <div class=\"media-body\">\n                            <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                        </div>"));
+                        .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/app/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                            </a>                            \n                        </div>"));
                     var createTime = $ts("<td>").appendElement(task.create_time);
                     var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
                     var end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
                     var progress = $ts("<td>").appendElement(taskProgress[statusCodeMap(task.status)]);
-                    var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
+                    var menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model)url}", model_url));
                     return $ts("<tr>")
                         .appendElement(appTask)
                         .appendElement(createTime)
@@ -217,7 +228,7 @@ var bioCAD;
                 return TaskMgr;
             }(Bootstrap));
             Platform.TaskMgr = TaskMgr;
-            var menuTemplate = "\n        <div class=\"dropdown\">\n            <a class=\"btn btn-sm btn-icon-only text-light\" href=\"#\" role=\"button\"\n                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                <i class=\"fas fa-ellipsis-v\"></i>\n            </a>\n            <div class=\"dropdown-menu dropdown-menu-right dropdown-menu-arrow\">\n                <a class=\"dropdown-item bg-danger\" href=\"#\">Delete</a>\n                <a class=\"dropdown-item\" href=\"/biostack/pathway_design/flowEditor\">View Model</a>\n                <a class=\"dropdown-item\" href=\"#\">Help</a>\n            </div>\n        </div>\n    ";
+            var menuTemplate = "\n        <div class=\"dropdown\">\n            <a class=\"btn btn-sm btn-icon-only text-light\" href=\"#\" role=\"button\"\n                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                <i class=\"fas fa-ellipsis-v\"></i>\n            </a>\n            <div class=\"dropdown-menu dropdown-menu-right dropdown-menu-arrow\">\n                <a class=\"dropdown-item bg-danger\" href=\"#\">Delete</a>\n                <a class=\"dropdown-item\" href=\"{$model_url}\">View Model</a>\n                <a class=\"dropdown-item\" href=\"#\">Help</a>\n            </div>\n        </div>\n    ";
             var taskProgress = {
                 "pending": "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">60%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-warning\" role=\"progressbar\"\n                                                        aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 60%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>",
                 "completed": "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">100%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-success\" role=\"progressbar\"\n                                                        aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 100%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>",

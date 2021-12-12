@@ -32,7 +32,20 @@ namespace bioCAD.WebApp.Platform {
             }
         }
 
+        private getModelId(task: task) {
+            const argvs = Bencode.decode(task["parameters"]);
+
+            for (let name of ["model", "file"]) {
+                if (name in argvs) {
+                    return argvs[name];
+                }
+            }
+
+            return "";
+        }
+
         private taskRow(task: task) {
+            const model_url = `/biostack/pathway_design/flowEditor?guid=${this.getModelId(task)}`;
             const appTask = $ts("<th>").appendElement(
                 $ts("<div>", { class: ["media", "align-items-center"] })
                     .appendElement(`
@@ -42,14 +55,16 @@ namespace bioCAD.WebApp.Platform {
                         </a>`)
                     .appendElement(`
                         <div class="media-body">
-                            <span class="mb-0 text-sm">${task.title}</span>
+                            <a href="/app/report/?q=${task.sha1}" target="__blank">
+                                <span class="mb-0 text-sm">${task.title}</span>
+                            </a>                            
                         </div>`)
             );
             const createTime = $ts("<td>").appendElement(task.create_time);
             const status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
             const end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
             const progress = $ts("<td>").appendElement(taskProgress[statusCodeMap(task.status)]);
-            const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate);
+            const menu = $ts("<td>", { class: "text-right" }).appendElement(menuTemplate.replace("{$model)url}", model_url));
 
             return $ts("<tr>")
                 .appendElement(appTask)
@@ -69,7 +84,7 @@ namespace bioCAD.WebApp.Platform {
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                 <a class="dropdown-item bg-danger" href="#">Delete</a>
-                <a class="dropdown-item" href="/biostack/pathway_design/flowEditor">View Model</a>
+                <a class="dropdown-item" href="{$model_url}">View Model</a>
                 <a class="dropdown-item" href="#">Help</a>
             </div>
         </div>
@@ -157,5 +172,6 @@ namespace bioCAD.WebApp.Platform {
         create_time: string;
         status: number;
         finish_time: string;
+        sha1: string;
     }
 }
