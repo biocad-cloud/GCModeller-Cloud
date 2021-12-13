@@ -50,13 +50,16 @@ if (Utils::isDbNull($pending)) {
     console::dump($pending);
 }
 
+$workdir = $pending["uri"];
+
 $R    = $pending["app_path"];
 $args = $pending["parameters"];
-$commandline = "Rscript $R --args $args --guid {$pending["sha1"]}";
+$commandline = "Rscript $R --args $args --guid {$pending["sha1"]} --WORKDIR {$workdir}";
 $volumn = [
     "Rscript" => ["host" => dirname($R), "virtual" => dirname($R)],
-    "mnt"     => ["host" => "/mnt", "virtual" => "/mnt"],
-    "tmp"     => ["host" => "/tmp", "virtual" => "/tmp"]
+    "mnt"     => ["host" => "/mnt",      "virtual" => "/mnt"],
+    "tmp"     => ["host" => "/tmp",      "virtual" => "/tmp"],
+    "data"    => ["host" => $workdir,    "virtual" => $workdir]
 ];
 
 # task status will be updated in rscript.
