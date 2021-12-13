@@ -60,6 +60,6 @@ $volumn = [
 ];
 
 # task status will be updated in rscript.
-docker::run("dotnet::gcmodeller_v5.23.2", $commandline, "/mnt", $volumn);
+docker::run("dotnet:gcmodeller_v5.23.2", $commandline, "/mnt", $volumn);
 
 console::log("~job done!");
