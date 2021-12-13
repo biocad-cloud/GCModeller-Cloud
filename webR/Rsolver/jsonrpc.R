@@ -1,5 +1,6 @@
+imports "http" from "webKit";
+
 require(JSON);
-require(http);
 
 options(strict = FALSE);
 
