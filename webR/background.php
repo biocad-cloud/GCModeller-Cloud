@@ -4,13 +4,18 @@
  * application root dir
 */
 define("APP_PATH", dirname(__DIR__));
+define("APP_DEBUG", TRUE);
+define("WEB_ROOT", APP_PATH . "/src");
 
 # run the background task script based on the app_id
 require APP_PATH . "/framework/php.NET/package.php";
 
 imports("Microsoft.VisualBasic.CommandLine.CommandLineParser");
 imports("Microsoft.VisualBasic.FileIO.FileSystem");
-imports("php.docker/*");
+imports("php.docker.Docker");
+imports("MVC.model");
+
+dotnet::AutoLoad(WEB_ROOT . "/.etc/config.php");
 
 # php ./taskhost.php --app_id=xxx --interval=1 --signal="signal.txt"
 $args    = CommandLineParser::ParseCLIArgvs();
