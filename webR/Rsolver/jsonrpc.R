@@ -14,6 +14,13 @@ call_rpc = function(func, args) {
         params = args,
         id = 0
     );
+    data = endpoint
+    |> requests.post(payload)
+    |> content()
+    |> json_decode()
+    ;
 
+    str(data);
 
+    data;
 }
