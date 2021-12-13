@@ -41,6 +41,7 @@ console::log("query for pending task:");
 console::log($taskMgr->getLastMySql());
 
 if (Utils::isDbNull($pending)) {
+    console::log("no task is found as pending currently...");
     console::log("~job done!");
     exit(0);
 } else {
