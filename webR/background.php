@@ -37,6 +37,9 @@ $pending = $taskMgr
     ->where($filter)
     ->find();
 
+console::log("query for pending task:");
+console::log($taskMgr->getLastMySql());
+
 if (Utils::isDbNull($pending)) {
     console::log("~job done!");
     exit(0);
