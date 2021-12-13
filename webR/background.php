@@ -43,9 +43,12 @@ console::log($taskMgr->getLastMySql());
 if (Utils::isDbNull($pending)) {
     console::log("~job done!");
     exit(0);
+} else {
+    console::log("we have a new task pending for run:");
+    console::dump($pending);
 }
 
-$R = $pending["app_path"];
+$R    = $pending["app_path"];
 $args = $pending["parameters"];
 $commandline = "Rscript $R --args $args --guid {$pending["sha1"]}";
 $volumn = [
