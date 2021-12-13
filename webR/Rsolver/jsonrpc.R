@@ -1,6 +1,8 @@
 require(JSON);
 require(http);
 
+options(strict = FALSE);
+
 #' jsonrpc to biocad services
 #' 
 call_rpc = function(func, args) {
