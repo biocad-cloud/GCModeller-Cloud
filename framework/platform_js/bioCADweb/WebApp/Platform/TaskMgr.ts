@@ -96,12 +96,12 @@ namespace bioCAD.WebApp.Platform {
 
     const taskProgress = {
         "pending": `<div class="d-flex align-items-center">
-                                            <span class="mr-2">60%</span>
+                                            <span class="mr-2">0%</span>
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-warning" role="progressbar"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: 60%;"></div>
+                                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: 1%;"></div>
                                                 </div>
                                             </div>
                                         </div>`,
@@ -118,23 +118,23 @@ namespace bioCAD.WebApp.Platform {
                                         </div>`,
 
         "delayed": `<div class="d-flex align-items-center">
-                                            <span class="mr-2">72%</span>
+                                            <span class="mr-2">{$pct}%</span>
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-danger" role="progressbar"
-                                                        aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: 72%;"></div>
+                                                        aria-valuenow="{$pct}" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: {$pct}%;"></div>
                                                 </div>
                                             </div>
                                         </div>`,
 
         "on_schedule": `<div class="d-flex align-items-center">
-                                            <span class="mr-2">90%</span>
+                                            <span class="mr-2">{$pct}%</span>
                                             <div>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-info" role="progressbar"
-                                                        aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: 90%;"></div>
+                                                        aria-valuenow="{$pct}" aria-valuemin="0" aria-valuemax="100"
+                                                        style="width: {$pct}%;"></div>
                                                 </div>
                                             </div>
                                         </div>`
