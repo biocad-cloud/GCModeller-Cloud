@@ -5,6 +5,7 @@
 */
 define("APP_PATH", dirname(__DIR__));
 define("APP_DEBUG", TRUE);
+define("FRAMEWORK_DEBUG", TRUE);
 define("WEB_ROOT", APP_PATH . "/src");
 
 # run the background task script based on the app_id
