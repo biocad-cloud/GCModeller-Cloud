@@ -21,7 +21,7 @@ dotnet::AutoLoad(WEB_ROOT . "/.etc/config.php");
 $args    = CommandLineParser::ParseCLIArgvs();
 $app_id  = $args->getArgumentValue("app_id", NULL);
 $taskMgr = new Table("task");
-$filter  = ["status" => 0];
+$filter  = ["status" => "0"];
 
 # check for status = 0 // pending status
 if (!Utils::isDbNull($app_id)) {
