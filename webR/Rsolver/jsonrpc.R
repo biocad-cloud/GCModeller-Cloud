@@ -21,9 +21,10 @@ call_rpc = function(func, args) {
     data = endpoint
     |> requests.post(list(rpc = payload))
     |> content()
-    |> print()
+    |> json_decode()
     ;
 
+    print("data response from the services:");
     str(data);
 
     data;
