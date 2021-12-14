@@ -2,6 +2,7 @@ require(GCModeller);
 
 # talk with biocad.cloud via jsonrpc
 imports "jsonrpc.R";
+imports "S.system" from "simulators";
 
 argv = [?"--args" || stop("missing of the task configuration data!")] |> bdecode;
 guid = [?"--guid" || stop("a task guid is required!")];
@@ -18,7 +19,17 @@ file = `${model$uri}/${model$current_version}.${model$suffix}`;
 print("get model file path:");
 print(file);
 
-model = file |> readText() |> json_decode();
+const to_Ssystem as function(model) {
+    print("view of the model file content:");
+    str(model);
+    
+}
 
-print("view of the model file content:");
-str(model);
+model = file 
+|> readText() 
+|> json_decode() 
+|> to_Ssystem()
+;
+
+
+
