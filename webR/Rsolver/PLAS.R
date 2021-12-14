@@ -34,12 +34,17 @@ const to_Ssystem as function(model) {
     print("view of the model file content:");
     # str(model);
 
-    nodes = model$nodeDataArray;
-    links = model$linkDataArray;
+    nodes = cast_table(model$nodeDataArray);
+    links = cast_table(model$linkDataArray);
 
-    print(cast_table(nodes));
-    print(cast_table(links));
+    print(nodes);
+    print(links);
 
+    # symbols
+    symbols = nodes[nodes[, "category"] != "valve", ];
+    
+    print("contains symbols:");
+    print(symbols);
 }
 
 model = file 
