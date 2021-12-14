@@ -42,9 +42,12 @@ const to_Ssystem as function(model) {
 
     # symbols
     symbols = nodes[nodes[, "category"] != "valve", ];
-    
+    symbols = symbols[, "key"];
+
     print("contains symbols:");
     print(symbols);
+
+
 }
 
 model = file 
