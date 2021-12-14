@@ -17,7 +17,7 @@ call_rpc = function(func, args) {
     data = endpoint
     |> requests.post(list(rpc = payload))
     |> content()
-    |> json_decode()
+    |> print()
     ;
 
     str(data);
