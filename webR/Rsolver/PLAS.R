@@ -38,7 +38,21 @@ const to_Ssystem as function(model) {
     links = cast_table(model$linkDataArray);
 
     print(nodes);
-    print(links);
+    
+    links = links[, "category"] 
+    |> unique() 
+    |> lapply(function(cat) {
+        type = links[, "category"] == cat;
+        links[type, ];
+    });
+
+    flow = links$flow;
+    influence = links$influence;
+
+    print("flow flux list:");
+    print(flow);
+    print("flux influence");
+    print(influence);
 
     # symbols
     symbols = nodes[nodes[, "category"] != "valve", ];
@@ -47,6 +61,10 @@ const to_Ssystem as function(model) {
     print("contains symbols:");
     print(symbols);
 
+    lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence));
+}
+
+const cast_sexpr as function(symbol, flow, influence) {
 
 }
 
