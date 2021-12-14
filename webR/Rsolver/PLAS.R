@@ -44,6 +44,10 @@ const to_Ssystem as function(model) {
     |> unique() 
     |> lapply(function(cat) {
         type = links[, "category"] == cat;
+        
+        print(cat);
+        print(type);
+
         links[type, ];
     });
 
