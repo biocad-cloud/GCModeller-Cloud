@@ -65,6 +65,8 @@ const to_Ssystem as function(model) {
 }
 
 const cast_sexpr as function(symbol, flow, influence) {
+    const in  = flow[, "from"][flow[, "to"] == symbol];
+    const out = flow[, "to"][flow[, "from"] == symbol];
 
 }
 
