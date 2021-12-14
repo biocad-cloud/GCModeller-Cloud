@@ -38,8 +38,9 @@ const to_Ssystem as function(model) {
     links = cast_table(model$linkDataArray);
 
     print(nodes);
+    print(links);
     
-    links = links[, "category"] 
+    links = (links[, "category"]) 
     |> unique() 
     |> lapply(function(cat) {
         type = links[, "category"] == cat;
