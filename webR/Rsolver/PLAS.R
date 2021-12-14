@@ -38,18 +38,13 @@ const to_Ssystem as function(model) {
     links = cast_table(model$linkDataArray);
 
     print(nodes);
-    print(links);
+    # print(links);
     
     links = (links[, "category"]) 
     |> unique() 
     |> lapply(function(cat) {
-        type = links[, "category"] == cat;
-        
-        print(cat);
-        print(type);
-
-        links[type, ];
-    });
+        links[links[, "category"] == cat, ];
+    }, names = type -> type);
 
     flow = links$flow;
     influence = links$influence;
