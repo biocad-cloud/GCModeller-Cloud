@@ -2,6 +2,7 @@ require(GCModeller);
 
 # talk with biocad.cloud via jsonrpc
 imports "jsonrpc.R";
+imports "modules/PLAS_Solver.R";
 imports "modules/SBuilder.R";
 
 argv = [?"--args" || stop("missing of the task configuration data!")] |> bdecode;
@@ -25,5 +26,17 @@ model = file
 |> to_Ssystem()
 ;
 
+print("create S-system model:");
+str(model);
 
+result = solve_Ssystem(S = model$S, factors = model$factors);
+keys = colnames(result);
+names = model$names;
+names =  sapply(keys, key -> names[[key]]);
 
+colnames(result) = unique.names(names);
+
+print("get simulator outputs:");
+print(result, max.print = 15);
+
+write.csv(result, file = `${@dir}/simulates.csv`);
