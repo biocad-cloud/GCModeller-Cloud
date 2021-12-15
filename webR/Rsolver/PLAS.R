@@ -1,6 +1,5 @@
 require(GCModeller);
 
-imports "S.system" from "simulators";
 # talk with biocad.cloud via jsonrpc
 imports "jsonrpc.R";
 imports "modules/SBuilder.R";
