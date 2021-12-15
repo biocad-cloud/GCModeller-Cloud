@@ -26,8 +26,9 @@ const solve_Ssystem as function(S, outputfile, title = "another S-system") {
             # is.const = TRUE
         )
         |> environment(symbols)
+        |> bounds(lapply(symbols, any -> [-10, 10]))
         |> s.system(S)
-        |> run(ticks = 4.5, resolution = 0.1)
+        |> run(ticks = 4.5, resolution = 0.01)
         ;
     }
 }
