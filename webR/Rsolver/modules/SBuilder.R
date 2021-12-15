@@ -51,26 +51,71 @@ const to_Ssystem as function(model) {
     print("contains symbols:");
     print(symbols);
 
+    factors = !(names(symbolNames) in symbols);
+    factors = names(symbolNames)[factors];
+    factors = lapply(factors, any -> 1, names = factors);
+
     list(
-        names = symbolNames, 
+        names = symbolNames,
+        factors = factors, 
         S = lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols)
     );
 }
 
+const buildGenerator as function(symbol, flow, influence) {
+    i = flow[, "to"] == symbol;
+    upstream = (flow[, "from"])[i];
+    flux_id = (flow[, "labelKeys"])[i];
+
+    if (sum(i) == 0) {
+        return([]);
+    } else {
+        addFactors(upstream, influence, flux_id);
+    }   
+}
+
+const addFactors as function(symbols, influence, flux_id) {
+    adjust = (influence[, "to"] in flux_id);
+    adjust = (influence[, "from"])[adjust];
+
+    flux = sapply(symbols, x -> `${x} ^ 0.5`);
+
+    if (length(adjust) > 0) {
+        flux = adjust 
+        |> sapply(x -> `${x} ^ (-1)`)
+        |> append(flux)
+        ;
+    }
+
+    flux;
+}
+
+const buildConsumer as function(symbol, flow, influence) {
+    i = flow[, "from"] == symbol;
+    downstream = (flow[, "to"])[i];
+    flux_id = (flow[, "labelKeys"])[i];
+
+    if (sum(i) == 0) {
+        return([]);
+    } else {
+        addFactors(downstream, influence, flux_id);
+    }
+}
+
 const cast_sexpr as function(symbol, flow, influence) {
     # generate current symbol: X -> symbol
-    in  = (flow[, "from"])[flow[, "to"] == symbol];
+    in  = buildGenerator(symbol, flow, influence);
     # consume current symbol:  symbol -> X
-    out = (flow[, "to"])[flow[, "from"] == symbol];
+    out = buildConsumer(symbol, flow, influence);
 
     if (length(in) > 0) {
-        in = sapply(in, x -> `${x} ^ 0.5`) |> paste("*");
+        in = paste(in, "*");
     } else {
         in = "";
     }
 
     if (length(out) > 0) {
-        out = sapply(out, x -> `${x} ^ 0.5`) |> paste("*");
+        out = paste(out, "*");
     } else {
         out = "";
     }

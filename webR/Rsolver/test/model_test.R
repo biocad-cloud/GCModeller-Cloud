@@ -14,7 +14,7 @@ model = file
 
 str(model);
 
-result = solve_Ssystem(S = model$S);
+result = solve_Ssystem(S = model$S, factors = model$factors);
 keys = colnames(result);
 names = model$names;
 names =  sapply(keys, key -> names[[key]]);
