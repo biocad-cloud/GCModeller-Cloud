@@ -47,12 +47,36 @@ const to_Ssystem as function(model) {
     print("contains symbols:");
     print(symbols);
 
-    lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence));
+    lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols);
 }
 
 const cast_sexpr as function(symbol, flow, influence) {
-    const in  = flow[, "from"][flow[, "to"] == symbol];
-    const out = flow[, "to"][flow[, "from"] == symbol];
+    # generate current symbol: X -> symbol
+    in  = (flow[, "from"])[flow[, "to"] == symbol];
+    # consume current symbol:  symbol -> X
+    out = (flow[, "to"])[flow[, "from"] == symbol];
 
-    
+    if (length(in) > 0) {
+        in = sapply(in, x -> `${x} ^ 0.5`) |> paste("*");
+    } else {
+        in = "";
+    }
+
+    if (length(out) > 0) {
+        out = sapply(out, x -> `${x} ^ 0.5`) |> paste("*");
+    } else {
+        out = "";
+    }
+
+    if ((in == "") && (out == "")) {
+        return("0");
+    } else {
+        if (in == "") {
+            return(`-${out}`);
+        } else if (out == "") {
+            return(in);
+        } else {
+            return(`${in} - ${out}`);
+        }        
+    }  
 }

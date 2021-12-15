@@ -1,5 +1,7 @@
 imports "../modules/SBuilder.R";
 
+require(JSON);
+
 file = `${@dir}/1639306937.json`;
 model = file 
 |> readText() 
@@ -7,4 +9,4 @@ model = file
 |> to_Ssystem()
 ;
 
-print(model);
+str(model);
