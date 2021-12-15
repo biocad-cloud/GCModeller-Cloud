@@ -15,6 +15,7 @@ docker run -itd --name biocad_web \
 	-v "/opt/biocad/src/:/var/www/html/:ro" \
 	-v "/opt/biocad/src/.etc:/etc/httpd/vhost" \
 	-v "/mnt/biocad_cloud:/mnt/biocad_cloud:rw" \
+	-v "/opt/GeoIP:/usr/local/share/GeoIP/:ro" \
 	-p 8848:80 \
 	-p 8843:443 \
 	web_env:php /usr/sbin/init
