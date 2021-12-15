@@ -68,15 +68,17 @@ const cast_sexpr as function(symbol, flow, influence) {
         out = "";
     }
 
-    if ((in == "") && (out == "")) {
+    if ((nchar(in) == 0) && (nchar(out) == 0)) {
         return("0");
     } else {
-        if (in == "") {
+        if (nchar(in) == 0) {
             return(`-${out}`);
-        } else if (out == "") {
-            return(in);
         } else {
-            return(`${in} - ${out}`);
-        }        
+            if (nchar(out) == 0) {
+                return(in);
+            } else {
+                return(`${in} - ${out}`);
+            }    
+        } 
     }  
 }
