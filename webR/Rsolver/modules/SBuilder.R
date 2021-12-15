@@ -22,10 +22,14 @@ const to_Ssystem as function(model) {
 
     nodes = cast_table(model$nodeDataArray);
     links = cast_table(model$linkDataArray);
+    symbolNames = lapply(model$nodeDataArray, function(x) {
+        ifelse(is.null(x$label), x$key, x$label);
+    }, names = x -> x$key); 
 
     print(nodes);
-    # print(links);
-    
+    print("get symbol name mapping as:");
+    str(symbolNames);
+
     links = (links[, "category"]) 
     |> unique() 
     |> lapply(function(cat) {
@@ -47,7 +51,10 @@ const to_Ssystem as function(model) {
     print("contains symbols:");
     print(symbols);
 
-    lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols);
+    list(
+        names = symbolNames, 
+        S = lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols)
+    );
 }
 
 const cast_sexpr as function(symbol, flow, influence) {

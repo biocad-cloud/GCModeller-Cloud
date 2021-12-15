@@ -14,7 +14,16 @@ model = file
 
 str(model);
 
-solve_Ssystem(S = model);
+result = solve_Ssystem(S = model$S);
+keys = colnames(result);
+names = model$names;
+names =  sapply(keys, key -> names[[key]]);
+print(keys);
+print(names);
 
+colnames(result) = unique.names(names);
 
+print(result, max.print = 15);
+
+write.csv(result, file = `${@dir}/simulates.csv`);
 
