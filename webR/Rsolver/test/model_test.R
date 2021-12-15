@@ -14,7 +14,7 @@ model = file
 
 str(model);
 
-solve_Ssystem(S = model, outputfile = `${@dir}/simulates.csv`);
+solve_Ssystem(S = model);
 
 
 
