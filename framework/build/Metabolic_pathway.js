@@ -423,7 +423,9 @@ var apps;
         FlowEditor.prototype.load = function () {
             var vm = this;
             $ts.getText("@api:load?model_id=" + $ts("@data:model_id"), function (json) {
-                vm.myDiagram.model = go.Model.fromJson(json);
+                var model = apps.ModelPatch(JSON.parse(json));
+                var jsonStr = JSON.stringify(model);
+                vm.myDiagram.model = go.Model.fromJson(jsonStr);
             });
         };
         FlowEditor.prototype.dosave = function (callback) {
@@ -504,14 +506,13 @@ var apps;
     function ModelPatch(model) {
         for (var _i = 0, _a = model.nodeDataArray; _i < _a.length; _i++) {
             var node = _a[_i];
+            if (node.isGroup) {
+                continue;
+            }
             if (Strings.IsPattern(node.key.toString(), intId)) {
                 node.key = "T" + node.key;
             }
-            if (node.group && Strings.IsPattern(node.group.toString(), intId)) {
-                node.group = "T" + node.group;
-            }
             node.key = makeSafeSymbol(node.key);
-            node.group = makeSafeSymbol(node.group);
         }
         for (var _b = 0, _c = model.linkDataArray; _b < _c.length; _b++) {
             var link = _c[_b];

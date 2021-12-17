@@ -108,6 +108,7 @@ declare namespace apps {
             key: string;
             label: string;
             loc: string;
+            isGroup: boolean;
         }[];
         linkDataArray: {
             category: string;
