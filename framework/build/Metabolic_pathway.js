@@ -432,7 +432,7 @@ var apps;
             var modelJson = myDiagram.model.toJson();
             var payload = {
                 guid: $ts("@data:model_id"),
-                model: JSON.parse(modelJson),
+                model: apps.ModelPatch(JSON.parse(modelJson)),
                 type: "dynamics"
             };
             myDiagram.isModified = false;
@@ -485,6 +485,36 @@ var apps;
         return FlowEditor;
     }(Bootstrap));
     apps.FlowEditor = FlowEditor;
+})(apps || (apps = {}));
+var apps;
+(function (apps) {
+    var intId = /[-]?\d+/ig;
+    function ModelPatch(model) {
+        for (var _i = 0, _a = model.nodeDataArray; _i < _a.length; _i++) {
+            var node = _a[_i];
+            if (Strings.IsPattern(node.key.toString(), intId)) {
+                node.key = "T" + node.key;
+            }
+        }
+        for (var _b = 0, _c = model.linkDataArray; _b < _c.length; _b++) {
+            var link = _c[_b];
+            if (Strings.IsPattern(link.from.toString(), intId)) {
+                link.from = "T" + link.from;
+            }
+            if (Strings.IsPattern(link.to.toString(), intId)) {
+                link.to = "T" + link.to;
+            }
+            if (!isNullOrEmpty(link.labelKeys)) {
+                for (var i = 0; i < link.labelKeys.length; i++) {
+                    if (Strings.IsPattern(link.labelKeys[i], intId)) {
+                        link.labelKeys[i] = "T" + link.labelKeys[i];
+                    }
+                }
+            }
+        }
+        return model;
+    }
+    apps.ModelPatch = ModelPatch;
 })(apps || (apps = {}));
 var apps;
 (function (apps) {

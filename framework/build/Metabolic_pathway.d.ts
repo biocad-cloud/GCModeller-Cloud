@@ -99,6 +99,25 @@ declare namespace apps {
         private doRunModel;
     }
 }
+declare namespace apps {
+    function ModelPatch(model: Model): Model;
+    interface Model {
+        nodeDataArray: {
+            category: string;
+            group: string;
+            key: string;
+            label: string;
+            loc: string;
+        }[];
+        linkDataArray: {
+            category: string;
+            from: string;
+            labelKeys: string[];
+            text: string;
+            to: string;
+        }[];
+    }
+}
 declare namespace apps.EditorTemplates {
     function nodeStyle(): any[];
     function shapeStyle(): {
