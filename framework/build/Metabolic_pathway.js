@@ -490,6 +490,9 @@ var apps;
 (function (apps) {
     var intId = /[-]?\d+/ig;
     function makeSafeSymbol(name) {
+        if (!name) {
+            return null;
+        }
         return name
             .toString()
             .replace(".", "_")
@@ -504,7 +507,7 @@ var apps;
             if (Strings.IsPattern(node.key.toString(), intId)) {
                 node.key = "T" + node.key;
             }
-            if (Strings.IsPattern(node.group.toString(), intId)) {
+            if (node.group && Strings.IsPattern(node.group.toString(), intId)) {
                 node.group = "T" + node.group;
             }
             node.key = makeSafeSymbol(node.key);
