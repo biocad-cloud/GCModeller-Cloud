@@ -506,7 +506,7 @@ var apps;
             }
             if (!isNullOrEmpty(link.labelKeys)) {
                 for (var i = 0; i < link.labelKeys.length; i++) {
-                    if (Strings.IsPattern(link.labelKeys[i], intId)) {
+                    if (Strings.IsPattern(link.labelKeys[i].toString(), intId)) {
                         link.labelKeys[i] = "T" + link.labelKeys[i];
                     }
                 }
