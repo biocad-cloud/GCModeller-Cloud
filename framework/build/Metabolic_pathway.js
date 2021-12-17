@@ -276,7 +276,7 @@ var apps;
                 "clickCreatingTool.insertPart": function (loc) {
                     // customize the data for the new node
                     SD.nodeCounter[SD.itemType] += 1;
-                    var newNodeId = "T" + SD.itemType + SD.nodeCounter[SD.itemType];
+                    var newNodeId = SD.itemType + SD.nodeCounter[SD.itemType];
                     this.archetypeNodeData = {
                         key: newNodeId,
                         category: SD.itemType,
@@ -491,6 +491,7 @@ var apps;
     var intId = /[-]?\d+/ig;
     function makeSafeSymbol(name) {
         return name
+            .toString()
             .replace(".", "_")
             .replace("-", "_")
             .replace("+", "_")
@@ -501,22 +502,30 @@ var apps;
         for (var _i = 0, _a = model.nodeDataArray; _i < _a.length; _i++) {
             var node = _a[_i];
             if (Strings.IsPattern(node.key.toString(), intId)) {
-                node.key = makeSafeSymbol("T" + node.key);
+                node.key = "T" + node.key;
             }
+            if (Strings.IsPattern(node.group.toString(), intId)) {
+                node.group = "T" + node.group;
+            }
+            node.key = makeSafeSymbol(node.key);
+            node.group = makeSafeSymbol(node.group);
         }
         for (var _b = 0, _c = model.linkDataArray; _b < _c.length; _b++) {
             var link = _c[_b];
             if (Strings.IsPattern(link.from.toString(), intId)) {
-                link.from = makeSafeSymbol("T" + link.from);
+                link.from = "T" + link.from;
             }
             if (Strings.IsPattern(link.to.toString(), intId)) {
-                link.to = makeSafeSymbol("T" + link.to);
+                link.to = "T" + link.to;
             }
+            link.from = makeSafeSymbol(link.from);
+            link.to = makeSafeSymbol(link.to);
             if (!isNullOrEmpty(link.labelKeys)) {
                 for (var i = 0; i < link.labelKeys.length; i++) {
                     if (Strings.IsPattern(link.labelKeys[i].toString(), intId)) {
-                        link.labelKeys[i] = makeSafeSymbol("T" + link.labelKeys[i]);
+                        link.labelKeys[i] = "T" + link.labelKeys[i];
                     }
+                    link.labelKeys[i] = makeSafeSymbol(link.labelKeys[i]);
                 }
             }
         }
