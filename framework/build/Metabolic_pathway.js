@@ -211,12 +211,21 @@ var apps;
         function FlowEditor() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
             /**
-             * SD is a global variable, to avoid polluting global namespace and to make the global
-             * nature of the individual variables obvious.
+             * SD is a global variable, to avoid polluting global namespace
+             * and to make the global nature of the individual variables
+             * obvious.
             */
             _this.SD = {
+                /**
+                 * Set to default mode.  Alternatives are
+                 * "node" and "link", for adding a new node
+                 * or a new link respectively.
+                */
                 mode: "pointer",
-                // adding a new node or a new link respectively.
+                /**
+                 * Set when user clicks on a node or link
+                 * button.
+                */
                 itemType: "pointer",
                 nodeCounter: { stock: 0, cloud: 0, variable: 0, valve: 0 }
             };
@@ -258,11 +267,14 @@ var apps;
                     return go.LinkingTool.prototype.insertLink.call(this, fromnode, fromport, tonode, toport);
                 },
                 "clickCreatingTool.archetypeNodeData": {},
+                // allow Ctrl-G to call groupSelection()
+                "commandHandler.archetypeGroupData": { text: "Group", isGroup: true, color: "blue" },
                 "clickCreatingTool.isDoubleClick": false,
                 "clickCreatingTool.canStart": function () {
                     return SD.mode === "node" && go.ClickCreatingTool.prototype.canStart.call(this);
                 },
                 "clickCreatingTool.insertPart": function (loc) {
+                    // customize the data for the new node
                     SD.nodeCounter[SD.itemType] += 1;
                     var newNodeId = SD.itemType + SD.nodeCounter[SD.itemType];
                     this.archetypeNodeData = {
@@ -278,15 +290,16 @@ var apps;
             var $ = go.GraphObject.make;
             var SD = this.SD;
             var vm = this;
-            var myDiagram = vm.myDiagram = $(go.Diagram, "myDiagram", vm.config());
+            vm.myDiagram = $(go.Diagram, "myDiagram", vm.config());
+            var myDiagram = vm.myDiagram;
             // install the NodeLabelDraggingTool as a "mouse move" tool
             myDiagram.toolManager.mouseMoveTools.insertAt(0, new NodeLabelDraggingTool());
             // when the document is modified, add a "*" to the title and enable the "Save" button
             myDiagram.addDiagramListener("Modified", function (e) {
                 var button = document.getElementById("SaveButton");
+                var idx = document.title.indexOf("*");
                 if (button)
                     button.disabled = !myDiagram.isModified;
-                var idx = document.title.indexOf("*");
                 if (myDiagram.isModified) {
                     if (idx < 0)
                         document.title += "*";
@@ -315,42 +328,65 @@ var apps;
             var $ = go.GraphObject.make;
             var myDiagram = this.myDiagram;
             // Node templates
-            myDiagram.nodeTemplateMap.add("stock", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { desiredSize: new go.Size(50, 30) }), $(go.TextBlock, apps.EditorTemplates.textStyle(), {
-                _isNodeLabel: true,
-                alignment: new go.Spot(0.5, 0.5, 0, 30) // initial value
-            }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
-            myDiagram.nodeTemplateMap.add("cloud", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), {
-                figure: "Cloud",
-                desiredSize: new go.Size(35, 35)
-            })));
+            myDiagram.nodeTemplateMap.add("stock", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { desiredSize: new go.Size(50, 30) }), 
+            // declare draggable by NodeLabelDraggingTool
+            // initial value
+            $(go.TextBlock, apps.EditorTemplates.textStyle(), { _isNodeLabel: true, alignment: new go.Spot(0.5, 0.5, 0, 30) }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
+            myDiagram.nodeTemplateMap.add("cloud", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Cloud", desiredSize: new go.Size(35, 35) })));
             myDiagram.nodeTemplateMap.add("valve", $(go.Node, apps.EditorTemplates.nodeStyle(), {
                 movable: false,
                 layerName: "Foreground",
                 alignmentFocus: go.Spot.None
-            }, $(go.Shape, apps.EditorTemplates.shapeStyle(), {
-                figure: "Ellipse",
-                desiredSize: new go.Size(20, 20)
-            }), $(go.TextBlock, apps.EditorTemplates.textStyle(), {
+            }, $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Ellipse", desiredSize: new go.Size(20, 20) }), $(go.TextBlock, apps.EditorTemplates.textStyle(), {
                 _isNodeLabel: true,
                 alignment: new go.Spot(0.5, 0.5, 0, 20) // initial value
             }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
-            myDiagram.nodeTemplateMap.add("variable", $(go.Node, apps.EditorTemplates.nodeStyle(), { type: go.Panel.Auto }, $(go.TextBlock, apps.EditorTemplates.textStyle(), { isMultiline: false }), $(go.Shape, apps.EditorTemplates.shapeStyle(), 
+            myDiagram.nodeTemplateMap.add("variable", $(go.Node, apps.EditorTemplates.nodeStyle(), { type: go.Panel.Auto }, $(go.TextBlock, apps.EditorTemplates.textStyle(), { isMultiline: false }), 
             // the port is in front and transparent, even though it goes around the text;
             // in "link" mode will support drawing a new link
-            { isPanelMain: true, stroke: null, fill: "transparent" })));
+            $(go.Shape, apps.EditorTemplates.shapeStyle(), { isPanelMain: true, stroke: null, fill: "transparent" })));
             // Link templates
-            myDiagram.linkTemplateMap.add("flow", $(go.Link, { toShortLength: 8 }, $(go.Shape, { stroke: "blue", strokeWidth: 5 }), $(go.Shape, {
-                fill: "blue",
-                stroke: null,
-                toArrow: "Standard",
-                scale: 2.5
-            })));
-            myDiagram.linkTemplateMap.add("influence", $(go.Link, { curve: go.Link.Bezier, toShortLength: 8 }, $(go.Shape, { stroke: "green", strokeWidth: 1.5 }), $(go.Shape, {
-                fill: "green",
-                stroke: null,
-                toArrow: "Standard",
-                scale: 1.5
-            })));
+            myDiagram.linkTemplateMap.add("flow", $(go.Link, { toShortLength: 8 }, $(go.Shape, { stroke: "blue", strokeWidth: 5 }), $(go.Shape, { fill: "blue", stroke: null, toArrow: "Standard", scale: 2.5 })));
+            myDiagram.linkTemplateMap.add("influence", $(go.Link, { curve: go.Link.Bezier, toShortLength: 8 }, $(go.Shape, { stroke: "green", strokeWidth: 1.5 }), $(go.Shape, { fill: "green", stroke: null, toArrow: "Standard", scale: 1.5 })));
+            // Groups consist of a title in the color given by the group node data
+            // above a translucent gray rectangle surrounding the member parts
+            myDiagram.groupTemplate =
+                $(go.Group, "Vertical", {
+                    selectionObjectName: "PANEL",
+                    ungroupable: true // enable Ctrl-Shift-G to ungroup a selected Group
+                }, $(go.TextBlock, {
+                    //alignment: go.Spot.Right,
+                    font: "bold 19px sans-serif",
+                    isMultiline: false,
+                    editable: true // allow in-place editing by user
+                }, new go.Binding("text", "text").makeTwoWay(), new go.Binding("stroke", "color")), $(go.Panel, "Auto", { name: "PANEL" }, $(go.Shape, "Rectangle", // the rectangular shape around the members
+                {
+                    fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3,
+                    portId: "", cursor: "pointer",
+                    // allow all kinds of links from and to this port
+                    fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+                    toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+                }), $(go.Placeholder, { margin: 10, background: "transparent" }) // represents where the members are
+                ), {
+                    toolTip: $("ToolTip", $(go.TextBlock, { margin: 4 }, 
+                    // bind to tooltip, not to Group.data, to allow access to Group properties
+                    new go.Binding("text", "", FlowEditor.groupInfo).ofObject()))
+                });
+        };
+        /**
+         * Define the appearance and behavior for Groups
+        */
+        FlowEditor.groupInfo = function (adornment) {
+            // takes the tooltip or context menu, not a group node data object
+            var g = adornment.adornedPart;
+            // get the Group that the tooltip adorns
+            var mems = g.memberParts.count;
+            var links = 0;
+            g.memberParts.each(function (part) {
+                if (part instanceof go.Link)
+                    links++;
+            });
+            return "Group " + g.data.key + ": " + g.data.text + "\n" + mems + " members including " + links + " links";
         };
         FlowEditor.prototype.setMode = function (mode, itemType) {
             var myDiagram = this.myDiagram;
@@ -362,15 +398,15 @@ var apps;
             SD.itemType = itemType;
             if (mode === "pointer") {
                 myDiagram.allowLink = false;
-                myDiagram.nodes.each(function (n) { n.port.cursor = ""; });
+                myDiagram.nodes.each(function (n) { return n.port.cursor = ""; });
             }
             else if (mode === "node") {
                 myDiagram.allowLink = false;
-                myDiagram.nodes.each(function (n) { n.port.cursor = ""; });
+                myDiagram.nodes.each(function (n) { return n.port.cursor = ""; });
             }
             else if (mode === "link") {
                 myDiagram.allowLink = true;
-                myDiagram.nodes.each(function (n) { n.port.cursor = "pointer"; });
+                myDiagram.nodes.each(function (n) { return n.port.cursor = "pointer"; });
             }
             myDiagram.commitTransaction("mode changed");
         };

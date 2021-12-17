@@ -43,11 +43,21 @@ declare namespace apps {
     class FlowEditor extends Bootstrap {
         readonly appName: string;
         /**
-         * SD is a global variable, to avoid polluting global namespace and to make the global
-         * nature of the individual variables obvious.
+         * SD is a global variable, to avoid polluting global namespace
+         * and to make the global nature of the individual variables
+         * obvious.
         */
         readonly SD: {
+            /**
+             * Set to default mode.  Alternatives are
+             * "node" and "link", for adding a new node
+             * or a new link respectively.
+            */
             mode: string;
+            /**
+             * Set when user clicks on a node or link
+             * button.
+            */
             itemType: string;
             nodeCounter: {
                 stock: number;
@@ -56,11 +66,18 @@ declare namespace apps {
                 valve: number;
             };
         };
+        /**
+         * Declared as global
+        */
         private myDiagram;
         private config;
         init(): void;
         buildTemplates(): void;
-        setMode(mode: any, itemType: any): void;
+        /**
+         * Define the appearance and behavior for Groups
+        */
+        private static groupInfo;
+        setMode(mode: string, itemType: string): void;
         /**
          * Show the diagram's model in JSON format
          * that the user may edit.
