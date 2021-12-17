@@ -276,7 +276,7 @@ var apps;
                 "clickCreatingTool.insertPart": function (loc) {
                     // customize the data for the new node
                     SD.nodeCounter[SD.itemType] += 1;
-                    var newNodeId = SD.itemType + SD.nodeCounter[SD.itemType];
+                    var newNodeId = "T" + SD.itemType + SD.nodeCounter[SD.itemType];
                     this.archetypeNodeData = {
                         key: newNodeId,
                         category: SD.itemType,
@@ -331,7 +331,9 @@ var apps;
             myDiagram.nodeTemplateMap.add("stock", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { desiredSize: new go.Size(50, 30) }), 
             // declare draggable by NodeLabelDraggingTool
             // initial value
-            $(go.TextBlock, apps.EditorTemplates.textStyle(), { _isNodeLabel: true, alignment: new go.Spot(0.5, 0.5, 0, 30) }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
+            $(go.TextBlock, apps.EditorTemplates.textStyle(), {
+                _isNodeLabel: true, alignment: new go.Spot(0.5, 0.5, 0, 30)
+            }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
             myDiagram.nodeTemplateMap.add("cloud", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Cloud", desiredSize: new go.Size(35, 35) })));
             myDiagram.nodeTemplateMap.add("valve", $(go.Node, apps.EditorTemplates.nodeStyle(), {
                 movable: false,
