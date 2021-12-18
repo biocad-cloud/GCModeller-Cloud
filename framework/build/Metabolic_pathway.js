@@ -145,6 +145,8 @@ var apps;
                 graph = apps.translation.translateToColaGraph(graph);
             }
             console.log(JSON.stringify(graph));
+            console.log("view nodes details:");
+            console.table(graph.nodes);
             this.d3cola
                 .nodes(graph.nodes)
                 .links(graph.links)
@@ -214,6 +216,11 @@ var apps;
 (function (apps) {
     var translation;
     (function (translation) {
+        translation.paper_colors = [
+            "#D02823", "#0491d0", "#88bb64", "#15DBFF",
+            "#583B73", "#f2ce3f", "#8858BF", "#CCFF33",
+            "#fb5b44", "#361f32", "#DF2789", "#396b1c"
+        ];
         function translateToColaGraph(graph) {
             var g = {
                 groups: [],
@@ -226,10 +233,11 @@ var apps;
             for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
                 var node = _a[_i];
                 if ((!isNullOrUndefined(node.isGroup)) && node.isGroup) {
+                    var color = translation.paper_colors[Object.keys(groups).length];
                     groups[node.key.toString()] = {
                         leaves: [],
                         padding: 10,
-                        style: "fill:#4db987;fill-opacity:0.31764700000000001;stroke:#4db987;stroke-opacity:1"
+                        style: "fill:" + color + ";fill-opacity:0.31764700000000001;stroke:" + color + ";stroke-opacity:1"
                     };
                 }
             }

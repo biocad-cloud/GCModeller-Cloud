@@ -43,6 +43,7 @@ declare namespace apps {
     }
 }
 declare namespace apps.translation {
+    const paper_colors: string[];
     function translateToColaGraph(graph: apps.Model): Graph;
 }
 declare namespace apps {
