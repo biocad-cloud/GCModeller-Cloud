@@ -18,9 +18,9 @@ const cast_table as function(list) {
 
 const to_Ssystem as function(model) {
     print("view of the model file content:");
-    # str(model);
 
     nodes = cast_table(model$nodeDataArray);
+    nodes = nodes[!as.logical(nodes[, "isGroup"]), ];
     links = cast_table(model$linkDataArray);
     symbolNames = lapply(model$nodeDataArray, function(x) {
         ifelse(is.null(x$label), x$key, x$label);
