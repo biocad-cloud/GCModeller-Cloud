@@ -83,7 +83,9 @@ namespace bioCAD.WebApp.Platform {
     const menuTemplate: string = `
         <div class="dropdown">
             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                style="box-shadow: none;">
+
                 <i class="fas fa-ellipsis-v"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -150,16 +152,16 @@ namespace bioCAD.WebApp.Platform {
     }
 
     const taskStatus = {
-        pending: `<span class="badge badge-dot mr-4">
+        pending: `<span class="badge badge-dot mr-4" style="color: #fb6340 !important;">
                       <i class="bg-warning"></i> pending
                   </span>`,
-        completed: `<span class="badge badge-dot">
+        completed: `<span class="badge badge-dot" style="color: #2dce89 !important;">
                         <i class="bg-success"></i> completed
                     </span>`,
-        delayed: `<span class="badge badge-dot mr-4">
+        delayed: `<span class="badge badge-dot mr-4" style="color:  #ec0c38 !important;">
                       <i class="bg-danger"></i> error
                   </span>`,
-        on_schedule: `<span class="badge badge-dot">
+        on_schedule: `<span class="badge badge-dot" style="color: #11cdef !important;">
                           <i class="bg-info"></i> running
                       </span>`
     };

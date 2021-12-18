@@ -231,7 +231,7 @@ var bioCAD;
                 return TaskMgr;
             }(Bootstrap));
             Platform.TaskMgr = TaskMgr;
-            var menuTemplate = "\n        <div class=\"dropdown\">\n            <a class=\"btn btn-sm btn-icon-only text-light\" href=\"#\" role=\"button\"\n                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                <i class=\"fas fa-ellipsis-v\"></i>\n            </a>\n            <div class=\"dropdown-menu dropdown-menu-right dropdown-menu-arrow\">\n                <a class=\"dropdown-item bg-danger\" href=\"#\">Delete</a>\n                <a class=\"dropdown-item\" href=\"{$model_url}\">View Model</a>\n                <a class=\"dropdown-item\" href=\"#\">Help</a>\n            </div>\n        </div>\n    ";
+            var menuTemplate = "\n        <div class=\"dropdown\">\n            <a class=\"btn btn-sm btn-icon-only text-light\" href=\"#\" role=\"button\"\n                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"\n                style=\"box-shadow: none;\">\n\n                <i class=\"fas fa-ellipsis-v\"></i>\n            </a>\n            <div class=\"dropdown-menu dropdown-menu-right dropdown-menu-arrow\">\n                <a class=\"dropdown-item bg-danger\" href=\"#\">Delete</a>\n                <a class=\"dropdown-item\" href=\"{$model_url}\">View Model</a>\n                <a class=\"dropdown-item\" href=\"#\">Help</a>\n            </div>\n        </div>\n    ";
             var taskProgress = {
                 "pending": "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">0%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-warning\" role=\"progressbar\"\n                                                        aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 1%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>",
                 "completed": "<div class=\"d-flex align-items-center\">\n                                            <span class=\"mr-2\">100%</span>\n                                            <div>\n                                                <div class=\"progress\">\n                                                    <div class=\"progress-bar bg-success\" role=\"progressbar\"\n                                                        aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n                                                        style=\"width: 100%;\"></div>\n                                                </div>\n                                            </div>\n                                        </div>",
@@ -247,10 +247,10 @@ var bioCAD;
                 }
             }
             var taskStatus = {
-                pending: "<span class=\"badge badge-dot mr-4\">\n                      <i class=\"bg-warning\"></i> pending\n                  </span>",
-                completed: "<span class=\"badge badge-dot\">\n                        <i class=\"bg-success\"></i> completed\n                    </span>",
-                delayed: "<span class=\"badge badge-dot mr-4\">\n                      <i class=\"bg-danger\"></i> error\n                  </span>",
-                on_schedule: "<span class=\"badge badge-dot\">\n                          <i class=\"bg-info\"></i> running\n                      </span>"
+                pending: "<span class=\"badge badge-dot mr-4\" style=\"color: #fb6340 !important;\">\n                      <i class=\"bg-warning\"></i> pending\n                  </span>",
+                completed: "<span class=\"badge badge-dot\" style=\"color: #2dce89 !important;\">\n                        <i class=\"bg-success\"></i> completed\n                    </span>",
+                delayed: "<span class=\"badge badge-dot mr-4\" style=\"color:  #ec0c38 !important;\">\n                      <i class=\"bg-danger\"></i> error\n                  </span>",
+                on_schedule: "<span class=\"badge badge-dot\" style=\"color: #11cdef !important;\">\n                          <i class=\"bg-info\"></i> running\n                      </span>"
             };
         })(Platform = WebApp.Platform || (WebApp.Platform = {}));
     })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
