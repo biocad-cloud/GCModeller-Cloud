@@ -99,6 +99,9 @@ var apps;
         Metabolic_pathway.prototype.savePng = function () {
             saveSvgAsPng($ts("#canvas").childNodes.item(0), "pathway.png");
         };
+        /**
+         * show model file
+        */
         Metabolic_pathway.prototype.init = function () {
             var _this = this;
             var graph_url = $ts("@url:graph");
@@ -138,6 +141,9 @@ var apps;
             var groupsLayer = this.vis.append("g");
             var nodesLayer = this.vis.append("g");
             var linksLayer = this.vis.append("g");
+            if ((!Strings.Empty(graph.class)) && (graph.class == "GraphLinksModel")) {
+                graph = apps.translation.translateToColaGraph(graph);
+            }
             console.log(JSON.stringify(graph));
             this.d3cola
                 .nodes(graph.nodes)
@@ -203,6 +209,15 @@ var apps;
         return Metabolic_pathway;
     }());
     apps.Metabolic_pathway = Metabolic_pathway;
+})(apps || (apps = {}));
+var apps;
+(function (apps) {
+    var translation;
+    (function (translation) {
+        function translateToColaGraph(graph) {
+        }
+        translation.translateToColaGraph = translateToColaGraph;
+    })(translation = apps.translation || (apps.translation = {}));
 })(apps || (apps = {}));
 var apps;
 (function (apps) {
@@ -601,15 +616,17 @@ var apps;
             var dataUrl = $ts("@data:repository");
             var vm = this;
             var assembly = localStorage.getItem(this.assemblyKey);
-            if (Strings.Empty(assembly)) {
-                // get from server and cached into localstorage
-                $ts.get(dataUrl, function (obj) {
-                    vm.saveCache(obj);
+            if (!Strings.Empty(dataUrl, true)) {
+                if (Strings.Empty(assembly)) {
+                    // get from server and cached into localstorage
+                    $ts.get(dataUrl, function (obj) {
+                        vm.saveCache(obj);
+                        vm.loadCache();
+                    });
+                }
+                else {
                     vm.loadCache();
-                });
-            }
-            else {
-                vm.loadCache();
+                }
             }
             vm.canvas.init();
         };

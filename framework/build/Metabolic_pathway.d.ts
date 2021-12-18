@@ -29,6 +29,9 @@ declare namespace apps {
         constructor();
         private redraw;
         savePng(): void;
+        /**
+         * show model file
+        */
         init(): Metabolic_pathway;
         /**
          * load network graph model and then
@@ -38,6 +41,9 @@ declare namespace apps {
         private loadGraph;
         private static insertLinebreaks;
     }
+}
+declare namespace apps.translation {
+    function translateToColaGraph(graph: apps.Model): Graph;
 }
 declare namespace apps {
     class FlowEditor extends Bootstrap {
@@ -192,6 +198,11 @@ declare namespace PathwayNavigator {
     }
 }
 declare class Graph {
+    /**
+     * required of model format translation when
+     * the class value is "GraphLinksModel"
+    */
+    class: string;
     nodes: node[];
     links?: link[];
     constraints?: constraint[];

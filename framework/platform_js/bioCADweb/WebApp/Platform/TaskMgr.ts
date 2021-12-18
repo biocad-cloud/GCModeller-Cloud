@@ -60,7 +60,7 @@ namespace bioCAD.WebApp.Platform {
                     .appendElement(`
                         <div class="media-body">
                             <a href="/app/report/?q=${task.sha1}" target="__blank">
-                                <span class="mb-0 text-sm">${task.title}</span>
+                                <h4 class="mb-0">${task.title}</h4>
                             </a>                            
                         </div>`)
             );

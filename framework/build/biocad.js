@@ -214,7 +214,7 @@ var bioCAD;
                     var model_url = task.app_view + "?guid=" + this.getModelId(task);
                     var appTask = $ts("<th>").appendElement($ts("<div>", { class: ["media", "align-items-center"] })
                         .appendElement("\n                        <a href=\"#\" class=\"avatar rounded-circle mr-3\">\n                            <img alt=\"Image placeholder\"\n                                src=\"/resources/images/icons/" + task.name + ".png\">\n                        </a>")
-                        .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/app/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <span class=\"mb-0 text-sm\">" + task.title + "</span>\n                            </a>                            \n                        </div>"));
+                        .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/app/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <h4 class=\"mb-0\">" + task.title + "</h4>\n                            </a>                            \n                        </div>"));
                     var createTime = $ts("<td>").appendElement(task.create_time);
                     var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
                     var end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
