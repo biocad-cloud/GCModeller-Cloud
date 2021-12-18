@@ -215,6 +215,56 @@ var apps;
     var translation;
     (function (translation) {
         function translateToColaGraph(graph) {
+            var g = {
+                groups: [],
+                constraints: [],
+                links: [],
+                nodes: []
+            };
+            var nodeIndex = {};
+            var groups = {};
+            for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
+                var node = _a[_i];
+                if ((!isNullOrUndefined(node.isGroup)) && node.isGroup) {
+                    groups[node.key.toString()] = {
+                        leaves: [],
+                        padding: 10,
+                        style: "fill:#4db987;fill-opacity:0.31764700000000001;stroke:#4db987;stroke-opacity:1"
+                    };
+                }
+            }
+            for (var _b = 0, _c = graph.nodeDataArray; _b < _c.length; _b++) {
+                var node = _c[_b];
+                if ((!isNullOrUndefined(node.isGroup)) && node.isGroup) {
+                    continue;
+                }
+                g.nodes.push({
+                    dunnartid: (g.nodes.length + 1).toString(),
+                    height: 40,
+                    index: g.nodes.length,
+                    label: node.label,
+                    rx: 9,
+                    ry: 9,
+                    width: 60,
+                    x: 0,
+                    y: 0
+                });
+                nodeIndex[node.key] = g.nodes.length - 1;
+                if (!isNullOrUndefined(node.group)) {
+                    groups[node.group.toString()].leaves.push(g.nodes.length - 1);
+                }
+            }
+            for (var _d = 0, _e = graph.linkDataArray; _d < _e.length; _d++) {
+                var link = _e[_d];
+                g.links.push({
+                    source: nodeIndex[link.from],
+                    target: nodeIndex[link.to]
+                });
+            }
+            for (var name_1 in groups) {
+                g.groups.push(groups[name_1]);
+            }
+            return g;
         }
         translation.translateToColaGraph = translateToColaGraph;
     })(translation = apps.translation || (apps.translation = {}));

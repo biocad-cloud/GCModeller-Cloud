@@ -109,7 +109,7 @@ declare namespace apps {
     function ModelPatch(model: Model): Model;
     interface Model {
         nodeDataArray: {
-            category: string;
+            category: "valve" | "stock" | "cloud" | "variable";
             group: string;
             key: string;
             label: string;
@@ -117,7 +117,7 @@ declare namespace apps {
             isGroup: boolean;
         }[];
         linkDataArray: {
-            category: string;
+            category: "flow" | "influence";
             from: string;
             labelKeys: string[];
             text: string;
