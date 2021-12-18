@@ -38,7 +38,7 @@ str(model);
 result = solve_Ssystem(S = model$S, factors = model$factors);
 keys   = colnames(result);
 names  = model$names;
-names  =  sapply(keys, key -> names[[key]]);
+names  = sapply(keys, key -> names[[key]]);
 
 colnames(result) = unique.names(names);
 
