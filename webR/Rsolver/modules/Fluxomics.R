@@ -1,3 +1,5 @@
+imports "background" from "gseakit";
+imports "GSEA" from "gseakit";
 
 #' Run fluxomics data analysis
 #' 
@@ -7,7 +9,13 @@
 #' @param nsamples number of the sample points in each time stream 
 #'     section 
 #' 
-Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
+Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir = "./") {
+    if (!is.null(background)) {
+        clusters = lapply(background, function(nodes) {
+            print(nodes);
+        });
+    }
+
     [fluxomics, sample_info] = OmicsData(simulates, nparts = nparts, nsamples = nsamples);
 
     str(fluxomics);
@@ -20,7 +28,7 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
     symbols = rownames(fluxomics);
 
     print("get time stream in blocks:");
-    str(time_stream);
+    str(time_stream);   
 
     for(i in 2:length(time_stream)) {
         A = time_stream[i-1];

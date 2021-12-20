@@ -34,4 +34,4 @@ print(result, max.print = 15);
 
 write.csv(result, file = "./simulates.csv");
 
-Fluxomics(result);
+Fluxomics(result, model$background);
