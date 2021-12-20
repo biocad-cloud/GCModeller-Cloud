@@ -7,7 +7,9 @@ imports "../modules/CustomPathway.R";
 
 require(JSON);
 
-file = `${@dir}/1639306937.json`;
+setwd(@dir);
+
+file = "1639306937.json";
 model = file 
 |> readText() 
 |> json_decode() 
@@ -30,6 +32,6 @@ colnames(result) = unique.names(names);
 print("get simulator result:");
 print(result, max.print = 15);
 
-write.csv(result, file = `${@dir}/simulates.csv`);
+write.csv(result, file = "./simulates.csv");
 
 Fluxomics(result);
