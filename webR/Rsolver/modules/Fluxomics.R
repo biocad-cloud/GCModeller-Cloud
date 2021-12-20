@@ -14,6 +14,7 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
     print(sample_info, max.print = 10);
 
     time_stream = unique(sample_info[, "sample_info"]);
+    symbols = rownames(fluxomics);
 
     print("get time stream in blocks:");
     str(time_stream);
@@ -29,6 +30,7 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
         B = B[, "sample_id"];
 
         change = logFoldchange(fluxomics[, A], fluxomics[, B]);
+        rownames(change) = symbols;
 
         print(change);
 
