@@ -11,14 +11,28 @@ imports "GSEA" from "gseakit";
 #' 
 Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir = "./") {
     if (!is.null(background)) {
-        clusters = lapply(background, function(nodes) {
+        clusters = lapply(names(background), function(id) {
+            nodes = background[[id]];
             print(nodes);
+            gsea.cluster(
+                data = nodes,
+                clusterId = id, 
+                clusterName = id, 
+                desc = "n/a", 
+                id = "key", 
+                name = "label"
+            );
         });
+
+        background = clusters |> as.background();
+
+        print("create custom GSEA background model for run fluxomics enrichment:");
+        print(background);
     }
 
     [fluxomics, sample_info] = OmicsData(simulates, nparts = nparts, nsamples = nsamples);
 
-    str(fluxomics);
+    # str(fluxomics);
     print(sample_info, max.print = 10);
 
     write.csv(fluxomics, file = `${outputdir}/Fluxomics/fluxomics.csv`, row.names = TRUE);
@@ -45,6 +59,31 @@ Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir
         print(change);
 
         write.csv(change, file = `${dir}/DAF.csv`, row.names = TRUE);
+
+        # run enrichment
+        up = rownames(change)[(change[, "log2Foldchange"] > 0)];
+        down = rownames(change)[(change[, "log2Foldchange"] < 0)];
+        all = append(up, down);
+
+        if (!is.null(background)) {
+            background 
+            |> enrichment(geneSet = up, outputAll = FALSE)
+            |> enrichment.FDR()
+            |> write.enrichment(file = `${dir}/enrich_up.csv`)
+            ;
+
+            background 
+            |> enrichment(geneSet = down, outputAll = FALSE)
+            |> enrichment.FDR()
+            |> write.enrichment(file = `${dir}/enrich_down.csv`)
+            ;
+
+            background 
+            |> enrichment(geneSet = all, outputAll = FALSE)
+            |> enrichment.FDR()
+            |> write.enrichment(file = `${dir}/enrich_all.csv`)
+            ;
+        }        
     }
 }
 

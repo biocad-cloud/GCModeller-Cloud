@@ -1,0 +1,3 @@
+﻿term,name,description,score,pvalue,FDR,cluster,enriched,geneIDs
+pathway1,pathway1,n/a,0.3333333333333333,0.5714285714285696,1.1428571428571392,3,1/3,Tstock3
+pathway2,pathway2,n/a,0.6666666666666666,1,1,3,2/2,Tcloud1; Tstock1
