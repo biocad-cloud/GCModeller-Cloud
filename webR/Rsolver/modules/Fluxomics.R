@@ -66,23 +66,20 @@ Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir
         all = append(up, down);
 
         if (!is.null(background)) {
-            background 
-            |> enrichment(geneSet = up, outputAll = FALSE)
-            |> enrichment.FDR()
-            |> write.enrichment(file = `${dir}/enrich_up.csv`)
-            ;
+            run = function(list, tag) {
+                enrich = background 
+                |> enrichment(geneSet = list, outputAll = FALSE)
+                |> enrichment.FDR()
+                ;
 
-            background 
-            |> enrichment(geneSet = down, outputAll = FALSE)
-            |> enrichment.FDR()
-            |> write.enrichment(file = `${dir}/enrich_down.csv`)
-            ;
+                print(as.data.frame(enrich));
+                
+                write.enrichment(enrich, file = `${dir}/enrich_${tag}.csv`);
+            }
 
-            background 
-            |> enrichment(geneSet = all, outputAll = FALSE)
-            |> enrichment.FDR()
-            |> write.enrichment(file = `${dir}/enrich_all.csv`)
-            ;
+            run(up, "up");      
+            run(down, "down");
+            run(all, "all");
         }        
     }
 }
