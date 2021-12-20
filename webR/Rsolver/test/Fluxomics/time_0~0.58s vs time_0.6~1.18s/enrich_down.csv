@@ -1,4 +1,0 @@
-﻿term,name,description,score,pvalue,FDR,cluster,enriched,geneIDs
-pathway1,pathway1,n/a,0.2,1,1.5,5,1/7,stock1
-pathway2,pathway2,n/a,0.5,1,1.5,2,1/7,stock3
-pathway_6,pathway_6,n/a,0.3333333333333333,1,1.5,6,2/6,stock4; stock9

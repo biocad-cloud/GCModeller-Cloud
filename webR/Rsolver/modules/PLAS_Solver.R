@@ -17,7 +17,7 @@ solve_Ssystem = function(S, factors, title = "another S-system") {
         |> environment(symbols)
         |> bounds(lapply(symbols, any -> [-10, 10]))
         |> s.system(S)
-        |> run(ticks = 3, resolution = 0.01)
+        |> run(ticks = 10, resolution = 0.01)
         ;
 
         as.data.frame(data.driver);

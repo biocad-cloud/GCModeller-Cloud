@@ -56,6 +56,9 @@ Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir
 
         change = logFoldchange(fluxomics[, A], fluxomics[, B]);
 
+        print("analysis for time stream:");
+        print(basename(dir));
+        print("get different analysis flux node:");
         print(change);
 
         write.csv(change, file = `${dir}/DAF.csv`, row.names = TRUE);
@@ -72,14 +75,19 @@ Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir
                 |> enrichment.FDR()
                 ;
 
+                print(`pathway enrichment for '${tag}':`);
                 print(as.data.frame(enrich));
                 
+                cat("\n\n");
+
                 write.enrichment(enrich, file = `${dir}/enrich_${tag}.csv`);
             }
 
             run(up, "up");      
             run(down, "down");
             run(all, "all");
+
+            cat("\n\n\n\n");
         }        
     }
 }

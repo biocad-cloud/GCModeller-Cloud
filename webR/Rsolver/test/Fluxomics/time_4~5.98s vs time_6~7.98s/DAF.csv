@@ -1,0 +1,31 @@
+,mean_A,mean_B,SD_A,SD_B,log2Foldchange,ttest,pvalue
+cloud1,0,0,0,0,NaN,NaN,NaN
+cloud2,0,0,0,0,NaN,NaN,NaN
+cloud3,0,0,0,0,NaN,NaN,NaN
+Grass,0,0,0,0,NaN,NaN,NaN
+good weather,1,1,0,0,0,NaN,NaN
+bad weather,1,1,0,0,0,NaN,NaN
+wolves,1,1,0,0,0,NaN,NaN
+Sheep,0,0,0,0,NaN,NaN,NaN
+stock1,2.02861,2.02861,1.77636E-15,1.77636E-15,0,0,1
+end_point,2.44515,2.44515,1.77636E-15,1.77636E-15,0,0,1
+stock11,0,0,0,0,NaN,NaN,NaN
+stock12,0.0271064,0.0271064,0,0,0,NaN,NaN
+stock13,0,0,0,0,NaN,NaN,NaN
+stock14,0,0,0,0,NaN,NaN,NaN
+stock1_1,2.93376,2.93376,1.33227E-15,1.33227E-15,0,0,1
+stock2,0,0,0,0,NaN,NaN,NaN
+stock2_1,0,0,0,0,NaN,NaN,NaN
+stock3,2.94122,2.94122,0,0,0,NaN,NaN
+stock3_1,1.58969,1.58969,0,0,0,NaN,NaN
+stock4,0.575252,0,3.18887E-16,0,∞,3.10006E+31,0
+stock4_1,0,0,0,0,NaN,NaN,NaN
+stock5,3.43326,4.01208,6.66134E-16,0,-0.224772,-7.14841E+3,0
+stock5_1,0,0,0,0,NaN,NaN,NaN
+stock6,2.57038,5.06508,8.52778E-16,2.5847E-15,-0.978604,-2.03436E+3,0
+stock6_1,0,0,0,0,NaN,NaN,NaN
+stock7,0.521347,0.521347,0,0,0,NaN,NaN
+stock7_1,0.348081,0.348081,2.77556E-16,2.77556E-16,0,0,1
+stock8,0,0,0,0,NaN,NaN,NaN
+stock8_1,0,0,0,0,NaN,NaN,NaN
+stock9,2.68921,2.68921,1.33227E-15,1.33227E-15,0,0,1
