@@ -1,9 +1,10 @@
 imports "S.system" from "simulators";
 
-#'
+#' Solve the PLAS.NET S-system model
+#' 
 #' @param outputfile a csv file path
 #' 
-const solve_Ssystem as function(S, factors, title = "another S-system") {
+solve_Ssystem = function(S, factors, title = "another S-system") {
     # set y0
     symbols = lapply(S, any -> 1);
     factors$is.const = TRUE;

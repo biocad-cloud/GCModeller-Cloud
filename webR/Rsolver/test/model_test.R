@@ -2,6 +2,7 @@ require(GCModeller);
 
 imports "../modules/SBuilder.R";
 imports "../modules/PLAS_Solver.R";
+imports "../modules/Fluxomics.R";
 
 require(JSON);
 
@@ -30,3 +31,4 @@ print(result, max.print = 15);
 
 write.csv(result, file = `${@dir}/simulates.csv`);
 
+Fluxomics(result);
