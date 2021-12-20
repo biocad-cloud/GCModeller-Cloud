@@ -1,1 +1,745 @@
-{"class":"GraphLinksModel","linkLabelKeysProperty":"labelKeys","nodeDataArray":[{"key":"Tstock1","category":"stock","label":"Tstock1","loc":"-140.5 -75.1875","group":-15},{"key":"Tstock2","category":"stock","label":"Tstock2","loc":"-548.5 -239.1875","group":-14},{"category":"valve","key":"T_3","label":"flow1","loc":"-334.4328871135985 -182.2325125466574"},{"key":"Tstock3","category":"stock","label":"Tstock3","loc":"-714.5 92.8125","group":-14},{"category":"valve","key":"T_5","label":"flow2","loc":"-631.5 -73.1875","group":-14},{"key":"Tcloud1","category":"cloud","label":"Tcloud1","loc":"-176.5 150.8125","group":-15},{"category":"valve","key":"T_7","label":"flow3","loc":"-158.34522214978466 36.840839051426016","group":-15},{"category":"valve","key":"T_8","label":"flow4","loc":"-354.5671128864015 -132.1424874533426"},{"key":"Tstock4","category":"stock","label":"Tstock4","loc":"-720.5 -54.1875","group":-14},{"category":"valve","key":"T_10","label":"flow5","loc":"-717.5 19.3125","group":-14},{"key":"Tstock12","category":"stock","label":"Tstock1","loc":"42 66.8125","group":-15},{"category":"valve","key":"T_13","label":"flow1","loc":"-72.18433454605646 110.7094524112986","group":-15},{"category":"valve","key":"T_14","label":"flow2","loc":"-49.249999999999986 -4.1875","group":-15},{"text":"pathway1","isGroup":true,"color":"blue","key":-14},{"text":"pathway2","isGroup":true,"color":"blue","key":-15}],"linkDataArray":[{"category":"flow","text":"flow","from":"Tstock1","to":"Tstock2","labelKeys":["T_3"]},{"category":"flow","text":"flow","from":"Tstock2","to":"Tstock3","labelKeys":["T_5"]},{"category":"influence","text":"influence","from":"Tstock3","to":"T_3","labelKeys":[]},{"category":"flow","text":"flow","from":"Tcloud1","to":"Tstock1","labelKeys":["T_7"]},{"category":"flow","text":"flow","from":"Tstock2","to":"Tstock1","labelKeys":["T_8"]},{"category":"flow","text":"flow","from":"Tstock3","to":"Tstock4","labelKeys":["T_10"]},{"category":"influence","text":"influence","from":"Tstock4","to":"T_8","labelKeys":[]},{"category":"influence","text":"influence","from":"Tstock4","to":"T_5","labelKeys":[]},{"category":"flow","text":"flow","from":"Tcloud1","to":"Tstock12","labelKeys":["T_13"]},{"category":"flow","text":"flow","from":"Tstock12","to":"Tstock1","labelKeys":["T_14"]},{"category":"influence","text":"influence","from":"Tstock12","to":"T_3","labelKeys":[]}]}
+{
+    "class": "GraphLinksModel",
+    "linkLabelKeysProperty": "labelKeys",
+    "nodeDataArray": [
+        {
+            "key": "grass",
+            "category": "stock",
+            "label": "Grass",
+            "loc": "-130 289",
+            "label_offset": "0.5 0.5 0 30",
+            "group": -46
+        },
+        {
+            "key": "cloud1",
+            "category": "cloud",
+            "loc": "40 289",
+            "group": -46
+        },
+        {
+            "key": "sheep",
+            "category": "stock",
+            "label": "Sheep",
+            "loc": "-130 89",
+            "label_offset": "0.5 0.5 0 -30",
+            "group": -46
+        },
+        {
+            "key": "cloud2",
+            "category": "cloud",
+            "loc": "40 89",
+            "group": -46
+        },
+        {
+            "key": "cloud3",
+            "category": "cloud",
+            "loc": "-310 289",
+            "group": -46
+        },
+        {
+            "key": "grass_loss",
+            "category": "valve",
+            "label": "grass_loss",
+            "label_offset": "0.5 0.5 0 20",
+            "loc": "-40.977641467659495 289",
+            "group": -46
+        },
+        {
+            "key": "grazing",
+            "category": "valve",
+            "label": "grazing",
+            "label_offset": "0.5 0.5 45 0",
+            "loc": "-130 189",
+            "group": -46
+        },
+        {
+            "key": "growth",
+            "category": "valve",
+            "label": "growth",
+            "label_offset": "0.5 0.5 0 20",
+            "loc": "-224.30777189405393 289",
+            "group": -46
+        },
+        {
+            "key": "sheep_loss",
+            "category": "valve",
+            "label": "sheep_loss",
+            "label_offset": "0.5 0.5 0 20",
+            "loc": "-40.977641467659495 89",
+            "group": -46
+        },
+        {
+            "key": "k1",
+            "category": "variable",
+            "label": "good weather",
+            "loc": "-80 100"
+        },
+        {
+            "key": "k2",
+            "category": "variable",
+            "label": "bad weather",
+            "loc": "100 150"
+        },
+        {
+            "key": "k3",
+            "category": "variable",
+            "label": "wolves",
+            "loc": "23 14"
+        },
+        {
+            "key": "stock1",
+            "category": "stock",
+            "label": "stock1",
+            "loc": "-348.5 -166",
+            "group": -44
+        },
+        {
+            "key": "stock2",
+            "category": "stock",
+            "label": "stock2",
+            "loc": "-191.5 -69",
+            "group": -45
+        },
+        {
+            "key": "stock3",
+            "category": "stock",
+            "label": "stock3",
+            "loc": "-63.5 -140",
+            "group": -45
+        },
+        {
+            "key": "stock4",
+            "category": "stock",
+            "label": "stock4",
+            "loc": "226.5 -316",
+            "group": -65
+        },
+        {
+            "key": "stock5",
+            "category": "stock",
+            "label": "stock5",
+            "loc": "229.5 -166",
+            "group": -65
+        },
+        {
+            "key": "stock6",
+            "category": "stock",
+            "label": "stock6",
+            "loc": "349.5 -276",
+            "group": -65
+        },
+        {
+            "key": "stock7",
+            "category": "stock",
+            "label": "stock7",
+            "loc": "508.5 -279",
+            "group": -65
+        },
+        {
+            "key": "stock8",
+            "category": "stock",
+            "label": "stock8",
+            "loc": "510.5 -131",
+            "group": -65
+        },
+        {
+            "key": "stock9",
+            "category": "stock",
+            "label": "stock9",
+            "loc": "379.5 -126",
+            "group": -65
+        },
+        {
+            "key": "stock10",
+            "category": "stock",
+            "label": "end_point",
+            "loc": "330.5 285"
+        },
+        {
+            "key": "stock11",
+            "category": "stock",
+            "label": "stock11",
+            "loc": "-372.5 -329",
+            "group": -44
+        },
+        {
+            "key": "stock12",
+            "category": "stock",
+            "label": "stock12",
+            "loc": "-437.5 -252",
+            "group": -44
+        },
+        {
+            "key": "stock13",
+            "category": "stock",
+            "label": "stock13",
+            "loc": "-447.5 -136",
+            "group": -44
+        },
+        {
+            "key": "stock14",
+            "category": "stock",
+            "label": "stock14",
+            "loc": "-463.5 -36",
+            "group": -44
+        },
+        {
+            "category": "valve",
+            "key": "T_27",
+            "label": "flow1",
+            "loc": "-455.5 -86",
+            "group": -44
+        },
+        {
+            "category": "valve",
+            "key": "T_28",
+            "label": "flow2",
+            "loc": "-442.5 -194",
+            "group": -44
+        },
+        {
+            "category": "valve",
+            "key": "T_29",
+            "label": "flow3",
+            "loc": "-405 -290.5",
+            "group": -44
+        },
+        {
+            "category": "valve",
+            "key": "T_30",
+            "label": "flow4",
+            "loc": "-360.5 -247.5",
+            "group": -44
+        },
+        {
+            "category": "valve",
+            "key": "T_31",
+            "label": "flow5",
+            "loc": "-270 -117.5"
+        },
+        {
+            "category": "valve",
+            "key": "T_32",
+            "label": "flow6",
+            "loc": "-127.5 -104.5",
+            "group": -45
+        },
+        {
+            "category": "valve",
+            "key": "T_33",
+            "label": "flow7",
+            "loc": "-61 -241"
+        },
+        {
+            "category": "valve",
+            "key": "T_34",
+            "label": "flow8",
+            "loc": "228 -241",
+            "group": -65
+        },
+        {
+            "category": "valve",
+            "key": "T_35",
+            "label": "flow9",
+            "loc": "49.750000000000014 -38.5"
+        },
+        {
+            "category": "valve",
+            "key": "T_36",
+            "label": "flow10",
+            "loc": "289.5 -221",
+            "group": -65
+        },
+        {
+            "category": "valve",
+            "key": "T_37",
+            "label": "flow11",
+            "loc": "429 -277.5",
+            "group": -65
+        },
+        {
+            "category": "valve",
+            "key": "T_38",
+            "label": "flow12",
+            "loc": "509.5 -205",
+            "group": -65
+        },
+        {
+            "category": "valve",
+            "key": "T_39",
+            "label": "flow13",
+            "loc": "445 -128.5",
+            "group": -65
+        },
+        {
+            "category": "valve",
+            "key": "T_40",
+            "label": "flow14",
+            "loc": "210.05629768390514 81.12558604176542"
+        },
+        {
+            "category": "valve",
+            "key": "T_41",
+            "label": "flow15",
+            "loc": "180.98743443408247 287.0586928133"
+        },
+        {
+            "category": "valve",
+            "key": "T_42",
+            "label": "flow16",
+            "loc": "-387.1999409150973 125.54735636868651"
+        },
+        {
+            "category": "valve",
+            "key": "T_43",
+            "label": "flow17",
+            "loc": "272.9640213750472 -93.98988231807331"
+        },
+        {
+            "text": "pathway1",
+            "isGroup": true,
+            "color": "blue",
+            "key": -44
+        },
+        {
+            "text": "pathway2",
+            "isGroup": true,
+            "color": "blue",
+            "key": -45
+        },
+        {
+            "text": "pathway4",
+            "isGroup": true,
+            "color": "blue",
+            "key": -46
+        },
+        {
+            "key": "stock15",
+            "category": "stock",
+            "label": "stock1",
+            "loc": "-836.5 256",
+            "group": -64
+        },
+        {
+            "key": "stock22",
+            "category": "stock",
+            "label": "stock2",
+            "loc": "-820.5 346",
+            "group": -64
+        },
+        {
+            "key": "stock32",
+            "category": "stock",
+            "label": "stock3",
+            "loc": "-846.5 485",
+            "group": -64
+        },
+        {
+            "key": "stock42",
+            "category": "stock",
+            "label": "stock4",
+            "loc": "-831.5 632",
+            "group": -64
+        },
+        {
+            "key": "stock52",
+            "category": "stock",
+            "label": "stock5",
+            "loc": "-713.5 633",
+            "group": -64
+        },
+        {
+            "key": "stock62",
+            "category": "stock",
+            "label": "stock6",
+            "loc": "-571.5 640",
+            "group": -64
+        },
+        {
+            "key": "stock72",
+            "category": "stock",
+            "label": "stock7",
+            "loc": "-551.5 470",
+            "group": -64
+        },
+        {
+            "key": "stock82",
+            "category": "stock",
+            "label": "stock8",
+            "loc": "-700.5 540",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_56",
+            "label": "flow1",
+            "loc": "-561.5 555",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_57",
+            "label": "flow2",
+            "loc": "-626 505",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_58",
+            "label": "flow3",
+            "loc": "-636 590",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_59",
+            "label": "flow4",
+            "loc": "-707 586.5",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_60",
+            "label": "flow5",
+            "loc": "-772.5 632.5",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_61",
+            "label": "flow6",
+            "loc": "-839 558.5",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_62",
+            "label": "flow7",
+            "loc": "-833.5 415.5",
+            "group": -64
+        },
+        {
+            "category": "valve",
+            "key": "T_63",
+            "label": "flow8",
+            "loc": "-828.5 301",
+            "group": -64
+        },
+        {
+            "text": "anothor_pathway",
+            "isGroup": true,
+            "color": "blue",
+            "key": -64
+        },
+        {
+            "text": "pathway_6",
+            "isGroup": true,
+            "color": "blue",
+            "key": -65
+        }
+    ],
+    "linkDataArray": [
+        {
+            "from": "grass",
+            "to": "cloud1",
+            "category": "flow",
+            "labelKeys": [
+                "grass_loss"
+            ]
+        },
+        {
+            "from": "sheep",
+            "to": "cloud2",
+            "category": "flow",
+            "labelKeys": [
+                "sheep_loss"
+            ]
+        },
+        {
+            "from": "grass",
+            "to": "sheep",
+            "category": "flow",
+            "labelKeys": [
+                "grazing"
+            ]
+        },
+        {
+            "from": "cloud3",
+            "to": "grass",
+            "category": "flow",
+            "labelKeys": [
+                "growth"
+            ]
+        },
+        {
+            "from": "grass",
+            "to": "grass_loss",
+            "category": "influence"
+        },
+        {
+            "from": "sheep",
+            "to": "sheep_loss",
+            "category": "influence"
+        },
+        {
+            "from": "grass",
+            "to": "growth",
+            "category": "influence"
+        },
+        {
+            "from": "grass",
+            "to": "grazing",
+            "category": "influence"
+        },
+        {
+            "from": "sheep",
+            "to": "grazing",
+            "category": "influence"
+        },
+        {
+            "from": "k1",
+            "to": "growth",
+            "category": "influence"
+        },
+        {
+            "from": "k1",
+            "to": "grazing",
+            "category": "influence"
+        },
+        {
+            "from": "k2",
+            "to": "grass_loss",
+            "category": "influence"
+        },
+        {
+            "from": "k3",
+            "to": "sheep_loss",
+            "category": "influence"
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock14",
+            "to": "stock13",
+            "labelKeys": [
+                "T_27"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock13",
+            "to": "stock12",
+            "labelKeys": [
+                "T_28"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock12",
+            "to": "stock11",
+            "labelKeys": [
+                "T_29"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock11",
+            "to": "stock1",
+            "labelKeys": [
+                "T_30"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock1",
+            "to": "stock2",
+            "labelKeys": [
+                "T_31"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock2",
+            "to": "stock3",
+            "labelKeys": [
+                "T_32"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock1",
+            "to": "stock4",
+            "labelKeys": [
+                "T_33"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock4",
+            "to": "stock5",
+            "labelKeys": [
+                "T_34"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock5",
+            "to": "sheep",
+            "labelKeys": [
+                "T_35"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock5",
+            "to": "stock6",
+            "labelKeys": [
+                "T_36"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock6",
+            "to": "stock7",
+            "labelKeys": [
+                "T_37"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock7",
+            "to": "stock8",
+            "labelKeys": [
+                "T_38"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock8",
+            "to": "stock9",
+            "labelKeys": [
+                "T_39"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock9",
+            "to": "cloud1",
+            "labelKeys": [
+                "T_40"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "cloud1",
+            "to": "stock10",
+            "labelKeys": [
+                "T_41"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "cloud3",
+            "to": "stock14",
+            "labelKeys": [
+                "T_42"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "cloud2",
+            "to": "stock7",
+            "labelKeys": [
+                "T_43"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock62",
+            "to": "stock72",
+            "labelKeys": [
+                "T_56"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock72",
+            "to": "stock82",
+            "labelKeys": [
+                "T_57"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock62",
+            "to": "stock82",
+            "labelKeys": [
+                "T_58"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock82",
+            "to": "stock52",
+            "labelKeys": [
+                "T_59"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock52",
+            "to": "stock42",
+            "labelKeys": [
+                "T_60"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock42",
+            "to": "stock32",
+            "labelKeys": [
+                "T_61"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock32",
+            "to": "stock22",
+            "labelKeys": [
+                "T_62"
+            ]
+        },
+        {
+            "category": "flow",
+            "text": "flow",
+            "from": "stock22",
+            "to": "stock15",
+            "labelKeys": [
+                "T_63"
+            ]
+        }
+    ]
+}

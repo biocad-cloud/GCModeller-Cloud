@@ -1,1 +1,4 @@
 ﻿term,name,description,score,pvalue,FDR,cluster,enriched,geneIDs
+pathway_6,pathway_6,n/a,0.5,0.3582684464219578,1.0748053392658734,6,3/4,stock5; stock6; stock9
+pathway2,pathway2,n/a,0.5,0.5234604105571884,0.7851906158357826,2,1/6,stock3
+pathway1,pathway1,n/a,0.2,1,1,5,1/6,stock1
