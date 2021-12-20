@@ -13,6 +13,9 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
     str(fluxomics);
     print(sample_info, max.print = 10);
 
+    write.csv(fluxomics, file = `${outputdir}/Fluxomics/fluxomics.csv`, row.names = TRUE);
+    write.csv(sample_info, file = `${outputdir}/Fluxomics/sample_info.csv`, row.names = FALSE);
+
     time_stream = unique(sample_info[, "sample_info"]);
     symbols = rownames(fluxomics);
 
@@ -30,7 +33,6 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32, outputdir = "./") {
         B = B[, "sample_id"];
 
         change = logFoldchange(fluxomics[, A], fluxomics[, B]);
-        rownames(change) = symbols;
 
         print(change);
 
