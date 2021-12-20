@@ -19,6 +19,7 @@ const cast_table as function(list) {
 const to_Ssystem as function(model) {
     print("view of the model file content:");
 
+    background = custom_pathway(model);
     nodes = cast_table(model$nodeDataArray);
     nodes = nodes[!as.logical(nodes[, "isGroup"]), ];
     links = cast_table(model$linkDataArray);
@@ -58,7 +59,8 @@ const to_Ssystem as function(model) {
     list(
         names = symbolNames,
         factors = factors, 
-        S = lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols)
+        S = lapply(symbols, symbol -> cast_sexpr(symbol, flow, influence), names = symbols),
+        background = background
     );
 }
 

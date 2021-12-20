@@ -11,7 +11,7 @@ Fluxomics = function(simulates, nparts = 5, nsamples = 32) {
     [fluxomics, sample_info] = OmicsData(simulates, nparts = nparts, nsamples = nsamples);
 
     str(fluxomics);
-    print(sample_info);
+    print(sample_info, max.print = 10);
 
 }
 
@@ -42,10 +42,12 @@ OmicsData = function(simulates, nparts = 5, nsamples = 32) {
 
         range_min = round(time_stream[range_min], 2);
         range_max = round(time_stream[range_max], 2);
-        sample_info = append(sample_info, rep(`time:${range_min} ~ ${range_max}s`));
+        sample_info = append(sample_info, rep(`time:${range_min} ~ ${range_max}s`, times = nsamples));
     }
 
     colnames(omics) = append("symbols", sample_names);
+    rownames(omics) = omics[, "symbols"];
+    omics[, "symbols"] = NULL;
 
     list(
         fluxomics = omics, 
