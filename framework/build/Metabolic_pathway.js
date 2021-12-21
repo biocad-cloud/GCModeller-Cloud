@@ -230,6 +230,7 @@ var apps;
             };
             var nodeIndex = {};
             var groups = {};
+            // get pathway group information
             for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
                 var node = _a[_i];
                 if ((!isNullOrUndefined(node.isGroup)) && node.isGroup) {
@@ -241,9 +242,13 @@ var apps;
                     };
                 }
             }
+            // add node into network graph
             for (var _b = 0, _c = graph.nodeDataArray; _b < _c.length; _b++) {
                 var node = _c[_b];
                 if ((!isNullOrUndefined(node.isGroup)) && node.isGroup) {
+                    continue;
+                }
+                else if (node.category == "valve") {
                     continue;
                 }
                 g.nodes.push({
@@ -331,7 +336,7 @@ var apps;
                 "linkingTool.insertLink": function (fromnode, fromport, tonode, toport) {
                     // to control what kind of Link is created,
                     // change the LinkingTool.archetypeLinkData's category
-                    vm.myDiagram.model.setCategoryForLinkData(this.archetypeLinkData, SD.itemType);
+                    vm.goCanvas.model.setCategoryForLinkData(this.archetypeLinkData, SD.itemType);
                     // Whenever a new Link is drawng by the LinkingTool, it also adds a node data object
                     // that acts as the label node for the link, to allow links to be drawn to/from the link.
                     this.archetypeLabelNodeData = (SD.itemType === "flow") ? { category: "valve" } : null;
@@ -363,8 +368,8 @@ var apps;
             var $ = go.GraphObject.make;
             var SD = this.SD;
             var vm = this;
-            vm.myDiagram = $(go.Diagram, "myDiagram", vm.config());
-            var myDiagram = vm.myDiagram;
+            vm.goCanvas = $(go.Diagram, "myDiagram", vm.config());
+            var myDiagram = vm.goCanvas;
             // install the NodeLabelDraggingTool as a "mouse move" tool
             myDiagram.toolManager.mouseMoveTools.insertAt(0, new NodeLabelDraggingTool());
             // when the document is modified, add a "*" to the title and enable the "Save" button
@@ -399,20 +404,21 @@ var apps;
         };
         FlowEditor.prototype.buildTemplates = function () {
             var $ = go.GraphObject.make;
-            var myDiagram = this.myDiagram;
+            var myDiagram = this.goCanvas;
             // Node templates
-            myDiagram.nodeTemplateMap.add("stock", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { desiredSize: new go.Size(50, 30) }), 
+            myDiagram.nodeTemplateMap.add("stock", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { desiredSize: new go.Size(90, 30) }), 
             // declare draggable by NodeLabelDraggingTool
             // initial value
-            $(go.TextBlock, apps.EditorTemplates.textStyle(), {
-                _isNodeLabel: true, alignment: new go.Spot(0.5, 0.5, 0, 30)
-            }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
+            $(go.TextBlock, apps.EditorTemplates.textStyle(10), //{
+            // _isNodeLabel: true, alignment: new go.Spot(0.5, 0.5, 0, 30)                     
+            // },
+            new go.Binding("text", "label"))));
             myDiagram.nodeTemplateMap.add("cloud", $(go.Node, apps.EditorTemplates.nodeStyle(), $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Cloud", desiredSize: new go.Size(35, 35) })));
             myDiagram.nodeTemplateMap.add("valve", $(go.Node, apps.EditorTemplates.nodeStyle(), {
                 movable: false,
                 layerName: "Foreground",
                 alignmentFocus: go.Spot.None
-            }, $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Ellipse", desiredSize: new go.Size(20, 20) }), $(go.TextBlock, apps.EditorTemplates.textStyle(), {
+            }, $(go.Shape, apps.EditorTemplates.shapeStyle(), { figure: "Ellipse", desiredSize: new go.Size(5, 5) }), $(go.TextBlock, apps.EditorTemplates.textStyle(0), {
                 _isNodeLabel: true,
                 alignment: new go.Spot(0.5, 0.5, 0, 20) // initial value
             }, new go.Binding("alignment", "label_offset", go.Spot.parse).makeTwoWay(go.Spot.stringify))));
@@ -421,7 +427,15 @@ var apps;
             // in "link" mode will support drawing a new link
             $(go.Shape, apps.EditorTemplates.shapeStyle(), { isPanelMain: true, stroke: null, fill: "transparent" })));
             // Link templates
-            myDiagram.linkTemplateMap.add("flow", $(go.Link, { toShortLength: 8 }, $(go.Shape, { stroke: "blue", strokeWidth: 5 }), $(go.Shape, { fill: "blue", stroke: null, toArrow: "Standard", scale: 2.5 })));
+            myDiagram.linkTemplateMap.add("flow", $(go.Link, {
+                toShortLength: 8,
+                routing: go.Link.AvoidsNodes,
+                corner: 5,
+                relinkableFrom: true,
+                relinkableTo: true,
+                reshapable: true,
+                resegmentable: true
+            }, $(go.Shape, { stroke: "blue", strokeWidth: 3 }), $(go.Shape, { fill: "blue", stroke: null, toArrow: "Standard", scale: 1.5 })));
             myDiagram.linkTemplateMap.add("influence", $(go.Link, { curve: go.Link.Bezier, toShortLength: 8 }, $(go.Shape, { stroke: "green", strokeWidth: 1.5 }), $(go.Shape, { fill: "green", stroke: null, toArrow: "Standard", scale: 1.5 })));
             // Groups consist of a title in the color given by the group node data
             // above a translucent gray rectangle surrounding the member parts
@@ -464,7 +478,7 @@ var apps;
             return "Group " + g.data.key + ": " + g.data.text + "\n" + mems + " members including " + links + " links";
         };
         FlowEditor.prototype.setMode = function (mode, itemType) {
-            var myDiagram = this.myDiagram;
+            var myDiagram = this.goCanvas;
             var SD = this.SD;
             myDiagram.startTransaction();
             document.getElementById(SD.itemType).className = SD.mode + "_normal";
@@ -498,12 +512,12 @@ var apps;
             $ts.getText("@api:load?model_id=" + $ts("@data:model_id"), function (json) {
                 var model = apps.ModelPatch(JSON.parse(json));
                 var jsonStr = JSON.stringify(model);
-                vm.myDiagram.model = go.Model.fromJson(jsonStr);
+                vm.goCanvas.model = go.Model.fromJson(jsonStr);
             });
         };
         FlowEditor.prototype.dosave = function (callback) {
             if (callback === void 0) { callback = null; }
-            var myDiagram = this.myDiagram;
+            var myDiagram = this.goCanvas;
             var modelJson = myDiagram.model.toJson();
             var payload = {
                 guid: $ts("@data:model_id"),
@@ -639,10 +653,11 @@ var apps;
             };
         }
         EditorTemplates.shapeStyle = shapeStyle;
-        function textStyle() {
+        function textStyle(fontsize) {
+            if (fontsize === void 0) { fontsize = 11; }
             return [
                 {
-                    font: "bold 11pt helvetica, bold arial, sans-serif",
+                    font: "bold " + fontsize + "pt helvetica, bold arial, sans-serif",
                     margin: 2,
                     editable: true
                 },

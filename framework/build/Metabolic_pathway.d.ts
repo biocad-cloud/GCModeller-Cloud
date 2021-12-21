@@ -76,7 +76,7 @@ declare namespace apps {
         /**
          * Declared as global
         */
-        private myDiagram;
+        private goCanvas;
         private config;
         init(): void;
         buildTemplates(): void;
@@ -136,7 +136,7 @@ declare namespace apps.EditorTemplates {
         fromLinkable: boolean;
         toLinkable: boolean;
     };
-    function textStyle(): any[];
+    function textStyle(fontsize?: number): any[];
 }
 declare namespace apps {
     class PathwayExplorer extends Bootstrap {
