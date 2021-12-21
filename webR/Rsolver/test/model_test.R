@@ -9,7 +9,7 @@ require(JSON);
 
 setwd(@dir);
 
-file = "1639306937.json";
+file = "D:\GCModeller-Cloud\webR\TCA\TCACycle.json";
 model = file 
 |> readText() 
 |> json_decode() 

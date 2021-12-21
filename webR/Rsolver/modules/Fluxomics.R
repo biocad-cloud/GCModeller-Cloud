@@ -71,7 +71,7 @@ Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir
         if (!is.null(background)) {
             run = function(list, tag) {
                 enrich = background 
-                |> enrichment(geneSet = list, outputAll = FALSE)
+                |> enrichment(geneSet = list, outputAll = TRUE)
                 |> enrichment.FDR()
                 ;
 
