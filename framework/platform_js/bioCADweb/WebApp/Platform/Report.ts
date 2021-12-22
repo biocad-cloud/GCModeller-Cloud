@@ -22,7 +22,10 @@ namespace bioCAD.WebApp.Platform {
                             .Column(name)
                             .Skip(1)
                             .Select(yi => parseFloat(yi))
-                            .ToArray()
+                            .ToArray(),
+                        emphasis: {
+                            focus: 'series'
+                        }
                     };
                 }).ToArray();
             const option: EChartsOption = <EChartsOption>{

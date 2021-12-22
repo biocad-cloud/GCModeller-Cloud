@@ -192,7 +192,10 @@ var bioCAD;
                                 .Column(name)
                                 .Skip(1)
                                 .Select(function (yi) { return parseFloat(yi); })
-                                .ToArray()
+                                .ToArray(),
+                            emphasis: {
+                                focus: 'series'
+                            }
                         };
                     }).ToArray();
                     var option = {
