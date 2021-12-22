@@ -14,6 +14,8 @@ print(`target task: ${guid}`);
 print("view of the task arguments:");
 str(argv);
 
+print(setTaskStatus(guid, 1));
+
 print("get systems dynamics model data...");
 model = call_rpc("getModelFile", list(id = argv$model));
 model = model$result;
@@ -53,3 +55,5 @@ print(trial_run);
 
 # save result matrix
 write.csv(result, file = `${trial_run}/PLAS.csv`);
+
+print(setTaskStatus(guid, 200));

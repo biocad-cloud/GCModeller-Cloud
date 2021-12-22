@@ -29,3 +29,10 @@ call_rpc = function(func, args) {
 
     data;
 }
+
+setTaskStatus = function(guid, status) {
+    call_rpc("setTaskStatus", list(
+        guid   = guid, 
+        status = status
+    ));
+}
