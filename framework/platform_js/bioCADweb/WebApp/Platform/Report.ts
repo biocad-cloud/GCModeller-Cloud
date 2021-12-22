@@ -30,11 +30,10 @@ namespace bioCAD.WebApp.Platform {
                         },
                         ymax: vec.Select(a => a[1]).Max()
                     };
-                }).ToArray();
-            const ymax = $from(y).Select(a => a.ymax).Max();
+                });
+            const ymax = TypeScript.Data.quantile(y.Select(a => a.ymax).ToArray(), 0.65);
             const option: EChartsOption = <EChartsOption>{
                 animation: false,
-                title: "PLAS.NET Systems Dynamics",
                 tooltip: {
                     trigger: 'none',
                     axisPointer: {
@@ -69,13 +68,17 @@ namespace bioCAD.WebApp.Platform {
                         show: true
                     }
                 },
-                series: y
+                series: y.ToArray()
             };
 
             console.log("lines:");
             console.log(y);
 
             option && myChart.setOption(option);
+
+            myChart.on('legendselectchanged', function (params) {
+                console.log(params);
+            });
         }
 
         protected init(): void {

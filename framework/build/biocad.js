@@ -199,11 +199,10 @@ var bioCAD;
                             },
                             ymax: vec.Select(function (a) { return a[1]; }).Max()
                         };
-                    }).ToArray();
-                    var ymax = $from(y).Select(function (a) { return a.ymax; }).Max();
+                    });
+                    var ymax = TypeScript.Data.quantile(y.Select(function (a) { return a.ymax; }).ToArray(), 0.65);
                     var option = {
                         animation: false,
-                        title: "PLAS.NET Systems Dynamics",
                         tooltip: {
                             trigger: 'none',
                             axisPointer: {
@@ -238,11 +237,14 @@ var bioCAD;
                                 show: true
                             }
                         },
-                        series: y
+                        series: y.ToArray()
                     };
                     console.log("lines:");
                     console.log(y);
                     option && myChart.setOption(option);
+                    myChart.on('legendselectchanged', function (params) {
+                        console.log(params);
+                    });
                 };
                 Report.prototype.init = function () {
                     var _this = this;
