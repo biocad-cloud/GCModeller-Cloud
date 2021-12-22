@@ -203,6 +203,7 @@ var bioCAD;
                     var ymax = $from(y).Select(function (a) { return a.ymax; }).Max();
                     var option = {
                         animation: false,
+                        title: "PLAS.NET Systems Dynamics",
                         tooltip: {
                             trigger: 'none',
                             axisPointer: {
@@ -223,7 +224,8 @@ var bioCAD;
                             },
                             minorSplitLine: {
                                 show: true
-                            }
+                            },
+                            nameLocation: 'middle'
                         },
                         yAxis: {
                             name: 'Activity',

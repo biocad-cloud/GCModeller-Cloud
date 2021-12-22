@@ -2292,6 +2292,22 @@ declare namespace TypeScript.Data {
 }
 declare namespace TypeScript.Data {
     function group(x: number[], offset: number): Group<number, number>[];
+    /**
+    * FUNCTION: quantile( arr, prob[, opts] )
+    *	Computes a quantile for a numeric array.
+    *
+    * @private
+    * @param {Array} arr - 1d array
+    * @param {Number} prob - quantile prob [0,1]
+    * @param {Object} [opts] - method options:
+        `method`: method used to interpolate a quantile value
+        `sorted`: boolean flag indicating if the input array is sorted
+    * @returns {Number} quantile value
+    */
+    function quantile(arr: number[], p: number, opts?: {
+        sorted: boolean;
+        method: string;
+    }): number;
 }
 declare namespace TypeScript.Data {
     class PriorityQueue<T> extends IEnumerator<QueueItem<T>> {

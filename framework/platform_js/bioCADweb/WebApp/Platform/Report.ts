@@ -34,6 +34,7 @@ namespace bioCAD.WebApp.Platform {
             const ymax = $from(y).Select(a => a.ymax).Max();
             const option: EChartsOption = <EChartsOption>{
                 animation: false,
+                title: "PLAS.NET Systems Dynamics",
                 tooltip: {
                     trigger: 'none',
                     axisPointer: {
@@ -54,7 +55,8 @@ namespace bioCAD.WebApp.Platform {
                     },
                     minorSplitLine: {
                         show: true
-                    }
+                    },
+                    nameLocation: 'middle'
                 },
                 yAxis: {
                     name: 'Activity',
