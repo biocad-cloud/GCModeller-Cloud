@@ -9,24 +9,37 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private makeChart(data: csv.dataframe, myChart: echarts.ECharts) {
-            console.log(data);
-
+            const symbols = data.headers;
+            const x: number[] = data.Select((any, i) => i).ToArray();
+            const y = symbols
+                .Where(name => name != "")
+                .Select(function (name) {
+                    return {
+                        name: name,
+                        type: 'line',
+                        smooth: true,
+                        data: data
+                            .Column(name)
+                            .Skip(1)
+                            .Select(yi => parseFloat(yi))
+                            .ToArray()
+                    };
+                }).ToArray();
             const option: EChartsOption = <EChartsOption>{
                 xAxis: {
                     type: 'value',
-                    data: []
+                    data: x
                 },
                 yAxis: {
                     type: 'value'
                 },
-                series: [
-                    {
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        type: 'line',
-                        smooth: true
-                    }
-                ]
+                series: y
             };
+
+            console.log("x axis:");
+            console.log(x);
+            console.log("lines:");
+            console.log(y);
 
             option && myChart.setOption(option);
         }
@@ -35,7 +48,7 @@ namespace bioCAD.WebApp.Platform {
             const chartDom: HTMLDivElement = <any>document.getElementById('main')!;
             const myChart: echarts.ECharts = echarts.init(chartDom);
 
-            $ts.getText("data:PLAS", text => this.makeChart($ts.csv(text), myChart));
+            $ts.getText("@data:PLAS", text => this.makeChart($ts.csv(text, false), myChart));
         }
     }
 }

@@ -152,6 +152,7 @@ var bioCAD;
             Router.AddAppHandler(new WebApp.RegisterScript());
             Router.AddAppHandler(new WebApp.RecoverScript());
             Router.AddAppHandler(new WebApp.Platform.TaskMgr());
+            Router.AddAppHandler(new WebApp.Platform.Report());
             Router.RunApp();
         }
         WebApp.start = start;
@@ -172,36 +173,49 @@ var bioCAD;
                 }
                 Object.defineProperty(Report.prototype, "appName", {
                     get: function () {
-                        return "Report";
+                        return "reportViewer";
                     },
                     enumerable: true,
                     configurable: true
                 });
                 Report.prototype.makeChart = function (data, myChart) {
-                    console.log(data);
+                    var symbols = data.headers;
+                    var x = data.Select(function (any, i) { return i; }).ToArray();
+                    var y = symbols
+                        .Where(function (name) { return name != ""; })
+                        .Select(function (name) {
+                        return {
+                            name: name,
+                            type: 'line',
+                            smooth: true,
+                            data: data
+                                .Column(name)
+                                .Skip(1)
+                                .Select(function (yi) { return parseFloat(yi); })
+                                .ToArray()
+                        };
+                    }).ToArray();
                     var option = {
                         xAxis: {
                             type: 'value',
-                            data: []
+                            data: x
                         },
                         yAxis: {
                             type: 'value'
                         },
-                        series: [
-                            {
-                                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                                type: 'line',
-                                smooth: true
-                            }
-                        ]
+                        series: y
                     };
+                    console.log("x axis:");
+                    console.log(x);
+                    console.log("lines:");
+                    console.log(y);
                     option && myChart.setOption(option);
                 };
                 Report.prototype.init = function () {
                     var _this = this;
                     var chartDom = document.getElementById('main');
                     var myChart = echarts.init(chartDom);
-                    $ts.getText("data:PLAS", function (text) { return _this.makeChart($ts.csv(text), myChart); });
+                    $ts.getText("@data:PLAS", function (text) { return _this.makeChart($ts.csv(text, false), myChart); });
                 };
                 return Report;
             }(Bootstrap));
@@ -264,7 +278,7 @@ var bioCAD;
                     var model_url = task.app_view + "?guid=" + this.getModelId(task);
                     var appTask = $ts("<th>").appendElement($ts("<div>", { class: ["media", "align-items-center"] })
                         .appendElement("\n                        <a href=\"#\" class=\"avatar rounded-circle mr-3\">\n                            <img alt=\"Image placeholder\"\n                                src=\"/resources/images/icons/" + task.name + ".png\">\n                        </a>")
-                        .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/app/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <h4 class=\"mb-0\">" + task.title + "</h4>\n                            </a>                            \n                        </div>"));
+                        .appendElement("\n                        <div class=\"media-body\">\n                            <a href=\"/task/report/?q=" + task.sha1 + "\" target=\"__blank\">\n                                <h4 class=\"mb-0\">" + task.title + "</h4>\n                            </a>                            \n                        </div>"));
                     var createTime = $ts("<td>").appendElement(task.create_time);
                     var status = $ts("<td>").appendElement(taskStatus[statusCodeMap(task.status)]);
                     var end_time = $ts("<td>").appendElement(task.finish_time || "n/a");
