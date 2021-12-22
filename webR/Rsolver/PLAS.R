@@ -4,6 +4,8 @@ require(GCModeller);
 imports "jsonrpc.R";
 imports "modules/PLAS_Solver.R";
 imports "modules/SBuilder.R";
+imports "modules/Fluxomics.R";
+imports "modules/CustomPathway.R";
 
 argv = [?"--args" || stop("missing of the task configuration data!")] |> bdecode;
 guid = [?"--guid" || stop("a task guid is required!")];
