@@ -30,6 +30,13 @@ declare namespace bioCAD.WebApp {
     function start(): void;
 }
 declare namespace bioCAD.WebApp.Platform {
+    class Report extends Bootstrap {
+        readonly appName: string;
+        private makeChart;
+        protected init(): void;
+    }
+}
+declare namespace bioCAD.WebApp.Platform {
     class TaskMgr extends Bootstrap {
         private totalTasks;
         readonly appName: string;

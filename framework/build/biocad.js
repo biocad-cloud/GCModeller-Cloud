@@ -165,6 +165,56 @@ var bioCAD;
     (function (WebApp) {
         var Platform;
         (function (Platform) {
+            var Report = /** @class */ (function (_super) {
+                __extends(Report, _super);
+                function Report() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                Object.defineProperty(Report.prototype, "appName", {
+                    get: function () {
+                        return "Report";
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Report.prototype.makeChart = function (data, myChart) {
+                    console.log(data);
+                    var option = {
+                        xAxis: {
+                            type: 'value',
+                            data: []
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                                type: 'line',
+                                smooth: true
+                            }
+                        ]
+                    };
+                    option && myChart.setOption(option);
+                };
+                Report.prototype.init = function () {
+                    var _this = this;
+                    var chartDom = document.getElementById('main');
+                    var myChart = echarts.init(chartDom);
+                    $ts.getText("data:PLAS", function (text) { return _this.makeChart($ts.csv(text), myChart); });
+                };
+                return Report;
+            }(Bootstrap));
+            Platform.Report = Report;
+        })(Platform = WebApp.Platform || (WebApp.Platform = {}));
+    })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
+})(bioCAD || (bioCAD = {}));
+var bioCAD;
+(function (bioCAD) {
+    var WebApp;
+    (function (WebApp) {
+        var Platform;
+        (function (Platform) {
             var TaskMgr = /** @class */ (function (_super) {
                 __extends(TaskMgr, _super);
                 function TaskMgr() {

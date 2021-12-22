@@ -52,6 +52,9 @@
     <TypeScriptCompile Include="WebApp\Platform\TaskViewer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="WebApp\Platform\Report.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WebApp\" />
