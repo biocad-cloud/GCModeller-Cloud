@@ -13,24 +13,34 @@ namespace bioCAD.WebApp.Platform {
             const y = symbols
                 .Where(name => name != "")
                 .Select(function (name) {
+                    const vec = data
+                        .Column(name)
+                        .Skip(1)
+                        .Select((yi, i) => [i, parseFloat(yi)]);
+
                     return {
                         name: name,
                         type: 'line',
                         smooth: true,
                         showSymbol: false,
                         clip: true,
-                        data: data
-                            .Column(name)
-                            .Skip(1)
-                            .Select((yi, i) => [i, parseFloat(yi)])
-                            .ToArray(),
+                        data: vec.ToArray(),
                         emphasis: {
                             focus: 'series'
-                        }
+                        },
+                        ymax: vec.Select(a => a[1]).Max()
                     };
                 }).ToArray();
+            const ymax = $from(y).Select(a => a.ymax).Max();
             const option: EChartsOption = <EChartsOption>{
                 animation: false,
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                legend: {},
                 grid: {
                     top: 40,
                     left: 50,
@@ -49,7 +59,7 @@ namespace bioCAD.WebApp.Platform {
                 yAxis: {
                     name: 'Activity',
                     min: 0,
-                    max: 10,
+                    max: ymax,
                     minorTick: {
                         show: true
                     },

@@ -183,24 +183,33 @@ var bioCAD;
                     var y = symbols
                         .Where(function (name) { return name != ""; })
                         .Select(function (name) {
+                        var vec = data
+                            .Column(name)
+                            .Skip(1)
+                            .Select(function (yi, i) { return [i, parseFloat(yi)]; });
                         return {
                             name: name,
                             type: 'line',
                             smooth: true,
                             showSymbol: false,
                             clip: true,
-                            data: data
-                                .Column(name)
-                                .Skip(1)
-                                .Select(function (yi, i) { return [i, parseFloat(yi)]; })
-                                .ToArray(),
+                            data: vec.ToArray(),
                             emphasis: {
                                 focus: 'series'
-                            }
+                            },
+                            ymax: vec.Select(function (a) { return a[1]; }).Max()
                         };
                     }).ToArray();
+                    var ymax = $from(y).Select(function (a) { return a.ymax; }).Max();
                     var option = {
                         animation: false,
+                        tooltip: {
+                            trigger: 'none',
+                            axisPointer: {
+                                type: 'cross'
+                            }
+                        },
+                        legend: {},
                         grid: {
                             top: 40,
                             left: 50,
@@ -219,7 +228,7 @@ var bioCAD;
                         yAxis: {
                             name: 'Activity',
                             min: 0,
-                            max: 10,
+                            max: ymax,
                             minorTick: {
                                 show: true
                             },
