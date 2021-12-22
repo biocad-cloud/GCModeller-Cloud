@@ -180,7 +180,6 @@ var bioCAD;
                 });
                 Report.prototype.makeChart = function (data, myChart) {
                     var symbols = data.headers;
-                    var x = data.Select(function (any, i) { return i; }).ToArray();
                     var y = symbols
                         .Where(function (name) { return name != ""; })
                         .Select(function (name) {
@@ -188,10 +187,12 @@ var bioCAD;
                             name: name,
                             type: 'line',
                             smooth: true,
+                            showSymbol: false,
+                            clip: true,
                             data: data
                                 .Column(name)
                                 .Skip(1)
-                                .Select(function (yi) { return parseFloat(yi); })
+                                .Select(function (yi, i) { return [i, parseFloat(yi)]; })
                                 .ToArray(),
                             emphasis: {
                                 focus: 'series'
@@ -199,17 +200,35 @@ var bioCAD;
                         };
                     }).ToArray();
                     var option = {
+                        animation: false,
+                        grid: {
+                            top: 40,
+                            left: 50,
+                            right: 40,
+                            bottom: 50
+                        },
                         xAxis: {
-                            type: 'value',
-                            data: x
+                            name: 'Time(ticks)',
+                            minorTick: {
+                                show: true
+                            },
+                            minorSplitLine: {
+                                show: true
+                            }
                         },
                         yAxis: {
-                            type: 'value'
+                            name: 'Activity',
+                            min: 0,
+                            max: 10,
+                            minorTick: {
+                                show: true
+                            },
+                            minorSplitLine: {
+                                show: true
+                            }
                         },
                         series: y
                     };
-                    console.log("x axis:");
-                    console.log(x);
                     console.log("lines:");
                     console.log(y);
                     option && myChart.setOption(option);

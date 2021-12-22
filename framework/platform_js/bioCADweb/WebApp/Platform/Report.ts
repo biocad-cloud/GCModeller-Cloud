@@ -10,7 +10,6 @@ namespace bioCAD.WebApp.Platform {
 
         private makeChart(data: csv.dataframe, myChart: echarts.ECharts) {
             const symbols = data.headers;
-            const x: number[] = data.Select((any, i) => i).ToArray();
             const y = symbols
                 .Where(name => name != "")
                 .Select(function (name) {
@@ -18,10 +17,12 @@ namespace bioCAD.WebApp.Platform {
                         name: name,
                         type: 'line',
                         smooth: true,
+                        showSymbol: false,
+                        clip: true,
                         data: data
                             .Column(name)
                             .Skip(1)
-                            .Select(yi => parseFloat(yi))
+                            .Select((yi, i) => [i, parseFloat(yi)])
                             .ToArray(),
                         emphasis: {
                             focus: 'series'
@@ -29,18 +30,36 @@ namespace bioCAD.WebApp.Platform {
                     };
                 }).ToArray();
             const option: EChartsOption = <EChartsOption>{
+                animation: false,
+                grid: {
+                    top: 40,
+                    left: 50,
+                    right: 40,
+                    bottom: 50
+                },
                 xAxis: {
-                    type: 'value',
-                    data: x
+                    name: 'Time(ticks)',
+                    minorTick: {
+                        show: true
+                    },
+                    minorSplitLine: {
+                        show: true
+                    }
                 },
                 yAxis: {
-                    type: 'value'
+                    name: 'Activity',
+                    min: 0,
+                    max: 10,
+                    minorTick: {
+                        show: true
+                    },
+                    minorSplitLine: {
+                        show: true
+                    }
                 },
                 series: y
             };
 
-            console.log("x axis:");
-            console.log(x);
             console.log("lines:");
             console.log(y);
 
