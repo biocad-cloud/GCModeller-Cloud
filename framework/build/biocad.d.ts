@@ -47,6 +47,8 @@ declare namespace bioCAD.WebApp.Platform {
         };
         ymax: number;
     };
+    const listDiv = "#sample_suggests";
+    const inputDiv = "#sample_search";
     class Report extends Bootstrap {
         readonly pathways: Dictionary<nodeIndex>;
         readonly data: {

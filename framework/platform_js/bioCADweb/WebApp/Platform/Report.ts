@@ -17,6 +17,9 @@ namespace bioCAD.WebApp.Platform {
         ymax: number
     }
 
+    export const listDiv = "#sample_suggests";
+    export const inputDiv = "#sample_search";
+
     export class Report extends Bootstrap {
 
         readonly pathways = new Dictionary<nodeIndex>();
@@ -199,8 +202,6 @@ namespace bioCAD.WebApp.Platform {
                 }
             }
 
-            const listDiv = "#sample_suggests";
-            const inputDiv = "#sample_search";
             const suggest = uikit.suggestion_list.render.makeSuggestions(
                 terms, listDiv, term => this.clickOnTerm(term), 5, false, ""
             );
@@ -218,7 +219,12 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private clickOnTerm(term: uikit.suggestion_list.term) {
+            const valueSel = "#pathway_list";
 
+            $ts.value(valueSel, term.id.toString());
+            $ts(listDiv).hide();
+
+            this.updateChart(term.id);
         }
     }
 }

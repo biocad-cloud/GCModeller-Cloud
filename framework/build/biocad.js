@@ -167,6 +167,8 @@ var bioCAD;
     (function (WebApp) {
         var Platform;
         (function (Platform) {
+            Platform.listDiv = "#sample_suggests";
+            Platform.inputDiv = "#sample_search";
             var Report = /** @class */ (function (_super) {
                 __extends(Report, _super);
                 function Report() {
@@ -336,21 +338,23 @@ var bioCAD;
                             vm.updateChart(opt.toString());
                         }
                     };
-                    var listDiv = "#sample_suggests";
-                    var inputDiv = "#sample_search";
-                    var suggest = uikit.suggestion_list.render.makeSuggestions(terms, listDiv, function (term) { return _this.clickOnTerm(term); }, 5, false, "");
-                    $ts(inputDiv).onkeyup = function () {
-                        var search = $ts.value(inputDiv);
+                    var suggest = uikit.suggestion_list.render.makeSuggestions(terms, Platform.listDiv, function (term) { return _this.clickOnTerm(term); }, 5, false, "");
+                    $ts(Platform.inputDiv).onkeyup = function () {
+                        var search = $ts.value(Platform.inputDiv);
                         if (Strings.Empty(search, true)) {
-                            $ts(listDiv).hide();
+                            $ts(Platform.listDiv).hide();
                         }
                         else {
-                            $ts(listDiv).show();
+                            $ts(Platform.listDiv).show();
                             suggest(search);
                         }
                     };
                 };
                 Report.prototype.clickOnTerm = function (term) {
+                    var valueSel = "#pathway_list";
+                    $ts.value(valueSel, term.id.toString());
+                    $ts(Platform.listDiv).hide();
+                    this.updateChart(term.id);
                 };
                 return Report;
             }(Bootstrap));
