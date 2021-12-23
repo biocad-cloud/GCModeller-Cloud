@@ -191,8 +191,19 @@ var bioCAD;
                             // show all pathway data
                             return vm.data.y;
                         }
+                        else if (vm.pathways.ContainsKey(pathway)) {
+                            var line = vm.data.y
+                                .Where(function (line) { return pathway == line.name; })
+                                .First;
+                            if (!isNullOrUndefined(line)) {
+                                return new IEnumerator([line]);
+                            }
+                            else {
+                                return new IEnumerator([]);
+                            }
+                        }
                         else {
-                            var index = vm.pathways.Item(pathway.toString());
+                            var index = vm.pathways.Item(pathway);
                             var search_1 = $from(index.keys);
                             return vm.data.y
                                 .Where(function (line) { return search_1.Any(function (name) { return name == line.name; }); });
@@ -288,9 +299,11 @@ var bioCAD;
                 };
                 Report.prototype.initPathwaySelector = function (graph) {
                     var selector = $ts("#pathway_list");
+                    var pathwayGroup = $ts("<optgroup>", { label: "Pathways" });
+                    var metabolites = $ts("<optgroup>", { label: "Metabolites" });
                     var pathways = this.pathways;
                     var vm = this;
-                    selector.add($ts("<option>", { value: "*" }).display("*"));
+                    pathwayGroup.appendChild($ts("<option>", { value: "*" }).display("*"));
                     for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
                         var node = _a[_i];
                         if (node.isGroup) {
@@ -298,7 +311,7 @@ var bioCAD;
                             var opt = $ts("<option>", { value: node.key });
                             opt.innerText = (node.text);
                             pathways.Add(node.key.toString(), map);
-                            selector.add(opt);
+                            pathwayGroup.appendChild(opt);
                         }
                     }
                     for (var _b = 0, _c = graph.nodeDataArray; _b < _c.length; _b++) {
@@ -307,12 +320,22 @@ var bioCAD;
                             if (!Strings.Empty(node.group, true)) {
                                 var refKey = node.group.toString();
                                 var index = pathways.Item(refKey);
+                                var opt = $ts("<option>", { value: node.label });
+                                opt.innerText = node.label;
                                 index.keys.push(node.label);
+                                if ((node.category != "valve") && !Strings.Empty(node.label, true)) {
+                                    metabolites.appendChild(opt);
+                                }
                             }
                         }
                     }
+                    selector.add(pathwayGroup);
+                    selector.add(metabolites);
                     selector.onchange = function () {
-                        vm.updateChart($ts.select.getOption("#pathway_list"));
+                        var opt = $ts.select.getOption("#pathway_list");
+                        if ((!isNullOrUndefined(opt)) && !Strings.Empty(opt)) {
+                            vm.updateChart(opt.toString());
+                        }
                     };
                 };
                 return Report;

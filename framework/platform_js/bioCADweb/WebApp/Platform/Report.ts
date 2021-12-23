@@ -34,8 +34,18 @@ namespace bioCAD.WebApp.Platform {
                 if (pathway == "*") {
                     // show all pathway data
                     return vm.data.y;
+                } else if (vm.pathways.ContainsKey(pathway)) {
+                    const line = vm.data.y
+                        .Where(line => pathway == line.name)
+                        .First;
+
+                    if (!isNullOrUndefined(line)) {
+                        return new IEnumerator([line]);
+                    } else {
+                        return new IEnumerator<lineData>([]);
+                    }
                 } else {
-                    const index: nodeIndex = vm.pathways.Item(pathway.toString());
+                    const index: nodeIndex = vm.pathways.Item(pathway);
                     const search = $from(index.keys);
 
                     return vm.data.y
@@ -146,10 +156,12 @@ namespace bioCAD.WebApp.Platform {
 
         private initPathwaySelector(graph: apps.Model) {
             const selector: HTMLSelectElement = <any>$ts("#pathway_list");
+            const pathwayGroup: HTMLOptGroupElement = <any>$ts("<optgroup>", { label: "Pathways" });
+            const metabolites: HTMLOptGroupElement = <any>$ts("<optgroup>", { label: "Metabolites" });
             const pathways = this.pathways;
             const vm = this;
 
-            selector.add(<any>$ts("<option>", { value: "*" }).display("*"));
+            pathwayGroup.appendChild(<any>$ts("<option>", { value: "*" }).display("*"));
 
             for (let node of graph.nodeDataArray) {
                 if (node.isGroup) {
@@ -159,7 +171,7 @@ namespace bioCAD.WebApp.Platform {
                     opt.innerText = (node.text);
 
                     pathways.Add(node.key.toString(), map);
-                    selector.add(opt);
+                    pathwayGroup.appendChild(opt);
                 }
             }
 
@@ -168,14 +180,26 @@ namespace bioCAD.WebApp.Platform {
                     if (!Strings.Empty(node.group, true)) {
                         const refKey = node.group.toString();
                         const index = pathways.Item(refKey);
+                        const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.label });
 
+                        opt.innerText = node.label;
                         index.keys.push(node.label);
+
+                        if ((node.category != "valve") && !Strings.Empty(node.label, true)) {
+                            metabolites.appendChild(opt);
+                        }
                     }
                 }
             }
 
+            selector.add(pathwayGroup);
+            selector.add(metabolites);
             selector.onchange = function () {
-                vm.updateChart($ts.select.getOption("#pathway_list"));
+                const opt: string = $ts.select.getOption("#pathway_list");
+
+                if ((!isNullOrUndefined(opt)) && !Strings.Empty(opt)) {
+                    vm.updateChart(opt.toString());
+                }
             }
         }
     }
