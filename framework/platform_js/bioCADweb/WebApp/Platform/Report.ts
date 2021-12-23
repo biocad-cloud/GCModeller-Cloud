@@ -4,17 +4,43 @@ namespace bioCAD.WebApp.Platform {
 
     type EChartsOption = echarts.EChartsOption;
     type nodeIndex = { pathway: string, keys: string[] };
+    type lineData = {
+        name: string,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
+        clip: true,
+        data: number[][],
+        emphasis: {
+            focus: 'series'
+        },
+        ymax: number
+    }
 
     export class Report extends Bootstrap {
 
         readonly pathways = new Dictionary<nodeIndex>();
+        readonly data = {
+            y: new IEnumerator<lineData>([])
+        }
 
         public get appName(): string {
             return "reportViewer";
         }
 
-        private makeChart(data: csv.dataframe, myChart: echarts.ECharts) {
-            const symbols = data.headers;
+        private updateChart(pathway: string) {
+
+            console.log(pathway);
+
+            const index: nodeIndex = this.pathways.Item(pathway.toString());
+            const search = $from(index.keys);
+            const y = this.data.y.Where(line => search.Any(name => name == line.name));
+
+            this.makeChartInternal(y);
+        }
+
+        public static parseData(data: csv.dataframe) {
+            const symbols: IEnumerator<string> = data.headers;
             const y = symbols
                 .Where(name => name != "")
                 .Select(function (name) {
@@ -23,7 +49,7 @@ namespace bioCAD.WebApp.Platform {
                         .Skip(1)
                         .Select((yi, i) => [i, parseFloat(yi)]);
 
-                    return {
+                    return <lineData>{
                         name: name,
                         type: 'line',
                         smooth: true,
@@ -36,7 +62,26 @@ namespace bioCAD.WebApp.Platform {
                         ymax: vec.Select(a => a[1]).Max()
                     };
                 });
+
+            return y;
+        }
+
+        private myChart: echarts.ECharts;
+
+        private makeChart(data: csv.dataframe, myChart: echarts.ECharts) {
+            const y = Report.parseData(data);
+            const vm = this;
+
+            vm.myChart = myChart;
+            vm.data.y = y;
+            myChart.on('legendselectchanged', function (params) {
+                console.log(params);
+            });
+        }
+
+        private makeChartInternal(y: IEnumerator<lineData>) {
             const ymax = TypeScript.Data.quantile(y.Select(a => a.ymax).ToArray(), 0.65);
+            const myChart: echarts.ECharts = this.myChart;
             const option: EChartsOption = <EChartsOption>{
                 animation: false,
                 tooltip: {
@@ -80,10 +125,6 @@ namespace bioCAD.WebApp.Platform {
             console.log(y);
 
             option && myChart.setOption(option);
-
-            myChart.on('legendselectchanged', function (params) {
-                console.log(params);
-            });
         }
 
         protected init(): void {
@@ -97,6 +138,7 @@ namespace bioCAD.WebApp.Platform {
         private initPathwaySelector(graph: apps.Model) {
             const selector: HTMLSelectElement = <any>$ts("#pathway_list");
             const pathways = this.pathways;
+            const vm = this;
 
             for (let node of graph.nodeDataArray) {
                 if (node.isGroup) {
@@ -121,8 +163,8 @@ namespace bioCAD.WebApp.Platform {
                 }
             }
 
-            selector.onselectionchange = <any>function (global: GlobalEventHandlers, evt: Event) {
-                console.log(evt);
+            selector.onchange = function () {
+                vm.updateChart($ts.select.getOption("#pathway_list"));
             }
         }
     }

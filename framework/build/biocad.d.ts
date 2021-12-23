@@ -35,10 +35,29 @@ declare namespace bioCAD.WebApp.Platform {
         pathway: string;
         keys: string[];
     };
+    type lineData = {
+        name: string;
+        type: 'line';
+        smooth: true;
+        showSymbol: false;
+        clip: true;
+        data: number[][];
+        emphasis: {
+            focus: 'series';
+        };
+        ymax: number;
+    };
     class Report extends Bootstrap {
         readonly pathways: Dictionary<nodeIndex>;
+        readonly data: {
+            y: IEnumerator<lineData>;
+        };
         readonly appName: string;
+        private updateChart;
+        static parseData(data: csv.dataframe): IEnumerator<lineData>;
+        private myChart;
         private makeChart;
+        private makeChartInternal;
         protected init(): void;
         private initPathwaySelector;
     }

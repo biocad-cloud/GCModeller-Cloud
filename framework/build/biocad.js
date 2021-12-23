@@ -172,6 +172,9 @@ var bioCAD;
                 function Report() {
                     var _this = _super !== null && _super.apply(this, arguments) || this;
                     _this.pathways = new Dictionary();
+                    _this.data = {
+                        y: new IEnumerator([])
+                    };
                     return _this;
                 }
                 Object.defineProperty(Report.prototype, "appName", {
@@ -181,7 +184,14 @@ var bioCAD;
                     enumerable: true,
                     configurable: true
                 });
-                Report.prototype.makeChart = function (data, myChart) {
+                Report.prototype.updateChart = function (pathway) {
+                    console.log(pathway);
+                    var index = this.pathways.Item(pathway.toString());
+                    var search = $from(index.keys);
+                    var y = this.data.y.Where(function (line) { return search.Any(function (name) { return name == line.name; }); });
+                    this.makeChartInternal(y);
+                };
+                Report.parseData = function (data) {
                     var symbols = data.headers;
                     var y = symbols
                         .Where(function (name) { return name != ""; })
@@ -203,7 +213,20 @@ var bioCAD;
                             ymax: vec.Select(function (a) { return a[1]; }).Max()
                         };
                     });
+                    return y;
+                };
+                Report.prototype.makeChart = function (data, myChart) {
+                    var y = Report.parseData(data);
+                    var vm = this;
+                    vm.myChart = myChart;
+                    vm.data.y = y;
+                    myChart.on('legendselectchanged', function (params) {
+                        console.log(params);
+                    });
+                };
+                Report.prototype.makeChartInternal = function (y) {
                     var ymax = TypeScript.Data.quantile(y.Select(function (a) { return a.ymax; }).ToArray(), 0.65);
+                    var myChart = this.myChart;
                     var option = {
                         animation: false,
                         tooltip: {
@@ -245,9 +268,6 @@ var bioCAD;
                     console.log("lines:");
                     console.log(y);
                     option && myChart.setOption(option);
-                    myChart.on('legendselectchanged', function (params) {
-                        console.log(params);
-                    });
                 };
                 Report.prototype.init = function () {
                     var _this = this;
@@ -259,6 +279,7 @@ var bioCAD;
                 Report.prototype.initPathwaySelector = function (graph) {
                     var selector = $ts("#pathway_list");
                     var pathways = this.pathways;
+                    var vm = this;
                     for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
                         var node = _a[_i];
                         if (node.isGroup) {
@@ -279,8 +300,8 @@ var bioCAD;
                             }
                         }
                     }
-                    selector.onselectionchange = function (global, evt) {
-                        console.log(evt);
+                    selector.onchange = function () {
+                        vm.updateChart($ts.select.getOption("#pathway_list"));
                     };
                 };
                 return Report;
