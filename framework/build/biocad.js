@@ -347,7 +347,7 @@ var bioCAD;
                             vm.updateChart(opt.toString());
                         }
                     };
-                    var suggest = uikit.suggestion_list.render.makeSuggestions(terms, Platform.listDiv, function (term) { return _this.clickOnTerm(term); }, 5, false, "");
+                    var suggest = uikit.suggestion_list.render.makeSuggestions(terms, Platform.listDiv, function (term) { return _this.clickOnTerm(term); }, 5, true, "");
                     $ts(Platform.inputDiv).onkeyup = function () {
                         var search = $ts.value(Platform.inputDiv);
                         if (Strings.Empty(search, true)) {

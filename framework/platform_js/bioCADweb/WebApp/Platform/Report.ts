@@ -215,7 +215,7 @@ namespace bioCAD.WebApp.Platform {
             }
 
             const suggest = uikit.suggestion_list.render.makeSuggestions(
-                terms, listDiv, term => this.clickOnTerm(term), 5, false, ""
+                terms, listDiv, term => this.clickOnTerm(term), 5, true, ""
             );
 
             $ts(inputDiv).onkeyup = function () {
