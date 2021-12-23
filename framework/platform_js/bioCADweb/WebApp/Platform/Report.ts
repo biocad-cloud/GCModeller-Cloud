@@ -3,8 +3,11 @@
 namespace bioCAD.WebApp.Platform {
 
     type EChartsOption = echarts.EChartsOption;
+    type nodeIndex = { pathway: string, keys: string[] };
 
     export class Report extends Bootstrap {
+
+        readonly pathways = new Dictionary<nodeIndex>();
 
         public get appName(): string {
             return "reportViewer";
@@ -92,7 +95,35 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private initPathwaySelector(graph: apps.Model) {
-            console.log(graph);
+            const selector: HTMLSelectElement = <any>$ts("#pathway_list");
+            const pathways = this.pathways;
+
+            for (let node of graph.nodeDataArray) {
+                if (node.isGroup) {
+                    const map = <nodeIndex>{ pathway: node.label, keys: [] };
+                    const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.key });
+
+                    opt.innerText = (node.text);
+
+                    pathways.Add(node.key.toString(), map);
+                    selector.add(opt);
+                }
+            }
+
+            for (let node of graph.nodeDataArray) {
+                if (isNullOrUndefined(node.isGroup) || !node.isGroup) {
+                    if (!Strings.Empty(node.group, true)) {
+                        const refKey = node.group.toString();
+                        const index = pathways.Item(refKey);
+
+                        index.keys.push(node.label);
+                    }
+                }
+            }
+
+            selector.onselectionchange = <any>function (global: GlobalEventHandlers, evt: Event) {
+                console.log(evt);
+            }
         }
     }
 }

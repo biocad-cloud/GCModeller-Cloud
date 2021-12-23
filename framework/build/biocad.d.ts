@@ -31,7 +31,12 @@ declare namespace bioCAD.WebApp {
     function start(): void;
 }
 declare namespace bioCAD.WebApp.Platform {
+    type nodeIndex = {
+        pathway: string;
+        keys: string[];
+    };
     class Report extends Bootstrap {
+        readonly pathways: Dictionary<nodeIndex>;
         readonly appName: string;
         private makeChart;
         protected init(): void;

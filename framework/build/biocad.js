@@ -170,7 +170,9 @@ var bioCAD;
             var Report = /** @class */ (function (_super) {
                 __extends(Report, _super);
                 function Report() {
-                    return _super !== null && _super.apply(this, arguments) || this;
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.pathways = new Dictionary();
+                    return _this;
                 }
                 Object.defineProperty(Report.prototype, "appName", {
                     get: function () {
@@ -255,7 +257,31 @@ var bioCAD;
                     $ts.getText("@url:graph", function (text) { return _this.initPathwaySelector(JSON.parse(text)); });
                 };
                 Report.prototype.initPathwaySelector = function (graph) {
-                    console.log(graph);
+                    var selector = $ts("#pathway_list");
+                    var pathways = this.pathways;
+                    for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
+                        var node = _a[_i];
+                        if (node.isGroup) {
+                            var map = { pathway: node.label, keys: [] };
+                            var opt = $ts("<option>", { value: node.key });
+                            opt.innerText = (node.text);
+                            pathways.Add(node.key.toString(), map);
+                            selector.add(opt);
+                        }
+                    }
+                    for (var _b = 0, _c = graph.nodeDataArray; _b < _c.length; _b++) {
+                        var node = _c[_b];
+                        if (isNullOrUndefined(node.isGroup) || !node.isGroup) {
+                            if (!Strings.Empty(node.group, true)) {
+                                var refKey = node.group.toString();
+                                var index = pathways.Item(refKey);
+                                index.keys.push(node.label);
+                            }
+                        }
+                    }
+                    selector.onselectionchange = function (global, evt) {
+                        console.log(evt);
+                    };
                 };
                 return Report;
             }(Bootstrap));
