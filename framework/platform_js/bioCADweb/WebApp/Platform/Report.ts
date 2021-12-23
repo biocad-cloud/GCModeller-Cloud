@@ -35,15 +35,8 @@ namespace bioCAD.WebApp.Platform {
                     // show all pathway data
                     return vm.data.y;
                 } else if (!vm.pathways.ContainsKey(pathway)) {
-                    const line = vm.data.y
-                        .Where(line => pathway == line.name)
-                        .First;
-
-                    if (!isNullOrUndefined(line)) {
-                        return new IEnumerator([line]);
-                    } else {
-                        return new IEnumerator<lineData>([]);
-                    }
+                    return vm.data.y
+                        .Where(line => pathway == line.name);
                 } else {
                     const index: nodeIndex = vm.pathways.Item(pathway);
                     const search = $from(index.keys);
@@ -129,7 +122,7 @@ namespace bioCAD.WebApp.Platform {
                 yAxis: {
                     name: 'Activity',
                     min: 0,
-                    max: ymax,
+                    max: Math.round(ymax * 1.25),
                     minorTick: {
                         show: true
                     },
@@ -143,7 +136,7 @@ namespace bioCAD.WebApp.Platform {
             console.log("lines:");
             console.log(y);
 
-            option && myChart.setOption(option);
+            option && myChart.setOption(option, true, false);
         }
 
         protected init(): void {

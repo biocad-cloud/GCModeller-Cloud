@@ -192,15 +192,8 @@ var bioCAD;
                             return vm.data.y;
                         }
                         else if (!vm.pathways.ContainsKey(pathway)) {
-                            var line = vm.data.y
-                                .Where(function (line) { return pathway == line.name; })
-                                .First;
-                            if (!isNullOrUndefined(line)) {
-                                return new IEnumerator([line]);
-                            }
-                            else {
-                                return new IEnumerator([]);
-                            }
+                            return vm.data.y
+                                .Where(function (line) { return pathway == line.name; });
                         }
                         else {
                             var index = vm.pathways.Item(pathway);
@@ -276,7 +269,7 @@ var bioCAD;
                         yAxis: {
                             name: 'Activity',
                             min: 0,
-                            max: ymax,
+                            max: Math.round(ymax * 1.25),
                             minorTick: {
                                 show: true
                             },
@@ -288,7 +281,7 @@ var bioCAD;
                     };
                     console.log("lines:");
                     console.log(y);
-                    option && myChart.setOption(option);
+                    option && myChart.setOption(option, true, false);
                 };
                 Report.prototype.init = function () {
                     var _this = this;
