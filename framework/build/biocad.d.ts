@@ -58,9 +58,11 @@ declare namespace bioCAD.WebApp.Platform {
         private updateChart;
         static parseData(data: csv.dataframe): IEnumerator<lineData>;
         private myChart;
+        private csvText;
         private makeChart;
         private makeChartInternal;
         protected init(): void;
+        getPLAS_onclick(): void;
         private initPathwaySelector;
         private clickOnTerm;
     }

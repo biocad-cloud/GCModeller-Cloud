@@ -230,9 +230,11 @@ var bioCAD;
                     });
                     return y;
                 };
-                Report.prototype.makeChart = function (data, myChart) {
+                Report.prototype.makeChart = function (text, myChart) {
+                    var data = $ts.csv(text, false);
                     var y = Report.parseData(data);
                     var vm = this;
+                    vm.csvText = text;
                     vm.myChart = myChart;
                     vm.data.y = y;
                     vm.makeChartInternal(y);
@@ -289,8 +291,15 @@ var bioCAD;
                     var _this = this;
                     var chartDom = document.getElementById('main');
                     var myChart = echarts.init(chartDom);
-                    $ts.getText("@data:PLAS", function (text) { return _this.makeChart($ts.csv(text, false), myChart); });
+                    $ts.getText("@data:PLAS", function (text) { return _this.makeChart(text, myChart); });
                     $ts.getText("@url:graph", function (text) { return _this.initPathwaySelector(JSON.parse(text)); });
+                };
+                Report.prototype.getPLAS_onclick = function () {
+                    var payload = {
+                        mime_type: "text/html",
+                        data: Base64.encode(this.csvText)
+                    };
+                    DOM.download("PLAS_output.csv", payload, false);
                 };
                 Report.prototype.initPathwaySelector = function (graph) {
                     var _this = this;

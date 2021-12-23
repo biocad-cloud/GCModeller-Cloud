@@ -80,11 +80,14 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private myChart: echarts.ECharts;
+        private csvText: string;
 
-        private makeChart(data: csv.dataframe, myChart: echarts.ECharts) {
+        private makeChart(text: string, myChart: echarts.ECharts) {
+            const data: csv.dataframe = $ts.csv(text, false);
             const y = Report.parseData(data);
             const vm = this;
 
+            vm.csvText = text;
             vm.myChart = myChart;
             vm.data.y = y;
             vm.makeChartInternal(y);
@@ -146,8 +149,17 @@ namespace bioCAD.WebApp.Platform {
             const chartDom: HTMLDivElement = <any>document.getElementById('main')!;
             const myChart: echarts.ECharts = echarts.init(chartDom);
 
-            $ts.getText("@data:PLAS", text => this.makeChart($ts.csv(text, false), myChart));
+            $ts.getText("@data:PLAS", text => this.makeChart(text, myChart));
             $ts.getText("@url:graph", text => this.initPathwaySelector(JSON.parse(text)));
+        }
+
+        public getPLAS_onclick() {
+            const payload: DataURI = <DataURI>{
+                mime_type: "text/html",
+                data: Base64.encode(this.csvText)
+            }
+
+            DOM.download("PLAS_output.csv", payload, false);
         }
 
         private initPathwaySelector(graph: apps.Model) {
