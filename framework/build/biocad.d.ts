@@ -1,4 +1,5 @@
 /// <reference path="linq.d.ts" />
+/// <reference path="Metabolic_pathway.d.ts" />
 declare namespace bioCAD.WebApp {
     /**
      * script module for user login
@@ -34,6 +35,7 @@ declare namespace bioCAD.WebApp.Platform {
         readonly appName: string;
         private makeChart;
         protected init(): void;
+        private initPathwaySelector;
     }
 }
 declare namespace bioCAD.WebApp.Platform {

@@ -1,3 +1,5 @@
+///<reference path="../../../../build/Metabolic_pathway.d.ts" />
+
 namespace bioCAD.WebApp.Platform {
 
     type EChartsOption = echarts.EChartsOption;
@@ -86,6 +88,11 @@ namespace bioCAD.WebApp.Platform {
             const myChart: echarts.ECharts = echarts.init(chartDom);
 
             $ts.getText("@data:PLAS", text => this.makeChart($ts.csv(text, false), myChart));
+            $ts.getText("@url:graph", text => this.initPathwaySelector(JSON.parse(text)));
+        }
+
+        private initPathwaySelector(graph: apps.Model) {
+            console.log(graph);
         }
     }
 }

@@ -160,6 +160,7 @@ var bioCAD;
 })(bioCAD || (bioCAD = {}));
 $ts.mode = Modes.debug;
 $ts(bioCAD.WebApp.start);
+///<reference path="../../../../build/Metabolic_pathway.d.ts" />
 var bioCAD;
 (function (bioCAD) {
     var WebApp;
@@ -251,6 +252,10 @@ var bioCAD;
                     var chartDom = document.getElementById('main');
                     var myChart = echarts.init(chartDom);
                     $ts.getText("@data:PLAS", function (text) { return _this.makeChart($ts.csv(text, false), myChart); });
+                    $ts.getText("@url:graph", function (text) { return _this.initPathwaySelector(JSON.parse(text)); });
+                };
+                Report.prototype.initPathwaySelector = function (graph) {
+                    console.log(graph);
                 };
                 return Report;
             }(Bootstrap));
