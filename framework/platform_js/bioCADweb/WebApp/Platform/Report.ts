@@ -29,14 +29,21 @@ namespace bioCAD.WebApp.Platform {
         }
 
         private updateChart(pathway: string) {
+            const vm = this;
+            const getLines = function () {
+                if (pathway == "*") {
+                    // show all pathway data
+                    return vm.data.y;
+                } else {
+                    const index: nodeIndex = vm.pathways.Item(pathway.toString());
+                    const search = $from(index.keys);
 
-            console.log(pathway);
+                    return vm.data.y
+                        .Where(line => search.Any(name => name == line.name));
+                }
+            }
 
-            const index: nodeIndex = this.pathways.Item(pathway.toString());
-            const search = $from(index.keys);
-            const y = this.data.y.Where(line => search.Any(name => name == line.name));
-
-            this.makeChartInternal(y);
+            this.makeChartInternal(getLines());
         }
 
         public static parseData(data: csv.dataframe) {
@@ -74,6 +81,8 @@ namespace bioCAD.WebApp.Platform {
 
             vm.myChart = myChart;
             vm.data.y = y;
+            vm.makeChartInternal(y);
+
             myChart.on('legendselectchanged', function (params) {
                 console.log(params);
             });
@@ -139,6 +148,8 @@ namespace bioCAD.WebApp.Platform {
             const selector: HTMLSelectElement = <any>$ts("#pathway_list");
             const pathways = this.pathways;
             const vm = this;
+
+            selector.add(<any>$ts("<option>", { value: "*" }).display("*"));
 
             for (let node of graph.nodeDataArray) {
                 if (node.isGroup) {

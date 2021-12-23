@@ -185,11 +185,20 @@ var bioCAD;
                     configurable: true
                 });
                 Report.prototype.updateChart = function (pathway) {
-                    console.log(pathway);
-                    var index = this.pathways.Item(pathway.toString());
-                    var search = $from(index.keys);
-                    var y = this.data.y.Where(function (line) { return search.Any(function (name) { return name == line.name; }); });
-                    this.makeChartInternal(y);
+                    var vm = this;
+                    var getLines = function () {
+                        if (pathway == "*") {
+                            // show all pathway data
+                            return vm.data.y;
+                        }
+                        else {
+                            var index = vm.pathways.Item(pathway.toString());
+                            var search_1 = $from(index.keys);
+                            return vm.data.y
+                                .Where(function (line) { return search_1.Any(function (name) { return name == line.name; }); });
+                        }
+                    };
+                    this.makeChartInternal(getLines());
                 };
                 Report.parseData = function (data) {
                     var symbols = data.headers;
@@ -220,6 +229,7 @@ var bioCAD;
                     var vm = this;
                     vm.myChart = myChart;
                     vm.data.y = y;
+                    vm.makeChartInternal(y);
                     myChart.on('legendselectchanged', function (params) {
                         console.log(params);
                     });
@@ -280,6 +290,7 @@ var bioCAD;
                     var selector = $ts("#pathway_list");
                     var pathways = this.pathways;
                     var vm = this;
+                    selector.add($ts("<option>", { value: "*" }).display("*"));
                     for (var _i = 0, _a = graph.nodeDataArray; _i < _a.length; _i++) {
                         var node = _a[_i];
                         if (node.isGroup) {
