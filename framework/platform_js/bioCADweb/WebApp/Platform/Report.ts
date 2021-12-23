@@ -153,6 +153,7 @@ namespace bioCAD.WebApp.Platform {
             const metabolites: HTMLOptGroupElement = <any>$ts("<optgroup>", { label: "Metabolites" });
             const pathways = this.pathways;
             const vm = this;
+            const terms: uikit.suggestion_list.term[] = [];
 
             pathwayGroup.appendChild(<any>$ts("<option>", { value: "*" }).display("*"));
 
@@ -160,9 +161,10 @@ namespace bioCAD.WebApp.Platform {
                 if (node.isGroup) {
                     const map = <nodeIndex>{ pathway: node.label, keys: [] };
                     const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.key });
+                    const term = new uikit.suggestion_list.term(node.key, node.text);
 
                     opt.innerText = (node.text);
-
+                    terms.push(term);
                     pathways.Add(node.key.toString(), map);
                     pathwayGroup.appendChild(opt);
                 }
@@ -174,11 +176,13 @@ namespace bioCAD.WebApp.Platform {
                         const refKey = node.group.toString();
                         const index = pathways.Item(refKey);
                         const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.label });
+                        const term = new uikit.suggestion_list.term(node.label, node.label);
 
                         opt.innerText = node.label;
                         index.keys.push(node.label);
 
                         if ((node.category != "valve") && !Strings.Empty(node.label, true)) {
+                            terms.push(term);
                             metabolites.appendChild(opt);
                         }
                     }
@@ -194,6 +198,27 @@ namespace bioCAD.WebApp.Platform {
                     vm.updateChart(opt.toString());
                 }
             }
+
+            const listDiv = "#sample_suggests";
+            const inputDiv = "#sample_search";
+            const suggest = uikit.suggestion_list.render.makeSuggestions(
+                terms, listDiv, term => this.clickOnTerm(term), 5, false, ""
+            );
+
+            $ts(inputDiv).onkeyup = function () {
+                const search: string = $ts.value(inputDiv);
+
+                if (Strings.Empty(search, true)) {
+                    $ts(listDiv).hide();
+                } else {
+                    $ts(listDiv).show();
+                    suggest(search);
+                }
+            }
+        }
+
+        private clickOnTerm(term: uikit.suggestion_list.term) {
+
         }
     }
 }

@@ -55,8 +55,18 @@
     <TypeScriptCompile Include="WebApp\Platform\Report.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="suggestion_list/display.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="suggestion_list/list.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="suggestion_list/terms.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="suggestion_list\" />
     <Folder Include="WebApp\" />
     <Folder Include="WebApp\Platform\" />
     <Folder Include="WebApp\Passport\" />
