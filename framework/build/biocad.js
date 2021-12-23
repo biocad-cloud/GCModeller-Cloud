@@ -191,7 +191,7 @@ var bioCAD;
                             // show all pathway data
                             return vm.data.y;
                         }
-                        else if (vm.pathways.ContainsKey(pathway)) {
+                        else if (!vm.pathways.ContainsKey(pathway)) {
                             var line = vm.data.y
                                 .Where(function (line) { return pathway == line.name; })
                                 .First;

@@ -34,7 +34,7 @@ namespace bioCAD.WebApp.Platform {
                 if (pathway == "*") {
                     // show all pathway data
                     return vm.data.y;
-                } else if (vm.pathways.ContainsKey(pathway)) {
+                } else if (!vm.pathways.ContainsKey(pathway)) {
                     const line = vm.data.y
                         .Where(line => pathway == line.name)
                         .First;
