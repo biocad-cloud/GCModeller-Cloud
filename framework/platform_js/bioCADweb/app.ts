@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../build/linq.d.ts" />
+/// <reference path="../../build/biocad_webcore.d.ts" />
 
 /// <reference path="WebApp/Passport/LogInScript.ts" />
 /// <reference path="WebApp/Passport/RecoverScript.ts" />

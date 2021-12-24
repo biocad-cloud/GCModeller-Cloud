@@ -173,4 +173,54 @@ var MIME;
     }
     MIME.ParseFasta = ParseFasta;
 })(MIME || (MIME = {}));
+var BioCAD;
+(function (BioCAD) {
+    var MIME;
+    (function (MIME) {
+        var bioClassType;
+        (function (bioClassType) {
+            /**
+             * The unknown class type
+            */
+            bioClassType[bioClassType["unknown"] = 0] = "unknown";
+            /**
+             * General text file
+            */
+            bioClassType[bioClassType["text"] = 1] = "text";
+            /**
+             * Image file
+            */
+            bioClassType[bioClassType["image"] = 2] = "image";
+            /**
+             * The data table is a kind of numeric matrix for gene expression data, or something.
+            */
+            bioClassType[bioClassType["matrix"] = 3] = "matrix";
+            /**
+             * The biological sequence data type, like fasta sequence file.
+            */
+            bioClassType[bioClassType["bioSequence"] = 4] = "bioSequence";
+        })(bioClassType = MIME.bioClassType || (MIME.bioClassType = {}));
+    })(MIME = BioCAD.MIME || (BioCAD.MIME = {}));
+})(BioCAD || (BioCAD = {}));
+var BioCAD;
+(function (BioCAD) {
+    var MIME;
+    (function (MIME) {
+        /**
+         * 对文件格式信息的简要描述
+        */
+        var mimeType = /** @class */ (function () {
+            function mimeType(data) {
+                this.classID = data["id"];
+                this.contentType = data["content_type"];
+                this.description = data["description"];
+            }
+            mimeType.prototype.toString = function () {
+                return this.contentType;
+            };
+            return mimeType;
+        }());
+        MIME.mimeType = mimeType;
+    })(MIME = BioCAD.MIME || (BioCAD.MIME = {}));
+})(BioCAD || (BioCAD = {}));
 //# sourceMappingURL=biocad_webcore.js.map

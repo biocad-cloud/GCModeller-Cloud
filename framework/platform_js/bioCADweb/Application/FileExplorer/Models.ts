@@ -20,9 +20,9 @@
         /**
          * 文件的格式信息描述
         */
-        public mime: bioCADmimeType;
+        public mime: BioCAD.MIME.mimeType;
 
-        constructor(data: object, types: Dictionary<bioCADmimeType>) {
+        constructor(data: object, types: Dictionary<BioCAD.MIME.mimeType>) {
             this.id = data["id"];
             this.fileName = data["name"];
             this.size = data["size"];
@@ -31,35 +31,6 @@
 
         public toString(): string {
             return this.fileName;
-        }
-    }
-
-    /**
-     * 对文件格式信息的简要描述
-    */
-    export class bioCADmimeType {
-
-        /**
-         * 这种文件格式在数据库之中的唯一编号
-        */
-        public classID: number;
-        /**
-         * 对文件内容的摘要描述信息
-        */
-        public contentType: string;
-        /**
-         * 详细的描述信息
-        */
-        public description: string;
-
-        constructor(data: object) {
-            this.classID = data["id"];
-            this.contentType = data["content_type"];
-            this.description = data["description"];
-        }
-
-        public toString(): string {
-            return this.contentType;
         }
     }
 }

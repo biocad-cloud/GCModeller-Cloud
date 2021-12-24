@@ -2,6 +2,8 @@
 
 namespace Application.Explorer {
 
+    type BioClass = BioCAD.MIME.bioClassType;
+
     /**
      * 文件浏览器的模型，这个对象是一个文件的集合
     */
@@ -32,12 +34,12 @@ namespace Application.Explorer {
          * @param divId 文件浏览器将会显示在这个div之中
          * @param icons 将文件的mime type转换为大分类的映射数组
         */
-        public static show(divId: string, files: bioCADFile[], icons: Map<string, bioClassType>[] = []): Explorer {
+        public static show(divId: string, files: bioCADFile[], icons: Map<string, BioClass>[] = []): Explorer {
             var div: HTMLDivElement = <HTMLDivElement>document.getElementById(divId);
-            var iconTypes: Dictionary<bioClassType> = $from(icons).ToDictionary(map => map.key, map => map.value);
+            var iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.key, map => map.value);
             var fileHandles: IEnumerator<FileHandle> = $from(files)
                 .Select((file: bioCADFile) => {
-                    var cls: bioClassType = iconTypes.Item(file.mime.contentType);
+                    var cls: BioClass = iconTypes.Item(file.mime.contentType);
                     var svg: string[] = bioMimeTypes.classToFontAwsome(cls);
                     var handle: FileHandle = new FileHandle(file, svg);
 
@@ -60,14 +62,14 @@ namespace Application.Explorer {
         /**
          * 加载script标签之中的json数据然后解析为所需要的映射关系
         */
-        public static getFaMaps(idClassTypes: string): Map<string, bioClassType>[] {
-            var types: Map<string, bioClassType>[] = $from(LoadJson(idClassTypes))
+        public static getFaMaps(idClassTypes: string): Map<string, BioClass>[] {
+            var types: Map<string, BioClass>[] = $from(LoadJson(idClassTypes))
                 .Select(c => {
                     var contentType: string = <string>c["content_type"];
                     var classId: number = <number>c["classId"];
-                    var classType: bioClassType = <bioClassType>classId;
+                    var classType: BioClass = <BioClass>classId;
 
-                    return new Map<string, bioClassType>(contentType, classType);
+                    return new Map<string, BioClass>(contentType, classType);
                 }).ToArray();
 
             console.log(types);
@@ -79,10 +81,10 @@ namespace Application.Explorer {
          * 加载script标签之中的json数据然后解析为文件数据模型
         */
         public static getFiles(idFiles: string, idClassTypes: string): bioCADFile[] {
-            var types: Dictionary<bioCADmimeType> = $from(LoadJson(idClassTypes))
+            var types: Dictionary<BioCAD.MIME.mimeType> = $from(LoadJson(idClassTypes))
                 .ToDictionary(
                     c => <string>c["id"],
-                    c => new bioCADmimeType(c)
+                    c => new BioCAD.MIME.mimeType(c)
                 );
             var files: bioCADFile[] = $from(LoadJson(idFiles))
                 .Select(a => new bioCADFile(a, types))

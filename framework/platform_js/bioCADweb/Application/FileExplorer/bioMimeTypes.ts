@@ -1,5 +1,7 @@
 ﻿namespace Application.Explorer {
 
+    type BioClass = BioCAD.MIME.bioClassType;
+
     export module bioMimeTypes {
 
         const iconDNA: string[] = [
@@ -58,14 +60,16 @@
          * ## 2018-08-15 typescript 的枚举类型目前还不可以使用select进行选择
          * 所以在这里使用if进行数据的获取
         */
-        export function classToFontAwsome(cls: bioClassType): string[] {
-            if (cls == bioClassType.text) {
+        export function classToFontAwsome(cls: BioClass): string[] {
+            const BioClass = BioCAD.MIME.bioClassType;
+
+            if (cls == BioClass.text) {
                 return [fillSVG(iconText), "green"];
-            } else if (cls == bioClassType.image) {
+            } else if (cls == BioClass.image) {
                 return [fillSVG(iconImage), "red"];
-            } else if (cls == bioClassType.matrix) {
+            } else if (cls == BioClass.matrix) {
                 return [fillSVG(iconExcel), "darkgreen"];
-            } else if (cls == bioClassType.bioSequence) {
+            } else if (cls == BioClass.bioSequence) {
                 return [fillSVG(iconDNA), "lightblue"];
             } else {
                 return [fillSVG(iconUnknown), "gray"];

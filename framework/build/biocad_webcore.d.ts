@@ -57,3 +57,48 @@ declare namespace MIME {
     }
     function ParseFasta(stream: string): FastaSeq[];
 }
+declare namespace BioCAD.MIME {
+    enum bioClassType {
+        /**
+         * The unknown class type
+        */
+        unknown = 0,
+        /**
+         * General text file
+        */
+        text = 1,
+        /**
+         * Image file
+        */
+        image = 2,
+        /**
+         * The data table is a kind of numeric matrix for gene expression data, or something.
+        */
+        matrix = 3,
+        /**
+         * The biological sequence data type, like fasta sequence file.
+        */
+        bioSequence = 4
+    }
+}
+declare namespace BioCAD.MIME {
+    /**
+     * 对文件格式信息的简要描述
+    */
+    class mimeType {
+        /**
+         * 这种文件格式在数据库之中的唯一编号
+        */
+        classID: number;
+        /**
+         * 对文件内容的摘要描述信息
+        */
+        contentType: string;
+        /**
+         * 详细的描述信息
+        */
+        description: string;
+        constructor(data: object);
+        toString(): string;
+    }
+}

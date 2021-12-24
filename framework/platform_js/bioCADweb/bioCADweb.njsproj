@@ -49,7 +49,6 @@
     <TypeScriptCompile Include="WebApp\Passport\RegisterScript.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Application\FileExplorer\bioClassType.ts" />
     <TypeScriptCompile Include="Application\FileExplorer\bioMimeTypes.ts" />
     <TypeScriptCompile Include="Application\FileExplorer\Explorer.ts" />
     <TypeScriptCompile Include="Application\FileExplorer\Models.ts" />
