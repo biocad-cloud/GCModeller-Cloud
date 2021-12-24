@@ -1,50 +1,52 @@
 ﻿// 在这里构建出用于显示文件的UI部分的代码
 
-/**
- * 将文件呈现给用户的UI代码部分
-*/
-class FileHandle {
-
-    public divId: string;
-    /**
-     * 目标文件的数据模型对象
-    */
-    public file: bioCADFile;
-    public div: HTMLDivElement;
+namespace Application.Explorer {
 
     /**
-     * ``[svg, color]``
+     * 将文件呈现给用户的UI代码部分
     */
-    public mimeIcon: string[];
+    export class FileHandle {
 
-    public get fileId(): string {
-        return this.file.id.toString();
-    }
+        public divId: string;
+        /**
+         * 目标文件的数据模型对象
+        */
+        public file: bioCADFile;
+        public div: HTMLDivElement;
 
-    public constructor(file: bioCADFile, icon: string[]) {
-        this.file = file;
-        this.mimeIcon = icon;
-    }
+        /**
+         * ``[svg, color]``
+        */
+        public mimeIcon: string[];
 
-    static classNames: string[] = [
-        "file-preview-frame",
-        "krajee-default",
-        "file-preview-initial",
-        "file-sortable",
-        "kv-preview-thumb"
-    ];
+        public get fileId(): string {
+            return this.file.id.toString();
+        }
 
-    private footer(): string {
-        return `<div class="file-footer-caption" title="${this.file.fileName}">
+        public constructor(file: bioCADFile, icon: string[]) {
+            this.file = file;
+            this.mimeIcon = icon;
+        }
+
+        static classNames: string[] = [
+            "file-preview-frame",
+            "krajee-default",
+            "file-preview-initial",
+            "file-sortable",
+            "kv-preview-thumb"
+        ];
+
+        private footer(): string {
+            return `<div class="file-footer-caption" title="${this.file.fileName}">
                     <div class="file-caption-info">${this.file.fileName}</div>
                     <div class="file-size-info">
                         <samp>(${this.file.size})</samp>
                     </div>
                 </div>`;
-    }
+        }
 
-    private actionButtons(): string {
-        return `<div class="file-actions">
+        private actionButtons(): string {
+            return `<div class="file-actions">
                     <div class="file-footer-buttons">
                         <button type="button" 
                                 class="kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary" 
@@ -60,16 +62,16 @@ class FileHandle {
                         </button>
                     </div>
                 </div>`;
-    }
+        }
 
-    /**
-     * @returns UI html string
-    */
-    public toString(): string {
-        var svg: string = this.mimeIcon[0];
-        var color: string = this.mimeIcon[1];
+        /**
+         * @returns UI html string
+        */
+        public toString(): string {
+            var svg: string = this.mimeIcon[0];
+            var color: string = this.mimeIcon[1];
 
-        return `<div class="file-preview-frame krajee-default file-preview-initial file-sortable kv-preview-thumb" 
+            return `<div class="file-preview-frame krajee-default file-preview-initial file-sortable kv-preview-thumb" 
                      id="${this.fileId}" 
                      data-fileindex="${this.fileId}" 
                      data-template="image"
@@ -96,5 +98,6 @@ class FileHandle {
                         <div class="clearfix"></div>
                     </div>
                 </div>`;
+        }
     }
 }

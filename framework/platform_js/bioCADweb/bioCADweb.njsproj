@@ -40,6 +40,9 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
+    <TypeScriptCompile Include="Application\Suggestion\display.ts" />
+    <TypeScriptCompile Include="Application\Suggestion\list.ts" />
+    <TypeScriptCompile Include="Application\Suggestion\terms.ts" />
     <TypeScriptCompile Include="WebApp\Passport\LogInScript.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -59,20 +62,11 @@
     <TypeScriptCompile Include="WebApp\Platform\Report.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Application\suggestion_list\display.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Application\suggestion_list\list.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Application\suggestion_list\terms.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="Application\FileExplorer\UI.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\" />
-    <Folder Include="Application\suggestion_list\" />
+    <Folder Include="Application\Suggestion\" />
     <Folder Include="WebApp\" />
     <Folder Include="WebApp\Platform\" />
     <Folder Include="WebApp\Passport\" />

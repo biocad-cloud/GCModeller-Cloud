@@ -1,4 +1,4 @@
-﻿namespace uikit.suggestion_list {
+﻿namespace Application.Suggestion {
 
     export class suggestion {
 

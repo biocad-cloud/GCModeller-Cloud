@@ -2,6 +2,7 @@
 
 namespace bioCAD.WebApp.Platform {
 
+    type SearchTerm = Application.Suggestion.term;
     type EChartsOption = echarts.EChartsOption;
     type nodeIndex = { pathway: string, keys: string[] };
     type lineData = {
@@ -168,7 +169,7 @@ namespace bioCAD.WebApp.Platform {
             const metabolites: HTMLOptGroupElement = <any>$ts("<optgroup>", { label: "Metabolites" });
             const pathways = this.pathways;
             const vm = this;
-            const terms: uikit.suggestion_list.term[] = [];
+            const terms: SearchTerm[] = [];
 
             pathwayGroup.appendChild(<any>$ts("<option>", { value: "*" }).display("*"));
 
@@ -176,7 +177,7 @@ namespace bioCAD.WebApp.Platform {
                 if (node.isGroup) {
                     const map = <nodeIndex>{ pathway: node.label, keys: [] };
                     const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.key });
-                    const term = new uikit.suggestion_list.term(node.key, node.text);
+                    const term = new Application.Suggestion.term(node.key, node.text);
 
                     opt.innerText = (node.text);
                     terms.push(term);
@@ -191,7 +192,7 @@ namespace bioCAD.WebApp.Platform {
                         const refKey = node.group.toString();
                         const index = pathways.Item(refKey);
                         const opt: HTMLOptionElement = <any>$ts("<option>", { value: node.label });
-                        const term = new uikit.suggestion_list.term(node.label, node.label);
+                        const term = new Application.Suggestion.term(node.label, node.label);
 
                         opt.innerText = node.label;
                         index.keys.push(node.label);
@@ -214,7 +215,7 @@ namespace bioCAD.WebApp.Platform {
                 }
             }
 
-            const suggest = uikit.suggestion_list.render.makeSuggestions(
+            const suggest = Application.Suggestion.render.makeSuggestions(
                 terms, listDiv, term => this.clickOnTerm(term), 5, true, ""
             );
 
@@ -230,7 +231,7 @@ namespace bioCAD.WebApp.Platform {
             }
         }
 
-        private clickOnTerm(term: uikit.suggestion_list.term) {
+        private clickOnTerm(term: SearchTerm) {
             const valueSel = "#pathway_list";
 
             $ts.value(valueSel, term.id.toString());

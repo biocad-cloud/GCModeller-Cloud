@@ -1,4 +1,4 @@
-﻿namespace uikit.suggestion_list.render {
+﻿namespace Application.Suggestion.render {
 
     /**
      * 将结果显示到网页上面
