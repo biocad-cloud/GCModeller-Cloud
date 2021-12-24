@@ -46,6 +46,10 @@
     <TypeScriptCompile Include="WebApp\Passport\RegisterScript.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Application\FileExplorer\bioClassType.ts" />
+    <TypeScriptCompile Include="Application\FileExplorer\bioMimeTypes.ts" />
+    <TypeScriptCompile Include="Application\FileExplorer\Explorer.ts" />
+    <TypeScriptCompile Include="Application\FileExplorer\Models.ts" />
     <TypeScriptCompile Include="WebApp\Platform\TaskMgr.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -55,21 +59,24 @@
     <TypeScriptCompile Include="WebApp\Platform\Report.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="suggestion_list/display.ts">
+    <TypeScriptCompile Include="Application\suggestion_list\display.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="suggestion_list/list.ts">
+    <TypeScriptCompile Include="Application\suggestion_list\list.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="suggestion_list/terms.ts">
+    <TypeScriptCompile Include="Application\suggestion_list\terms.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Application\FileExplorer\UI.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="suggestion_list\" />
+    <Folder Include="Application\" />
+    <Folder Include="Application\suggestion_list\" />
     <Folder Include="WebApp\" />
     <Folder Include="WebApp\Platform\" />
     <Folder Include="WebApp\Passport\" />
+    <Folder Include="Application\FileExplorer\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
