@@ -34,7 +34,7 @@ namespace Application.Explorer {
          * @param divId 文件浏览器将会显示在这个div之中
          * @param icons 将文件的mime type转换为大分类的映射数组
         */
-        public static show(divId: string, files: bioCADFile[], icons: Map<string, BioClass>[] = []): Explorer {
+        public static show(divId: string, files: bioCADFile[], icons: MapTuple<string, BioClass>[] = []): Explorer {
             var div: HTMLDivElement = <HTMLDivElement>document.getElementById(divId);
             var iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.key, map => map.value);
             var fileHandles: IEnumerator<FileHandle> = $from(files)
@@ -62,14 +62,14 @@ namespace Application.Explorer {
         /**
          * 加载script标签之中的json数据然后解析为所需要的映射关系
         */
-        public static getFaMaps(idClassTypes: string): Map<string, BioClass>[] {
-            var types: Map<string, BioClass>[] = $from(LoadJson(idClassTypes))
+        public static getFaMaps(idClassTypes: string): MapTuple<string, BioClass>[] {
+            var types: MapTuple<string, BioClass>[] = $from(LoadJson(idClassTypes))
                 .Select(c => {
                     var contentType: string = <string>c["content_type"];
                     var classId: number = <number>c["classId"];
                     var classType: BioClass = <BioClass>classId;
 
-                    return new Map<string, BioClass>(contentType, classType);
+                    return new MapTuple<string, BioClass>(contentType, classType);
                 }).ToArray();
 
             console.log(types);
@@ -81,12 +81,12 @@ namespace Application.Explorer {
          * 加载script标签之中的json数据然后解析为文件数据模型
         */
         public static getFiles(idFiles: string, idClassTypes: string): bioCADFile[] {
-            var types: Dictionary<BioCAD.MIME.mimeType> = $from(LoadJson(idClassTypes))
+            var types: Dictionary<BioCAD.MIME.mimeType> = $from<object>(LoadJson(idClassTypes))
                 .ToDictionary(
                     c => <string>c["id"],
                     c => new BioCAD.MIME.mimeType(c)
                 );
-            var files: bioCADFile[] = $from(LoadJson(idFiles))
+            var files: bioCADFile[] = $from<object>(LoadJson(idFiles))
                 .Select(a => new bioCADFile(a, types))
                 .ToArray();
 
