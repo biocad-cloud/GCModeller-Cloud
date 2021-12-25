@@ -19,6 +19,8 @@ FluxVisual = function(fluxomics, sample_info, simulates, background, outputdir =
         print(nodes, max.print = 10);
 
         data = simulates[, nodes[, "label"]];
+        data[, "#Time"] = simulates[, "#Time"];
+        
         MetabolicFluxLines(data, pathway, outputdir = outputdir);
     }
 }

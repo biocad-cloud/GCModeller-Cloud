@@ -36,4 +36,5 @@ print(result, max.print = 15);
 write.csv(result, file = "./simulates.csv");
 
 [fluxomics, sample_info] = Fluxomics(result, model$background);
-FluxVisual(fluxomics, sample_info, model$background, outputdir = "./");
+
+FluxVisual(fluxomics, sample_info, result, model$background, outputdir = "./");
