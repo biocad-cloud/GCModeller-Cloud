@@ -166,72 +166,38 @@ var containerClassName = "file-preview-thumbnails";
 var Application;
 (function (Application) {
     var Explorer;
-    (function (Explorer_1) {
+    (function (Explorer) {
         /**
-         * 文件浏览器的模型，这个对象是一个文件的集合
+         * 将文件显示在html用户界面之上
+         *
+         * @param divId 文件浏览器将会显示在这个div之中
+         * @param icons 将文件的mime type转换为大分类的映射数组
         */
-        var Explorer = /** @class */ (function () {
-            function Explorer(div, files) {
-                this.divId = div.id;
-                this.files = files;
-                this.container = div;
+        function show(divId, files, icons) {
+            var div = $ts(divId);
+            var iconTypes = $from(icons).ToDictionary(function (map) { return map.contentType; }, function (map) { return map.class; });
+            var fileHandles = $from(files)
+                .Select(function (file) {
+                var cls = iconTypes.Item(file.mime.contentType);
+                var svg = Explorer.bioMimeTypes.classToFontAwsome(cls);
+                var handle = new Explorer.FileHandle(file, svg);
+                return handle;
+            });
+            // 初始化容器div对象
+            if (!div.classList.contains(containerClassName)) {
+                div.classList.add(containerClassName);
             }
-            /**
-             * 将文件显示在html用户界面之上
-             *
-             * @param divId 文件浏览器将会显示在这个div之中
-             * @param icons 将文件的mime type转换为大分类的映射数组
-            */
-            Explorer.show = function (divId, files, icons) {
-                if (icons === void 0) { icons = []; }
-                var div = $ts(divId);
-                var iconTypes = $from(icons).ToDictionary(function (map) { return map.key; }, function (map) { return map.value; });
-                var fileHandles = $from(files)
-                    .Select(function (file) {
-                    var cls = iconTypes.Item(file.mime.contentType);
-                    var svg = Explorer_1.bioMimeTypes.classToFontAwsome(cls);
-                    var handle = new Explorer_1.FileHandle(file, svg);
-                    return handle;
-                });
-                // 初始化容器div对象
-                if (!div.classList.contains(containerClassName)) {
-                    div.classList.add(containerClassName);
-                }
-                div.innerHTML = fileHandles
-                    .Select(function (file) { return file.toString(); })
-                    .JoinBy("\n\n");
-                // 按照class查找对应的按钮注册处理事件
-                return new Explorer(div, fileHandles.ToArray());
+            div.innerHTML = fileHandles
+                .Select(function (file) { return file.toString(); })
+                .JoinBy("\n\n");
+            // 按照class查找对应的按钮注册处理事件
+            return {
+                container: div,
+                files: fileHandles.ToArray(),
+                divId: divId
             };
-            /**
-             * 加载script标签之中的json数据然后解析为所需要的映射关系
-            */
-            Explorer.getFaMaps = function (idClassTypes) {
-                var types = $from(LoadJson(idClassTypes))
-                    .Select(function (c) {
-                    var contentType = c["content_type"];
-                    var classId = c["classId"];
-                    var classType = classId;
-                    return new MapTuple(contentType, classType);
-                }).ToArray();
-                console.log(types);
-                return types;
-            };
-            /**
-             * 加载script标签之中的json数据然后解析为文件数据模型
-            */
-            Explorer.getFiles = function (idFiles, idClassTypes) {
-                var types = $from(LoadJson(idClassTypes))
-                    .ToDictionary(function (c) { return c["id"]; }, function (c) { return new BioCAD.MIME.mimeType(c); });
-                var files = $from(LoadJson(idFiles))
-                    .Select(function (a) { return new Explorer_1.bioCADFile(a, types); })
-                    .ToArray();
-                console.log(files);
-                return files;
-            };
-            return Explorer;
-        }());
-        Explorer_1.Explorer = Explorer;
+        }
+        Explorer.show = show;
     })(Explorer = Application.Explorer || (Application.Explorer = {}));
 })(Application || (Application = {}));
 var Application;
@@ -584,22 +550,23 @@ var bioCAD;
                         }
                         else {
                             vm.version = resp.info.version;
-                            vm.mimes = resp.info.content_types;
+                            vm.mimes = $from(resp.info.content_types)
+                                .Select(function (a) { return new BioCAD.MIME.mimeType(a); })
+                                .ToArray();
                             vm.loadFiles(vm.mimes);
                         }
                     });
                 };
                 FileManager.prototype.loadFiles = function (mimes) {
+                    var vm = this;
                     $ts.get("@data:fetch?page=" + 1, function (resp) {
                         if (resp.code != 0) {
                             console.error(resp);
                         }
                         else {
-                            console.log(resp.info);
+                            vm.explorer = Application.Explorer.show("#file-explorer-display", resp.info, mimes);
                         }
                     });
-                };
-                FileManager.prototype.__loadFiles = function () {
                 };
                 return FileManager;
             }(Bootstrap));

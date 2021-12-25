@@ -22,24 +22,24 @@ namespace bioCAD.WebApp.Platform {
                     console.error(resp);
                 } else {
                     vm.version = (<any>resp.info).version;
-                    vm.mimes = (<any>resp.info).content_types;
+                    vm.mimes = $from((<any>resp.info).content_types)
+                        .Select(a => new BioCAD.MIME.mimeType(<any>a))
+                        .ToArray();
                     vm.loadFiles(vm.mimes);
                 }
             });
         }
 
         private loadFiles(mimes: BioCAD.MIME.mimeType[]) {
+            const vm = this;
+
             $ts.get(`@data:fetch?page=${1}`, function (resp) {
                 if (resp.code != 0) {
                     console.error(resp);
                 } else {
-                    console.log(resp.info);
+                    vm.explorer = Application.Explorer.show("#file-explorer-display", <any>resp.info, mimes)
                 }
             });
-        }
-
-        private __loadFiles() {
-          
         }
     }
 }

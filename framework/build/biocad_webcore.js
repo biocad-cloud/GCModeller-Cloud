@@ -218,6 +218,7 @@ var BioCAD;
                 this.classID = data["id"];
                 this.contentType = data["content_type"];
                 this.description = data["description"];
+                this.class = typeof data["class"] == "number" ? data["class"] : parseInt(data["class"]);
             }
             mimeType.prototype.toString = function () {
                 return this.contentType;

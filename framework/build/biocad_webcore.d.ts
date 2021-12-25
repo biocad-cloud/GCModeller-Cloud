@@ -102,6 +102,10 @@ declare namespace BioCAD.MIME {
          * 详细的描述信息
         */
         description: string;
+        /**
+         * 更加通用的大分类描述标签
+        */
+        class: bioClassType;
         constructor(data: object);
         toString(): string;
     }

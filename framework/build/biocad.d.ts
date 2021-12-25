@@ -33,11 +33,10 @@ declare namespace bioCAD.WebApp {
 }
 declare const containerClassName: string;
 declare namespace Application.Explorer {
-    type BioClass = BioCAD.MIME.bioClassType;
     /**
      * 文件浏览器的模型，这个对象是一个文件的集合
     */
-    class Explorer {
+    interface Explorer {
         /**
          * 文件列表
         */
@@ -50,23 +49,14 @@ declare namespace Application.Explorer {
          * div容器对象
         */
         container: HTMLDivElement;
-        constructor(div: HTMLDivElement, files: FileHandle[]);
-        /**
-         * 将文件显示在html用户界面之上
-         *
-         * @param divId 文件浏览器将会显示在这个div之中
-         * @param icons 将文件的mime type转换为大分类的映射数组
-        */
-        static show(divId: string, files: bioCADFile[], icons?: MapTuple<string, BioClass>[]): Explorer;
-        /**
-         * 加载script标签之中的json数据然后解析为所需要的映射关系
-        */
-        static getFaMaps(idClassTypes: string): MapTuple<string, BioClass>[];
-        /**
-         * 加载script标签之中的json数据然后解析为文件数据模型
-        */
-        static getFiles(idFiles: string, idClassTypes: string): bioCADFile[];
     }
+    /**
+     * 将文件显示在html用户界面之上
+     *
+     * @param divId 文件浏览器将会显示在这个div之中
+     * @param icons 将文件的mime type转换为大分类的映射数组
+    */
+    function show(divId: string, files: bioCADFile[], icons: BioCAD.MIME.mimeType[]): Explorer;
 }
 declare namespace Application.Explorer {
     /**
@@ -183,7 +173,6 @@ declare namespace bioCAD.WebApp.Platform {
         readonly appName: string;
         protected init(): void;
         private loadFiles;
-        private __loadFiles;
     }
 }
 declare namespace bioCAD.WebApp.Platform {
