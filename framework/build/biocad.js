@@ -260,7 +260,17 @@ var Application;
             };
             FileHandle.prototype.viewer_click = function () {
                 $ts("#diag-title").clear().innerText = "View Model";
-                $ts("#diag-body").clear().display("");
+                $ts("#diag-body").clear().display($ts("<iframe>", {
+                    src: "@view:model?guid=" + this.fileId + "&iframe=true",
+                    width: "1500px",
+                    height: "650px",
+                    frameborder: "no",
+                    border: "0",
+                    marginwidth: "0",
+                    marginheight: "0",
+                    scrolling: "no",
+                    allowtransparency: "yes"
+                }));
                 $ts("#viewer-modal").style.zIndex = "1050000";
                 $("#viewer-modal").modal("show");
             };
