@@ -103,10 +103,7 @@ declare namespace Application.Explorer {
         static classNames: string[];
         private footer;
         private actionButtons;
-        /**
-         * @returns UI html string
-        */
-        toString(): string;
+        getNode(): HTMLElement;
     }
 }
 declare namespace Application.Explorer {

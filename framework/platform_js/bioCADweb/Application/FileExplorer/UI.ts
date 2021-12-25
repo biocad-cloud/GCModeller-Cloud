@@ -64,40 +64,41 @@ namespace Application.Explorer {
                 </div>`;
         }
 
-        /**
-         * @returns UI html string
-        */
-        public toString(): string {
-            var svg: string = this.mimeIcon[0];
-            var color: string = this.mimeIcon[1];
-
-            return `<div class="file-preview-frame krajee-default file-preview-initial file-sortable kv-preview-thumb" 
-                     id="${this.fileId}" 
-                     data-fileindex="${this.fileId}" 
-                     data-template="image"
-                     title="${this.file.fileName}">
-
-                    <div class="kv-file-content">
-                        <div class="kv-preview-data file-preview-other-frame" style="width:auto;height:auto;max-width:100%;max-height:100%;">
-                            <div class="file-preview-other">
-                                <span class="file-other-icon">
-                                    <center>
-                                        <div style="max-width: 128px; height: 50px; color: ${color};">
-                                            ${svg}
-                                        </div>
-                                    </center>
-                                </span>
+        public getNode(): HTMLElement {
+            const svg: string = this.mimeIcon[0];
+            const color: string = this.mimeIcon[1];
+            const content: HTMLElement = $ts("<div>", {
+                class: "kv-file-content"
+            }).display($ts("<div>", {
+                class: ["kv-preview-data", "file-preview-other-frame"],
+                style: "width:auto;height:auto;max-width:100%;max-height:100%;"
+            }).display(`
+                <div class="file-preview-other">
+                    <span class="file-other-icon">
+                        <center>
+                            <div style="max-width: 128px; height: 50px; color: ${color};">
+                                ${svg}
                             </div>
-                        </div>
-                    </div>
+                        </center>
+                    </span>
+                </div>
+            `));
+            const footer: HTMLElement = $ts("<div>", {
+                class: "file-thumbnail-footer"
+            })
+                .appendElement(this.footer())
+                .appendElement(this.actionButtons())
+                .appendElement($ts("<div>", { class: "clearfix" }));
 
-                    <div class="file-thumbnail-footer">
-                        ${this.footer()}
-                        ${this.actionButtons()}
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>`;
+            return $ts("<div>", {
+                class: ["file-preview-frame", "krajee-default", "file-preview-initial", "file-sortable", "kv-preview-thumb"],
+                id: `r-${this.fileId}`,
+                "data-fileindex": this.fileId,
+                "data-template": "image",
+                title: this.file.fileName
+            })
+                .appendElement(content)
+                .appendElement(footer);
         }
     }
 }

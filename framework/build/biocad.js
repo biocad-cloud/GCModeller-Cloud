@@ -175,8 +175,10 @@ var Application;
         */
         function show(divId, files, icons) {
             var div = $ts(divId);
-            var iconTypes = $from(icons).ToDictionary(function (map) { return map.contentType; }, function (map) { return map.class; });
+            var mimetypes = $from(icons).ToDictionary(function (map) { return map.classID.toString(); }, function (map) { return map; });
+            var iconTypes = $from(icons).ToDictionary(function (map) { return map.classID.toString(); }, function (map) { return map.class; });
             var fileHandles = $from(files)
+                .Select(function (a) { return new Explorer.bioCADFile(a, mimetypes); })
                 .Select(function (file) {
                 var cls = iconTypes.Item(file.mime.contentType);
                 var svg = Explorer.bioMimeTypes.classToFontAwsome(cls);
@@ -187,9 +189,10 @@ var Application;
             if (!div.classList.contains(containerClassName)) {
                 div.classList.add(containerClassName);
             }
-            div.innerHTML = fileHandles
-                .Select(function (file) { return file.toString(); })
-                .JoinBy("\n\n");
+            for (var _i = 0, _a = fileHandles.ToArray(); _i < _a.length; _i++) {
+                var file = _a[_i];
+                div.appendChild(file.getNode());
+            }
             // 按照class查找对应的按钮注册处理事件
             return {
                 container: div,
@@ -248,13 +251,30 @@ var Application;
             FileHandle.prototype.actionButtons = function () {
                 return "<div class=\"file-actions\">\n                    <div class=\"file-footer-buttons\">\n                        <button type=\"button\" \n                                class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" \n                                title=\"Delete file\" \n                                data-url=\"/site/file-delete\" \n                                data-key=\"" + this.fileId + "\">\n\n                            <i class=\"glyphicon glyphicon-trash\">\n                            </i>\n                        </button>\n                        <button type=\"button\" class=\"kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"View Details\">\n                            <i class=\"glyphicon glyphicon-zoom-in\"></i>\n                        </button>\n                    </div>\n                </div>";
             };
-            /**
-             * @returns UI html string
-            */
-            FileHandle.prototype.toString = function () {
+            FileHandle.prototype.getNode = function () {
                 var svg = this.mimeIcon[0];
                 var color = this.mimeIcon[1];
-                return "<div class=\"file-preview-frame krajee-default file-preview-initial file-sortable kv-preview-thumb\" \n                     id=\"" + this.fileId + "\" \n                     data-fileindex=\"" + this.fileId + "\" \n                     data-template=\"image\"\n                     title=\"" + this.file.fileName + "\">\n\n                    <div class=\"kv-file-content\">\n                        <div class=\"kv-preview-data file-preview-other-frame\" style=\"width:auto;height:auto;max-width:100%;max-height:100%;\">\n                            <div class=\"file-preview-other\">\n                                <span class=\"file-other-icon\">\n                                    <center>\n                                        <div style=\"max-width: 128px; height: 50px; color: " + color + ";\">\n                                            " + svg + "\n                                        </div>\n                                    </center>\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"file-thumbnail-footer\">\n                        " + this.footer() + "\n                        " + this.actionButtons() + "\n\n                        <div class=\"clearfix\"></div>\n                    </div>\n                </div>";
+                var content = $ts("<div>", {
+                    class: "kv-file-content"
+                }).display($ts("<div>", {
+                    class: ["kv-preview-data", "file-preview-other-frame"],
+                    style: "width:auto;height:auto;max-width:100%;max-height:100%;"
+                }).display("\n                <div class=\"file-preview-other\">\n                    <span class=\"file-other-icon\">\n                        <center>\n                            <div style=\"max-width: 128px; height: 50px; color: " + color + ";\">\n                                " + svg + "\n                            </div>\n                        </center>\n                    </span>\n                </div>\n            "));
+                var footer = $ts("<div>", {
+                    class: "file-thumbnail-footer"
+                })
+                    .appendElement(this.footer())
+                    .appendElement(this.actionButtons())
+                    .appendElement($ts("<div>", { class: "clearfix" }));
+                return $ts("<div>", {
+                    class: ["file-preview-frame", "krajee-default", "file-preview-initial", "file-sortable", "kv-preview-thumb"],
+                    id: "r-" + this.fileId,
+                    "data-fileindex": this.fileId,
+                    "data-template": "image",
+                    title: this.file.fileName
+                })
+                    .appendElement(content)
+                    .appendElement(footer);
             };
             FileHandle.classNames = [
                 "file-preview-frame",

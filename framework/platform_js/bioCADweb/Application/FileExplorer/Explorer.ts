@@ -32,13 +32,15 @@ namespace Application.Explorer {
         files: bioCADFile[],
         icons: BioCAD.MIME.mimeType[]): Explorer {
 
-        var div: HTMLDivElement = <any>$ts(divId);
-        var iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.contentType, map => map.class);
-        var fileHandles: IEnumerator<FileHandle> = $from(files)
+        const div: HTMLDivElement = <any>$ts(divId);
+        const mimetypes = $from(icons).ToDictionary(map => map.classID.toString(), map => map);
+        const iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.classID.toString(), map => map.class);
+        const fileHandles: IEnumerator<FileHandle> = $from(files)
+            .Select(a => new bioCADFile(a, mimetypes))
             .Select((file: bioCADFile) => {
-                var cls: BioClass = iconTypes.Item(file.mime.contentType);
-                var svg: string[] = bioMimeTypes.classToFontAwsome(cls);
-                var handle: FileHandle = new FileHandle(file, svg);
+                const cls: BioClass = iconTypes.Item(file.mime.contentType);
+                const svg: string[] = bioMimeTypes.classToFontAwsome(cls);
+                const handle: FileHandle = new FileHandle(file, svg);
 
                 return handle;
             });
@@ -48,9 +50,9 @@ namespace Application.Explorer {
             div.classList.add(containerClassName);
         }
 
-        div.innerHTML = fileHandles
-            .Select(file => file.toString())
-            .JoinBy("\n\n");
+        for (let file of fileHandles.ToArray()) {
+            div.appendChild(file.getNode());
+        }
 
         // 按照class查找对应的按钮注册处理事件
         return <Explorer>{
