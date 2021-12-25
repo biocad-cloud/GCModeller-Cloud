@@ -199,6 +199,10 @@ var BioCAD;
              * The biological sequence data type, like fasta sequence file.
             */
             bioClassType[bioClassType["bioSequence"] = 4] = "bioSequence";
+            /**
+             * biological model file for run simulator
+            */
+            bioClassType[bioClassType["model"] = 5] = "model";
         })(bioClassType = MIME.bioClassType || (MIME.bioClassType = {}));
     })(MIME = BioCAD.MIME || (BioCAD.MIME = {}));
 })(BioCAD || (BioCAD = {}));

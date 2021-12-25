@@ -137,6 +137,7 @@ var bioCAD;
     })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
 })(bioCAD || (bioCAD = {}));
 /// <reference path="../../build/linq.d.ts" />
+/// <reference path="../../build/biocad_webcore.d.ts" />
 /// <reference path="WebApp/Passport/LogInScript.ts" />
 /// <reference path="WebApp/Passport/RecoverScript.ts" />
 /// <reference path="WebApp/Passport/RegisterScript.ts" />
@@ -153,6 +154,7 @@ var bioCAD;
             Router.AddAppHandler(new WebApp.RecoverScript());
             Router.AddAppHandler(new WebApp.Platform.TaskMgr());
             Router.AddAppHandler(new WebApp.Platform.Report());
+            Router.AddAppHandler(new WebApp.Platform.FileManager());
             Router.RunApp();
         }
         WebApp.start = start;
@@ -160,6 +162,451 @@ var bioCAD;
 })(bioCAD || (bioCAD = {}));
 $ts.mode = Modes.debug;
 $ts(bioCAD.WebApp.start);
+var containerClassName = "file-preview-thumbnails";
+var Application;
+(function (Application) {
+    var Explorer;
+    (function (Explorer_1) {
+        /**
+         * 文件浏览器的模型，这个对象是一个文件的集合
+        */
+        var Explorer = /** @class */ (function () {
+            function Explorer(div, files) {
+                this.divId = div.id;
+                this.files = files;
+                this.container = div;
+            }
+            /**
+             * 将文件显示在html用户界面之上
+             *
+             * @param divId 文件浏览器将会显示在这个div之中
+             * @param icons 将文件的mime type转换为大分类的映射数组
+            */
+            Explorer.show = function (divId, files, icons) {
+                if (icons === void 0) { icons = []; }
+                var div = $ts(divId);
+                var iconTypes = $from(icons).ToDictionary(function (map) { return map.key; }, function (map) { return map.value; });
+                var fileHandles = $from(files)
+                    .Select(function (file) {
+                    var cls = iconTypes.Item(file.mime.contentType);
+                    var svg = Explorer_1.bioMimeTypes.classToFontAwsome(cls);
+                    var handle = new Explorer_1.FileHandle(file, svg);
+                    return handle;
+                });
+                // 初始化容器div对象
+                if (!div.classList.contains(containerClassName)) {
+                    div.classList.add(containerClassName);
+                }
+                div.innerHTML = fileHandles
+                    .Select(function (file) { return file.toString(); })
+                    .JoinBy("\n\n");
+                // 按照class查找对应的按钮注册处理事件
+                return new Explorer(div, fileHandles.ToArray());
+            };
+            /**
+             * 加载script标签之中的json数据然后解析为所需要的映射关系
+            */
+            Explorer.getFaMaps = function (idClassTypes) {
+                var types = $from(LoadJson(idClassTypes))
+                    .Select(function (c) {
+                    var contentType = c["content_type"];
+                    var classId = c["classId"];
+                    var classType = classId;
+                    return new MapTuple(contentType, classType);
+                }).ToArray();
+                console.log(types);
+                return types;
+            };
+            /**
+             * 加载script标签之中的json数据然后解析为文件数据模型
+            */
+            Explorer.getFiles = function (idFiles, idClassTypes) {
+                var types = $from(LoadJson(idClassTypes))
+                    .ToDictionary(function (c) { return c["id"]; }, function (c) { return new BioCAD.MIME.mimeType(c); });
+                var files = $from(LoadJson(idFiles))
+                    .Select(function (a) { return new Explorer_1.bioCADFile(a, types); })
+                    .ToArray();
+                console.log(files);
+                return files;
+            };
+            return Explorer;
+        }());
+        Explorer_1.Explorer = Explorer;
+    })(Explorer = Application.Explorer || (Application.Explorer = {}));
+})(Application || (Application = {}));
+var Application;
+(function (Application) {
+    var Explorer;
+    (function (Explorer) {
+        /**
+         * 文件数据模型
+        */
+        var bioCADFile = /** @class */ (function () {
+            function bioCADFile(data, types) {
+                this.id = data["id"];
+                this.fileName = data["name"];
+                this.size = data["size"];
+                this.mime = types.Item(data["content_type"]);
+            }
+            bioCADFile.prototype.toString = function () {
+                return this.fileName;
+            };
+            return bioCADFile;
+        }());
+        Explorer.bioCADFile = bioCADFile;
+    })(Explorer = Application.Explorer || (Application.Explorer = {}));
+})(Application || (Application = {}));
+// 在这里构建出用于显示文件的UI部分的代码
+var Application;
+(function (Application) {
+    var Explorer;
+    (function (Explorer) {
+        /**
+         * 将文件呈现给用户的UI代码部分
+        */
+        var FileHandle = /** @class */ (function () {
+            function FileHandle(file, icon) {
+                this.file = file;
+                this.mimeIcon = icon;
+            }
+            Object.defineProperty(FileHandle.prototype, "fileId", {
+                get: function () {
+                    return this.file.id.toString();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            FileHandle.prototype.footer = function () {
+                return "<div class=\"file-footer-caption\" title=\"" + this.file.fileName + "\">\n                    <div class=\"file-caption-info\">" + this.file.fileName + "</div>\n                    <div class=\"file-size-info\">\n                        <samp>(" + this.file.size + ")</samp>\n                    </div>\n                </div>";
+            };
+            FileHandle.prototype.actionButtons = function () {
+                return "<div class=\"file-actions\">\n                    <div class=\"file-footer-buttons\">\n                        <button type=\"button\" \n                                class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" \n                                title=\"Delete file\" \n                                data-url=\"/site/file-delete\" \n                                data-key=\"" + this.fileId + "\">\n\n                            <i class=\"glyphicon glyphicon-trash\">\n                            </i>\n                        </button>\n                        <button type=\"button\" class=\"kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"View Details\">\n                            <i class=\"glyphicon glyphicon-zoom-in\"></i>\n                        </button>\n                    </div>\n                </div>";
+            };
+            /**
+             * @returns UI html string
+            */
+            FileHandle.prototype.toString = function () {
+                var svg = this.mimeIcon[0];
+                var color = this.mimeIcon[1];
+                return "<div class=\"file-preview-frame krajee-default file-preview-initial file-sortable kv-preview-thumb\" \n                     id=\"" + this.fileId + "\" \n                     data-fileindex=\"" + this.fileId + "\" \n                     data-template=\"image\"\n                     title=\"" + this.file.fileName + "\">\n\n                    <div class=\"kv-file-content\">\n                        <div class=\"kv-preview-data file-preview-other-frame\" style=\"width:auto;height:auto;max-width:100%;max-height:100%;\">\n                            <div class=\"file-preview-other\">\n                                <span class=\"file-other-icon\">\n                                    <center>\n                                        <div style=\"max-width: 128px; height: 50px; color: " + color + ";\">\n                                            " + svg + "\n                                        </div>\n                                    </center>\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"file-thumbnail-footer\">\n                        " + this.footer() + "\n                        " + this.actionButtons() + "\n\n                        <div class=\"clearfix\"></div>\n                    </div>\n                </div>";
+            };
+            FileHandle.classNames = [
+                "file-preview-frame",
+                "krajee-default",
+                "file-preview-initial",
+                "file-sortable",
+                "kv-preview-thumb"
+            ];
+            return FileHandle;
+        }());
+        Explorer.FileHandle = FileHandle;
+    })(Explorer = Application.Explorer || (Application.Explorer = {}));
+})(Application || (Application = {}));
+var Application;
+(function (Application) {
+    var Explorer;
+    (function (Explorer) {
+        var bioMimeTypes;
+        (function (bioMimeTypes) {
+            var iconDNA = [
+                "0 0 384 512",
+                "M0 495.1C-.5 503 5.2 512 15.4 512h15.4c8.1 0 14.7-6.2 15.3-14.4.3-4.5 1-10.5 2.2-17.6h287c1.2 \n         7.1 2.1 13.4 2.5 17.7.7 8.1 7.3 14.3 15.3 14.3h15.5c11.5 0 15.8-10.7 15.3-16.8-2.1-29.5-16.3-126.8-108.5-208.8-12.6 \n         9.3-26.2 18.2-40.9 26.7 9.1 7.5 17 15.2 24.6 23H123.6c20.6-20.9 46.4-41.3 79.3-59.3C359.8 \n         190.5 381.2 56 384 16.9 384.5 9 378.8 0 368.6 0h-15.4c-8.1 0-14.7 6.2-15.3 14.4-.3 4.5-1 10.5-2.2 \n         17.6H48.6c-1.3-7.1-2-13.2-2.4-17.7C45.5 6.2 38.9 0 30.9 0H15.4C5.2 0-.5 9.1 0 16.9c2.6 35.7 21.2 \n         153 147.9 238.9C21.3 341.4 2.6 458.9 0 495.1zM322.4 80c-5.7 15-13.6 31.3-24.2 48H86.3C75.7 111.3 \n         67.8 95 62 80h260.4zM192 228.8c-27.4-16.3-49.4-34.3-67.5-52.8h135.4c-18.2 18.4-40.3 36.4-67.9 52.8zM61.4 \n         432c5.7-14.9 13.5-31.2 24.1-48h211.7c10.6 16.8 18.6 33 24.4 48H61.4z"
+            ];
+            var iconText = [
+                "0 0 384 512",
+                "M288 248v28c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-28c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 \n         12 12zm-12 72H108c-6.6 0-12 5.4-12 12v28c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12v-28c0-6.6-5.4-12-12-12zm108-188.1V464c0 \n         26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V48C0 21.5 21.5 0 48 0h204.1C264.8 0 277 5.1 286 \n         14.1L369.9 98c9 8.9 14.1 21.2 14.1 33.9zm-128-80V128h76.1L256 51.9zM336 464V176H232c-13.3 \n         0-24-10.7-24-24V48H48v416h288z"
+            ];
+            var iconImage = [
+                "0 0 384 512",
+                "M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 \n         48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 \n         10.7 24 24 24h104v288H48zm32-48h224V288l-23.5-23.5c-4.7-4.7-12.3-4.7-17 0L176 352l-39.5-39.5c-4.7-4.7-12.3-4.7-17 \n         0L80 352v64zm48-240c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
+            ];
+            var iconExcel = [
+                "0 0 384 512",
+                "M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 \n         48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 \n         10.7 24 24 24h104v288H48zm212-240h-28.8c-4.4 0-8.4 2.4-10.5 6.3-18 33.1-22.2 42.4-28.6 57.7-13.9-29.1-6.9-17.3-28.6-57.7-2.1-3.9-6.2-6.3-10.6-6.3H124c-9.3 \n         0-15 10-10.4 18l46.3 78-46.3 78c-4.7 8 1.1 18 10.4 18h28.9c4.4 0 8.4-2.4 10.5-6.3 21.7-40 23-45 \n         28.6-57.7 14.9 30.2 5.9 15.9 28.6 57.7 2.1 3.9 6.2 6.3 10.6 6.3H260c9.3 0 15-10 10.4-18L224 320c.7-1.1 \n         30.3-50.5 46.3-78 4.7-8-1.1-18-10.3-18z"
+            ];
+            var iconUnknown = [
+                "0 0 448 512",
+                "M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 \n         0 48 21.49 48 48zm-48 346V86a6 6 0 0 0-6-6H54a6 6 0 0 0-6 6v340a6 6 0 0 0 6 6h340a6 6 0 0 0 6-6zm-68.756-225.2c0 \n         67.052-72.421 68.084-72.421 92.863V300c0 6.627-5.373 12-12 12h-45.647c-6.627 0-12-5.373-12-12v-8.659c0-35.745 \n         27.1-50.034 47.579-61.516 17.561-9.845 28.324-16.541 28.324-29.579 0-17.246-21.999-28.693-39.784-28.693-23.189 \n         0-33.894 10.977-48.942 29.969-4.057 5.12-11.46 6.071-16.666 2.124l-27.824-21.098c-5.107-3.872-6.251-11.066-2.644-16.363C152.846 \n         131.491 182.94 112 229.794 112c49.071 0 101.45 38.304 101.45 88.8zM266 368c0 23.159-18.841 42-42 \n         42s-42-18.841-42-42 18.841-42 42-42 42 18.841 42 42z"
+            ];
+            /**
+             * bio class type to font-awsome icon name
+             *
+             * ## 2018-08-15 typescript 的枚举类型目前还不可以使用select进行选择
+             * 所以在这里使用if进行数据的获取
+            */
+            function classToFontAwsome(cls) {
+                var BioClass = BioCAD.MIME.bioClassType;
+                if (cls == BioClass.text) {
+                    return [fillSVG(iconText), "green"];
+                }
+                else if (cls == BioClass.image) {
+                    return [fillSVG(iconImage), "red"];
+                }
+                else if (cls == BioClass.matrix) {
+                    return [fillSVG(iconExcel), "darkgreen"];
+                }
+                else if (cls == BioClass.bioSequence) {
+                    return [fillSVG(iconDNA), "lightblue"];
+                }
+                else {
+                    return [fillSVG(iconUnknown), "gray"];
+                }
+            }
+            bioMimeTypes.classToFontAwsome = classToFontAwsome;
+            /**
+             * 填充svg图标的view box和path数据
+            */
+            function fillSVG(icon) {
+                return "<svg role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" + icon[0] + "\" height=\"128\" class=\"svg-inline--fa fa-w-12 fa-9x\">\n                    <path fill=\"currentColor\" d=\"" + icon[1] + "\">\n                    </path>\n                </svg>";
+            }
+        })(bioMimeTypes = Explorer.bioMimeTypes || (Explorer.bioMimeTypes = {}));
+    })(Explorer = Application.Explorer || (Application.Explorer = {}));
+})(Application || (Application = {}));
+var Application;
+(function (Application) {
+    var Suggestion;
+    (function (Suggestion) {
+        var render;
+        (function (render) {
+            /**
+             * 将结果显示到网页上面
+             *
+             * @param div 带有#符号前缀的id查询表达式
+            */
+            function makeSuggestions(terms, div, click, top, caseInsensitive, divClass, addNew) {
+                if (top === void 0) { top = 10; }
+                if (caseInsensitive === void 0) { caseInsensitive = false; }
+                if (divClass === void 0) { divClass = null; }
+                if (addNew === void 0) { addNew = null; }
+                var suggestions = new Suggestion.suggestion(terms);
+                return function (input) {
+                    showSuggestions(suggestions, input, div, click, top, caseInsensitive, addNew, divClass);
+                };
+            }
+            render.makeSuggestions = makeSuggestions;
+            function showSuggestions(suggestion, input, div, click, top, caseInsensitive, addNew, divClass) {
+                if (top === void 0) { top = 10; }
+                if (caseInsensitive === void 0) { caseInsensitive = false; }
+                if (addNew === void 0) { addNew = null; }
+                if (divClass === void 0) { divClass = null; }
+                var node = $ts(div);
+                if (!node) {
+                    return;
+                }
+                else {
+                    node.clear();
+                }
+                suggestion.populateSuggestion(input, top, caseInsensitive)
+                    .forEach(function (term) {
+                    node.appendChild(listItem(term, divClass, click));
+                });
+                if ((!isNullOrUndefined(addNew)) && (!suggestion.hasEquals(input, caseInsensitive))) {
+                    var addNewButton = $ts("<a>", {
+                        href: executeJavaScript,
+                        text: input,
+                        title: input,
+                        onclick: function () {
+                            addNew(input);
+                        }
+                    }).display("add '" + input + "'");
+                    node.append($ts("<div>", {
+                        class: divClass
+                    }).display(addNewButton));
+                }
+            }
+            function listItem(term, divClass, click) {
+                var a = $ts("<a>", {
+                    href: executeJavaScript,
+                    text: term.term,
+                    title: term.term,
+                    onclick: function () {
+                        click(term);
+                    }
+                }).display(term.term);
+                return $ts("<div>", { class: divClass }).display(a);
+            }
+        })(render = Suggestion.render || (Suggestion.render = {}));
+    })(Suggestion = Application.Suggestion || (Application.Suggestion = {}));
+})(Application || (Application = {}));
+var Application;
+(function (Application) {
+    var Suggestion;
+    (function (Suggestion) {
+        var suggestion = /** @class */ (function () {
+            function suggestion(terms) {
+                this.terms = terms;
+            }
+            suggestion.prototype.hasEquals = function (input, caseInsensitive) {
+                if (caseInsensitive === void 0) { caseInsensitive = false; }
+                if (!caseInsensitive) {
+                    input = input.toLowerCase();
+                }
+                for (var _i = 0, _a = this.terms; _i < _a.length; _i++) {
+                    var term_1 = _a[_i];
+                    if (caseInsensitive) {
+                        if (term_1.term.toLowerCase() == input) {
+                            return true;
+                        }
+                    }
+                    else {
+                        if (term_1.term == input) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            /**
+             * 返回最相似的前5个结果
+            */
+            suggestion.prototype.populateSuggestion = function (input, top, caseInsensitive) {
+                if (top === void 0) { top = 5; }
+                if (caseInsensitive === void 0) { caseInsensitive = false; }
+                var lowerInput = input.toLowerCase();
+                var scores = $from(this.terms)
+                    .Select(function (q) {
+                    var score = suggestion.getScore(q, input, lowerInput, caseInsensitive);
+                    return {
+                        term: q, score: score
+                    };
+                })
+                    .OrderBy(function (rank) { return rank.score; });
+                var result = scores
+                    .Where(function (s) { return s.score != Suggestion.NA; })
+                    .Take(top)
+                    .Select(function (s) { return s.term; })
+                    .ToArray();
+                if (result.length == top) {
+                    return result;
+                }
+                else {
+                    return suggestion.makeAdditionalSuggestion(scores, result, caseInsensitive, input, top);
+                }
+            };
+            // 非NA得分的少于top的数量
+            // 需要换一种方式计算结果，然后进行补充
+            suggestion.makeAdditionalSuggestion = function (scores, result, caseInsensitive, input, top) {
+                var lowerInput = input.toLowerCase();
+                var addi = scores
+                    .Skip(result.length)
+                    .Select(function (s) {
+                    var q = s.term;
+                    var score;
+                    if (caseInsensitive) {
+                        score = Levenshtein.ComputeDistance(q.term.toLowerCase(), lowerInput);
+                    }
+                    else {
+                        score = Levenshtein.ComputeDistance(q.term, input);
+                    }
+                    return {
+                        term: q, score: score
+                    };
+                }).OrderBy(function (s) { return s.score; })
+                    .Take(top - result.length)
+                    .Select(function (s) { return s.term; })
+                    .ToArray();
+                return result.concat(addi);
+            };
+            suggestion.getScore = function (q, input, lowerInput, caseInsensitive) {
+                if (caseInsensitive) {
+                    // 大小写不敏感的模式下，都转换为小写
+                    var lowerTerm = q.term.toLowerCase();
+                    return Suggestion.term.indexOf(lowerTerm, lowerInput);
+                }
+                else {
+                    return q.dist(input);
+                }
+            };
+            return suggestion;
+        }());
+        Suggestion.suggestion = suggestion;
+    })(Suggestion = Application.Suggestion || (Application.Suggestion = {}));
+})(Application || (Application = {}));
+var Application;
+(function (Application) {
+    var Suggestion;
+    (function (Suggestion) {
+        Suggestion.NA = 100000000000;
+        /**
+         * Term for suggestion
+        */
+        var term = /** @class */ (function () {
+            /**
+             * @param id 这个term在数据库之中的id编号
+            */
+            function term(id, term) {
+                this.id = id;
+                this.term = term;
+            }
+            /**
+             * 使用动态规划算法计算出当前的这个term和用户输入之间的相似度
+            */
+            term.prototype.dist = function (input) {
+                return term.indexOf(this.term, input);
+            };
+            term.indexOf = function (term, input) {
+                var i = term.indexOf(input);
+                if (i == -1) {
+                    return Suggestion.NA;
+                }
+                else {
+                    return Math.abs(input.length - term.length);
+                }
+            };
+            return term;
+        }());
+        Suggestion.term = term;
+    })(Suggestion = Application.Suggestion || (Application.Suggestion = {}));
+})(Application || (Application = {}));
+var bioCAD;
+(function (bioCAD) {
+    var WebApp;
+    (function (WebApp) {
+        var Platform;
+        (function (Platform) {
+            var FileManager = /** @class */ (function (_super) {
+                __extends(FileManager, _super);
+                function FileManager() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                Object.defineProperty(FileManager.prototype, "appName", {
+                    get: function () {
+                        return "FileExplorer";
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                FileManager.prototype.init = function () {
+                    var vm = this;
+                    $ts.get("@data:bio_mimetype", function (resp) {
+                        if (resp.code != 0) {
+                            console.error(resp);
+                        }
+                        else {
+                            vm.version = resp.info.version;
+                            vm.mimes = resp.info.content_types;
+                            vm.loadFiles(vm.mimes);
+                        }
+                    });
+                };
+                FileManager.prototype.loadFiles = function (mimes) {
+                    $ts.get("@data:fetch?page=" + 1, function (resp) {
+                        if (resp.code != 0) {
+                            console.error(resp);
+                        }
+                        else {
+                            console.log(resp.info);
+                        }
+                    });
+                };
+                FileManager.prototype.__loadFiles = function () {
+                };
+                return FileManager;
+            }(Bootstrap));
+            Platform.FileManager = FileManager;
+        })(Platform = WebApp.Platform || (WebApp.Platform = {}));
+    })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
+})(bioCAD || (bioCAD = {}));
 ///<reference path="../../../../build/Metabolic_pathway.d.ts" />
 var bioCAD;
 (function (bioCAD) {
@@ -315,7 +762,7 @@ var bioCAD;
                         if (node.isGroup) {
                             var map = { pathway: node.label, keys: [] };
                             var opt = $ts("<option>", { value: node.key });
-                            var term = new uikit.suggestion_list.term(node.key, node.text);
+                            var term = new Application.Suggestion.term(node.key, node.text);
                             opt.innerText = (node.text);
                             terms.push(term);
                             pathways.Add(node.key.toString(), map);
@@ -329,7 +776,7 @@ var bioCAD;
                                 var refKey = node.group.toString();
                                 var index = pathways.Item(refKey);
                                 var opt = $ts("<option>", { value: node.label });
-                                var term = new uikit.suggestion_list.term(node.label, node.label);
+                                var term = new Application.Suggestion.term(node.label, node.label);
                                 opt.innerText = node.label;
                                 index.keys.push(node.label);
                                 if ((node.category != "valve") && !Strings.Empty(node.label, true)) {
@@ -347,7 +794,7 @@ var bioCAD;
                             vm.updateChart(opt.toString());
                         }
                     };
-                    var suggest = uikit.suggestion_list.render.makeSuggestions(terms, Platform.listDiv, function (term) { return _this.clickOnTerm(term); }, 5, true, "");
+                    var suggest = Application.Suggestion.render.makeSuggestions(terms, Platform.listDiv, function (term) { return _this.clickOnTerm(term); }, 5, true, "");
                     $ts(Platform.inputDiv).onkeyup = function () {
                         var search = $ts.value(Platform.inputDiv);
                         if (Strings.Empty(search, true)) {
@@ -467,200 +914,4 @@ var bioCAD;
         })(Platform = WebApp.Platform || (WebApp.Platform = {}));
     })(WebApp = bioCAD.WebApp || (bioCAD.WebApp = {}));
 })(bioCAD || (bioCAD = {}));
-var uikit;
-(function (uikit) {
-    var suggestion_list;
-    (function (suggestion_list) {
-        var render;
-        (function (render) {
-            /**
-             * 将结果显示到网页上面
-             *
-             * @param div 带有#符号前缀的id查询表达式
-            */
-            function makeSuggestions(terms, div, click, top, caseInsensitive, divClass, addNew) {
-                if (top === void 0) { top = 10; }
-                if (caseInsensitive === void 0) { caseInsensitive = false; }
-                if (divClass === void 0) { divClass = null; }
-                if (addNew === void 0) { addNew = null; }
-                var suggestions = new suggestion_list.suggestion(terms);
-                return function (input) {
-                    showSuggestions(suggestions, input, div, click, top, caseInsensitive, addNew, divClass);
-                };
-            }
-            render.makeSuggestions = makeSuggestions;
-            function showSuggestions(suggestion, input, div, click, top, caseInsensitive, addNew, divClass) {
-                if (top === void 0) { top = 10; }
-                if (caseInsensitive === void 0) { caseInsensitive = false; }
-                if (addNew === void 0) { addNew = null; }
-                if (divClass === void 0) { divClass = null; }
-                var node = $ts(div);
-                if (!node) {
-                    return;
-                }
-                else {
-                    node.clear();
-                }
-                suggestion.populateSuggestion(input, top, caseInsensitive)
-                    .forEach(function (term) {
-                    node.appendChild(listItem(term, divClass, click));
-                });
-                if ((!isNullOrUndefined(addNew)) && (!suggestion.hasEquals(input, caseInsensitive))) {
-                    var addNewButton = $ts("<a>", {
-                        href: executeJavaScript,
-                        text: input,
-                        title: input,
-                        onclick: function () {
-                            addNew(input);
-                        }
-                    }).display("add '" + input + "'");
-                    node.append($ts("<div>", {
-                        class: divClass
-                    }).display(addNewButton));
-                }
-            }
-            function listItem(term, divClass, click) {
-                var a = $ts("<a>", {
-                    href: executeJavaScript,
-                    text: term.term,
-                    title: term.term,
-                    onclick: function () {
-                        click(term);
-                    }
-                }).display(term.term);
-                return $ts("<div>", { class: divClass }).display(a);
-            }
-        })(render = suggestion_list.render || (suggestion_list.render = {}));
-    })(suggestion_list = uikit.suggestion_list || (uikit.suggestion_list = {}));
-})(uikit || (uikit = {}));
-var uikit;
-(function (uikit) {
-    var suggestion_list;
-    (function (suggestion_list) {
-        var suggestion = /** @class */ (function () {
-            function suggestion(terms) {
-                this.terms = terms;
-            }
-            suggestion.prototype.hasEquals = function (input, caseInsensitive) {
-                if (caseInsensitive === void 0) { caseInsensitive = false; }
-                if (!caseInsensitive) {
-                    input = input.toLowerCase();
-                }
-                for (var _i = 0, _a = this.terms; _i < _a.length; _i++) {
-                    var term_1 = _a[_i];
-                    if (caseInsensitive) {
-                        if (term_1.term.toLowerCase() == input) {
-                            return true;
-                        }
-                    }
-                    else {
-                        if (term_1.term == input) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-            /**
-             * 返回最相似的前5个结果
-            */
-            suggestion.prototype.populateSuggestion = function (input, top, caseInsensitive) {
-                if (top === void 0) { top = 5; }
-                if (caseInsensitive === void 0) { caseInsensitive = false; }
-                var lowerInput = input.toLowerCase();
-                var scores = $from(this.terms)
-                    .Select(function (q) {
-                    var score = suggestion.getScore(q, input, lowerInput, caseInsensitive);
-                    return {
-                        term: q, score: score
-                    };
-                })
-                    .OrderBy(function (rank) { return rank.score; });
-                var result = scores
-                    .Where(function (s) { return s.score != suggestion_list.NA; })
-                    .Take(top)
-                    .Select(function (s) { return s.term; })
-                    .ToArray();
-                if (result.length == top) {
-                    return result;
-                }
-                else {
-                    return suggestion.makeAdditionalSuggestion(scores, result, caseInsensitive, input, top);
-                }
-            };
-            // 非NA得分的少于top的数量
-            // 需要换一种方式计算结果，然后进行补充
-            suggestion.makeAdditionalSuggestion = function (scores, result, caseInsensitive, input, top) {
-                var lowerInput = input.toLowerCase();
-                var addi = scores
-                    .Skip(result.length)
-                    .Select(function (s) {
-                    var q = s.term;
-                    var score;
-                    if (caseInsensitive) {
-                        score = Levenshtein.ComputeDistance(q.term.toLowerCase(), lowerInput);
-                    }
-                    else {
-                        score = Levenshtein.ComputeDistance(q.term, input);
-                    }
-                    return {
-                        term: q, score: score
-                    };
-                }).OrderBy(function (s) { return s.score; })
-                    .Take(top - result.length)
-                    .Select(function (s) { return s.term; })
-                    .ToArray();
-                return result.concat(addi);
-            };
-            suggestion.getScore = function (q, input, lowerInput, caseInsensitive) {
-                if (caseInsensitive) {
-                    // 大小写不敏感的模式下，都转换为小写
-                    var lowerTerm = q.term.toLowerCase();
-                    return suggestion_list.term.indexOf(lowerTerm, lowerInput);
-                }
-                else {
-                    return q.dist(input);
-                }
-            };
-            return suggestion;
-        }());
-        suggestion_list.suggestion = suggestion;
-    })(suggestion_list = uikit.suggestion_list || (uikit.suggestion_list = {}));
-})(uikit || (uikit = {}));
-var uikit;
-(function (uikit) {
-    var suggestion_list;
-    (function (suggestion_list) {
-        suggestion_list.NA = 100000000000;
-        /**
-         * Term for suggestion
-        */
-        var term = /** @class */ (function () {
-            /**
-             * @param id 这个term在数据库之中的id编号
-            */
-            function term(id, term) {
-                this.id = id;
-                this.term = term;
-            }
-            /**
-             * 使用动态规划算法计算出当前的这个term和用户输入之间的相似度
-            */
-            term.prototype.dist = function (input) {
-                return term.indexOf(this.term, input);
-            };
-            term.indexOf = function (term, input) {
-                var i = term.indexOf(input);
-                if (i == -1) {
-                    return suggestion_list.NA;
-                }
-                else {
-                    return Math.abs(input.length - term.length);
-                }
-            };
-            return term;
-        }());
-        suggestion_list.term = term;
-    })(suggestion_list = uikit.suggestion_list || (uikit.suggestion_list = {}));
-})(uikit || (uikit = {}));
 //# sourceMappingURL=biocad.js.map

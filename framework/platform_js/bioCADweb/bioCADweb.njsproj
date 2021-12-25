@@ -62,6 +62,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Application\FileExplorer\UI.ts" />
+    <TypeScriptCompile Include="WebApp\Platform\FileManager.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\" />

@@ -35,7 +35,7 @@ namespace Application.Explorer {
          * @param icons 将文件的mime type转换为大分类的映射数组
         */
         public static show(divId: string, files: bioCADFile[], icons: MapTuple<string, BioClass>[] = []): Explorer {
-            var div: HTMLDivElement = <HTMLDivElement>document.getElementById(divId);
+            var div: HTMLDivElement = <any>$ts(divId);
             var iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.key, map => map.value);
             var fileHandles: IEnumerator<FileHandle> = $from(files)
                 .Select((file: bioCADFile) => {

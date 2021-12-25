@@ -35,6 +35,7 @@ namespace bioCAD.WebApp {
 
         Router.AddAppHandler(new Platform.TaskMgr());
         Router.AddAppHandler(new Platform.Report());
+        Router.AddAppHandler(new Platform.FileManager());
 
         Router.RunApp();
     }
