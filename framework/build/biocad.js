@@ -261,7 +261,7 @@ var Application;
             FileHandle.prototype.viewer_click = function () {
                 $ts("#diag-title").clear().innerText = "View Model";
                 $ts("#diag-body").clear().display($ts("<iframe>", {
-                    src: "@view:model?guid=" + this.fileId + "&iframe=true",
+                    src: "@view:model?guid=" + this.fileId + "&iframe=true&debugger=false",
                     width: "1500px",
                     height: "650px",
                     frameborder: "no",
