@@ -14,6 +14,7 @@ docker run -itd --name biocad_web \
 	-v "/opt/biocad/framework/MaxMind/:/opt/vendor/MaxMind/:ro" \
 	-v "/opt/biocad/repository/:/opt/repository/:ro" \
 	-v "/opt/biocad/src/:/var/www/html/:ro" \
+	-v "/opt/biocad/src/web/resources/fonts/:/var/www/html/web/resources/styles/fonts/:ro" \
 	-v "/opt/biocad/src/.etc:/etc/httpd/vhost" \
 	-v "/mnt/biocad_cloud:/mnt/biocad_cloud:rw" \
 	-v "/opt/GeoIP:/usr/local/share/GeoIP/:ro" \
