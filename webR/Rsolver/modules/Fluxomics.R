@@ -9,7 +9,7 @@ imports "GSEA" from "gseakit";
 #' @param nsamples number of the sample points in each time stream 
 #'     section 
 #' 
-Fluxomics = function(simulates, background, nparts = 5, nsamples = 32, outputdir = "./") {
+Fluxomics = function(simulates, background, nparts = 6, nsamples = 32, outputdir = "./") {
     if (!is.null(background)) {
         clusters = lapply(names(background), function(id) {
             nodes = background[[id]];
@@ -137,6 +137,9 @@ OmicsData = function(simulates, nparts = 5, nsamples = 32) {
     omics = data.frame(symbols = symbols);
     sample_names = NULL;
     sample_info = NULL;
+
+    print("split matrix data into nparts:");
+    print(nparts);
 
     for(i in 1:nparts) {
         range_min = (i - 1) * block_size + 1;
