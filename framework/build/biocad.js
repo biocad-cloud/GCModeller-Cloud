@@ -192,6 +192,7 @@ var Application;
             for (var _i = 0, _a = fileHandles.ToArray(); _i < _a.length; _i++) {
                 var file = _a[_i];
                 div.appendChild(file.getNode());
+                file.handleEvents();
             }
             // 按照class查找对应的按钮注册处理事件
             return {
@@ -249,7 +250,19 @@ var Application;
                 return "<div class=\"file-footer-caption\" title=\"" + this.file.fileName + "\">\n                    <div class=\"file-caption-info\">" + this.file.fileName + "</div>\n                    <div class=\"file-size-info\">\n                        <samp>(" + this.file.size + ")</samp>\n                    </div>\n                </div>";
             };
             FileHandle.prototype.actionButtons = function () {
-                return "<div class=\"file-actions\">\n                    <div class=\"file-footer-buttons\">\n                        <button type=\"button\" \n                                class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" \n                                title=\"Delete file\" \n                                data-url=\"/site/file-delete\" \n                                data-key=\"" + this.fileId + "\">\n\n                            <i class=\"glyphicon glyphicon-trash\">\n                            </i>\n                        </button>\n                        <button type=\"button\" class=\"kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"View Details\">\n                            <i class=\"glyphicon glyphicon-zoom-in\"></i>\n                        </button>\n                    </div>\n                </div>";
+                return "<div class=\"file-actions\">\n                    <div class=\"file-footer-buttons\">\n                        <button type=\"button\" \n                                class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" \n                                title=\"Delete file\" \n                                data-url=\"/site/file-delete\" \n                                data-key=\"" + this.fileId + "\">\n\n                            <i class=\"glyphicon glyphicon-trash\">\n                            </i>\n                        </button>\n                        <button id=\"view-" + this.fileId + "\" type=\"button\" class=\"kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"View Details\">\n                            <i class=\"glyphicon glyphicon-zoom-in\"></i>\n                        </button>\n                    </div>\n                </div>";
+            };
+            FileHandle.prototype.handleEvents = function () {
+                var vm = this;
+                $ts("#view-" + this.fileId).onclick = function () {
+                    vm.viewer_click();
+                };
+            };
+            FileHandle.prototype.viewer_click = function () {
+                $ts("#diag-title").clear().innerText = "View Model";
+                $ts("#diag-body").clear().display("");
+                $ts("#viewer-modal").style.zIndex = "1050000";
+                $("#viewer-modal").modal("show");
             };
             FileHandle.prototype.getNode = function () {
                 var svg = this.mimeIcon[0];

@@ -103,6 +103,8 @@ declare namespace Application.Explorer {
         static classNames: string[];
         private footer;
         private actionButtons;
+        handleEvents(): void;
+        viewer_click(): void;
         getNode(): HTMLElement;
     }
 }

@@ -57,11 +57,27 @@ namespace Application.Explorer {
                             <i class="glyphicon glyphicon-trash">
                             </i>
                         </button>
-                        <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary" title="View Details">
+                        <button id="view-${this.fileId}" type="button" class="kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary" title="View Details">
                             <i class="glyphicon glyphicon-zoom-in"></i>
                         </button>
                     </div>
                 </div>`;
+        }
+
+        public handleEvents() {
+            const vm = this;
+
+            $ts(`#view-${this.fileId}`).onclick = function () {
+                vm.viewer_click();
+            }
+        }
+
+        public viewer_click() {
+            $ts("#diag-title").clear().innerText = "View Model";
+            $ts("#diag-body").clear().display("");
+            $ts("#viewer-modal").style.zIndex = "1050000";
+
+            $("#viewer-modal").modal("show");
         }
 
         public getNode(): HTMLElement {

@@ -52,6 +52,7 @@ namespace Application.Explorer {
 
         for (let file of fileHandles.ToArray()) {
             div.appendChild(file.getNode());
+            file.handleEvents();
         }
 
         // 按照class查找对应的按钮注册处理事件
