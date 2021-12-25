@@ -176,11 +176,10 @@ var Application;
         function show(divId, files, icons) {
             var div = $ts(divId);
             var mimetypes = $from(icons).ToDictionary(function (map) { return map.classID.toString(); }, function (map) { return map; });
-            var iconTypes = $from(icons).ToDictionary(function (map) { return map.classID.toString(); }, function (map) { return map.class; });
             var fileHandles = $from(files)
                 .Select(function (a) { return new Explorer.bioCADFile(a, mimetypes); })
                 .Select(function (file) {
-                var cls = iconTypes.Item(file.mime.contentType);
+                var cls = file.mime.class;
                 var svg = Explorer.bioMimeTypes.classToFontAwsome(cls);
                 var handle = new Explorer.FileHandle(file, svg);
                 return handle;

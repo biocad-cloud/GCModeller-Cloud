@@ -34,11 +34,10 @@ namespace Application.Explorer {
 
         const div: HTMLDivElement = <any>$ts(divId);
         const mimetypes = $from(icons).ToDictionary(map => map.classID.toString(), map => map);
-        const iconTypes: Dictionary<BioClass> = $from(icons).ToDictionary(map => map.classID.toString(), map => map.class);
         const fileHandles: IEnumerator<FileHandle> = $from(files)
             .Select(a => new bioCADFile(a, mimetypes))
             .Select((file: bioCADFile) => {
-                const cls: BioClass = iconTypes.Item(file.mime.contentType);
+                const cls: BioClass = file.mime.class;
                 const svg: string[] = bioMimeTypes.classToFontAwsome(cls);
                 const handle: FileHandle = new FileHandle(file, svg);
 
