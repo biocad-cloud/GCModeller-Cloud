@@ -26,8 +26,8 @@ FluxVisual = function(fluxomics, sample_info, simulates, background, outputdir =
 }
 
 MetabolicFluxLines = function(data, pathway, outputdir = "./") {
-    bitmap(file = `${outputdir}/visual/flux/${pathway}.png`, width = 2400, height = 1600) {
-        p = ggplot(data, padding = "padding: 200px 500px 200px 200px;");
+    bitmap(file = `${outputdir}/visual/flux/${pathway}.png`, width = 3300, height = 1700) {
+        p = ggplot(data, padding = "padding: 200px 900px 200px 250px;");
 
         for(name in colnames(data)) {
             if (name != "#Time") {
