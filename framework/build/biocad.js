@@ -282,7 +282,7 @@ var Application;
                 }).display($ts("<div>", {
                     class: ["kv-preview-data", "file-preview-other-frame"],
                     style: "width:auto;height:auto;max-width:100%;max-height:100%;"
-                }).display("\n                <div class=\"file-preview-other\">\n                    <span class=\"file-other-icon\">\n                        <center>\n                            <div style=\"max-width: 128px; height: 50px; color: " + color + ";\">\n                                " + svg + "\n                            </div>\n                        </center>\n                    </span>\n                </div>\n            "));
+                }).display("\n                <div class=\"file-preview-other\">\n                    <span class=\"file-other-icon\">\n                        <a href=\"/biostack/pathway_design/view?guid=" + this.fileId + "\">\n                            <center>\n                                <div style=\"max-width: 128px; height: 50px; color: " + color + ";\">\n                                    " + svg + "\n                                </div>\n                            </center>\n                        </a>\n                    </span>\n                </div>\n            "));
                 var footer = $ts("<div>", {
                     class: "file-thumbnail-footer"
                 })

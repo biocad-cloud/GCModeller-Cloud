@@ -101,11 +101,13 @@ namespace Application.Explorer {
             }).display(`
                 <div class="file-preview-other">
                     <span class="file-other-icon">
-                        <center>
-                            <div style="max-width: 128px; height: 50px; color: ${color};">
-                                ${svg}
-                            </div>
-                        </center>
+                        <a href="/biostack/pathway_design/view?guid=${this.fileId}">
+                            <center>
+                                <div style="max-width: 128px; height: 50px; color: ${color};">
+                                    ${svg}
+                                </div>
+                            </center>
+                        </a>
                     </span>
                 </div>
             `));
