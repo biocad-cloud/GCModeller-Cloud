@@ -4,6 +4,7 @@ imports "../modules/SBuilder.R";
 imports "../modules/PLAS_Solver.R";
 imports "../modules/Fluxomics.R";
 imports "../modules/CustomPathway.R";
+imports "../modules/Visual.R";
 
 require(JSON);
 
