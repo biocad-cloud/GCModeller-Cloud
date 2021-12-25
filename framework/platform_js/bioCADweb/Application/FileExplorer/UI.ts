@@ -38,9 +38,13 @@ namespace Application.Explorer {
 
         private footer(): string {
             return `<div class="file-footer-caption" title="${this.file.fileName}">
-                    <div class="file-caption-info">${this.file.fileName}</div>
+                    <div class="file-caption-info">
+                        <a src="${$ts.url("@view:model")}?guid=${this.fileId}">
+                            ${this.file.fileName}
+                        </a>
+                    </div>
                     <div class="file-size-info">
-                        <samp>(${this.file.size})</samp>
+                        <samp>(${Strings.Lanudry(parseFloat(this.file.size.toString()))})</samp>
                     </div>
                 </div>`;
         }
