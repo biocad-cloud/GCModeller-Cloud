@@ -242,6 +242,7 @@ var apps;
                     };
                 }
             }
+            var pos;
             // add node into network graph
             for (var _b = 0, _c = graph.nodeDataArray; _b < _c.length; _b++) {
                 var node = _c[_b];
@@ -251,6 +252,16 @@ var apps;
                 else if (node.category == "valve") {
                     continue;
                 }
+                var loc = node.loc;
+                if (Strings.Empty(loc)) {
+                    pos = [0, 0];
+                }
+                else {
+                    pos = loc.split(/\s+/ig).map(function (t) { return parseFloat(t); });
+                }
+                if (pos.length < 2) {
+                    pos = [0, 0];
+                }
                 g.nodes.push({
                     dunnartid: (g.nodes.length + 1).toString(),
                     height: 40,
@@ -259,8 +270,8 @@ var apps;
                     rx: 9,
                     ry: 9,
                     width: 60,
-                    x: 0,
-                    y: 0
+                    x: pos[0],
+                    y: pos[1]
                 });
                 nodeIndex[node.key] = g.nodes.length - 1;
                 if (!isNullOrUndefined(node.group)) {
