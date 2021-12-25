@@ -39,7 +39,7 @@ namespace Application.Explorer {
         private footer(): string {
             return `<div class="file-footer-caption" title="${this.file.fileName}">
                     <div class="file-caption-info">
-                        <a src="${$ts.url("@view:model")}?guid=${this.fileId}">
+                        <a href="${$ts.url("@view:model")}?guid=${this.fileId}">
                             ${this.file.fileName}
                         </a>
                     </div>
