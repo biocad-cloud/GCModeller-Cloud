@@ -20,25 +20,27 @@ FluxVisual = function(fluxomics, sample_info, simulates, background, outputdir =
 
         data = simulates[, nodes[, "label"]];
         data[, "#Time"] = simulates[, "#Time"];
-        
+
         MetabolicFluxLines(data, pathway, outputdir = outputdir);
     }
 }
 
 MetabolicFluxLines = function(data, pathway, outputdir = "./") {
-    require(ggplot);
-
-    x = seq(-5,5, by = 0.2);
-    y = sin(x);
-
     bitmap(file = `${outputdir}/visual/flux/${pathway}.png`, width = 2400, height = 1600) {
         p = ggplot(data, padding = "padding: 200px 500px 200px 200px;");
 
         for(name in colnames(data)) {
             if (name != "#Time") {
-                p = p + geom_line(aes(x = "#Time", y = name), width = 8);
+                p = p + geom_line(aes(x = "#Time", y = name, title = name), width = 8);
             }
         }
+
+        p = p 
+        + labs(x = "Time(ticks)", y = "metabolic activity")
+        + ggtitle(`Systems Dynamics of ${pathway}`)
+        + scale_x_continuous(labels = "F0")
+        + scale_y_continuous(labels = "F2")
+        ;
 
         p;
     }
