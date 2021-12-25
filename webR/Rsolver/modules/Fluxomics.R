@@ -45,51 +45,56 @@ Fluxomics = function(simulates, background, nparts = 6, nsamples = 32, outputdir
     str(time_stream);   
 
     for(i in 2:length(time_stream)) {
-        A = time_stream[i-1];
-        B = time_stream[i];
+        # A = time_stream[i-1];
+        # B = time_stream[i];
 
-        dir = `${outputdir}/Fluxomics/${A} vs ${B}/`;
-        A = sample_info[(sample_info[, "sample_info"] == A), ];
-        B = sample_info[(sample_info[, "sample_info"] == B), ];
-        A = A[, "sample_id"];
-        B = B[, "sample_id"];
+        # dir = `${outputdir}/Fluxomics/${A} vs ${B}/`;
+        # A = sample_info[(sample_info[, "sample_info"] == A), ];
+        # B = sample_info[(sample_info[, "sample_info"] == B), ];
+        # A = A[, "sample_id"];
+        # B = B[, "sample_id"];
 
-        change = logFoldchange(fluxomics[, A], fluxomics[, B]);
+        # change = logFoldchange(fluxomics[, A], fluxomics[, B]);
 
-        print("analysis for time stream:");
-        print(basename(dir));
-        print("get different analysis flux node:");
-        print(change);
+        # print("analysis for time stream:");
+        # print(basename(dir));
+        # print("get different analysis flux node:");
+        # print(change);
 
-        write.csv(change, file = `${dir}/DAF.csv`, row.names = TRUE);
+        # write.csv(change, file = `${dir}/DAF.csv`, row.names = TRUE);
 
-        # run enrichment
-        up = rownames(change)[(change[, "log2Foldchange"] > 0)];
-        down = rownames(change)[(change[, "log2Foldchange"] < 0)];
-        all = append(up, down);
+        # # run enrichment
+        # up = rownames(change)[(change[, "log2Foldchange"] > 0)];
+        # down = rownames(change)[(change[, "log2Foldchange"] < 0)];
+        # all = append(up, down);
 
-        if (!is.null(background)) {
-            run = function(list, tag) {
-                enrich = background 
-                |> enrichment(geneSet = list, outputAll = TRUE)
-                |> enrichment.FDR()
-                ;
+        # if (!is.null(background)) {
+        #     run = function(list, tag) {
+        #         enrich = background 
+        #         |> enrichment(geneSet = list, outputAll = TRUE)
+        #         |> enrichment.FDR()
+        #         ;
 
-                print(`pathway enrichment for '${tag}':`);
-                print(as.data.frame(enrich));
+        #         print(`pathway enrichment for '${tag}':`);
+        #         print(as.data.frame(enrich));
                 
-                cat("\n\n");
+        #         cat("\n\n");
 
-                write.enrichment(enrich, file = `${dir}/enrich_${tag}.csv`);
-            }
+        #         write.enrichment(enrich, file = `${dir}/enrich_${tag}.csv`);
+        #     }
 
-            run(up, "up");      
-            run(down, "down");
-            run(all, "all");
+        #     run(up, "up");      
+        #     run(down, "down");
+        #     run(all, "all");
 
-            cat("\n\n\n\n");
-        }        
+        #     cat("\n\n\n\n");
+        # }        
     }
+
+    list(
+        fluxomics = fluxomics, 
+        sample_info = sample_info
+    );
 }
 
 logFoldchange = function(A, B) {
