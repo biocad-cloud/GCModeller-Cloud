@@ -25,7 +25,7 @@
     <link href="/resources/styles/paper/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
     <script type="application/json" id="plas_graph">
-        [1] vec<string>
+       {$plas_graph}
     </script>
 
     <script type="text/javascript" src="/resources/typescripts/linq.min.js"></script>
@@ -79,14 +79,66 @@
                     <h1>PLAS.NET Flux Report</h1>
                 </div>
 
+                <p>
+                    Metabolic flux refers to the amount of a metabolite processed by one or more catalytic steps per
+                    unit time, and it is typically normalized by cellular abundance (e.g., gram dry weight)
+                    (Stephanopoulos et al., 1998 ).
+                </p>
+
+                <h2>Graph View</h2>
+
                 <div style="width: 100%; text-align: center; margin-top: 10px;">
                     <center>
                         <div id="canvas"></div>
                     </center>
                 </div>
 
+                <hr />
+
             </div>
         </div>
+
+        <div style="page-break-after: always;"></div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <h2>Pathway Dynamics</h2>
+
+                <p>
+                    All metabolic changes take place in multiple reactions and follow a particular pathway called the
+                    metabolic pathway. The metabolic pathway includes a series of reactions. The metabolite flow, the
+                    rate, and direction at which metabolism takes place are called the dynamic state of body
+                    constituents.
+                </p>
+
+                {$pathway_dynamics}
+
+            </div>
+        </div>
+
+        <div style="page-break-after: always;"></div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <h2>Fluxomics Dynamics</h2>
+
+                <p>
+                    Metabolic flux analysis (MFA) is an increasingly important tool to study metabolism quantitatively.
+                    Unlike the concentrations of metabolites, the fluxes, which are the rates at which intracellular
+                    metabolites interconvert, are not directly measurable. MFA uses stable isotope labeled tracers to
+                    reveal information related to the fluxes. The conceptual idea of MFA is that in tracer experiments
+                    the isotope labeling patterns of intracellular metabolites are determined by the fluxes, therefore
+                    by measuring the labeling patterns we can infer the fluxes in the network.
+                </p>
+
+                {$flux_dynamics}
+
+            </div>
+        </div>
+
 
     </div>
 </body>
