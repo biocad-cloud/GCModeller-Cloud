@@ -8,8 +8,14 @@ Report = function(model, workdir) {
     report["plas_graph"] = model;
     report["pathway_dynamics"] = pathway_dynamics(workdir);
     report["flux_dynamics"]    = flux_dynamics(workdir);
-
-    pdf::makePDF(report, pdfout = `${workdir}/report.pdf`);
+    report
+    |> pdf::makePDF(
+        pdfout = `${workdir}/report.pdf`,
+        pageOpts = pdfPage_options(
+            javascriptdelay = 10000,
+            loaderrorhandling = "ignore"
+        )
+    );
 }
 
 pathway_dynamics = function(workdir) {
