@@ -123,13 +123,24 @@ var apps;
                 .attr('transform', 'translate(80,80) scale(0.7)');
             if (graph_url.charAt(0) == "#") {
                 // load from a svg container node            
-                this.d3cola.on("tick", this.loadGraph(new dataAdapter.parseDunnart(graph_url).getGraph()).tick());
+                this.d3cola.on("tick", this.loadGraph(Metabolic_pathway.readGraph(graph_url)).tick());
             }
             else {
                 $ts.getText(graph_url, function (json) { return _this.d3cola.on("tick", _this.loadGraph(JSON.parse(json)).tick()); });
             }
             TypeScript.logging.log("intialization job done!", TypeScript.ConsoleColors.DarkBlue);
             return this;
+        };
+        Metabolic_pathway.readGraph = function (id) {
+            var html = $ts(id);
+            if (html.tagName.toLowerCase() == "script") {
+                var json = JSON.parse(html.innerText);
+                var graph = apps.translation.translateToColaGraph(json);
+                return graph;
+            }
+            else {
+                return new dataAdapter.parseDunnart(id).getGraph();
+            }
         };
         /**
          * load network graph model and then

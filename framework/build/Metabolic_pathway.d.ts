@@ -33,6 +33,7 @@ declare namespace apps {
          * show model file
         */
         init(): Metabolic_pathway;
+        private static readGraph;
         /**
          * load network graph model and then
          * initialize data visualization
