@@ -90,9 +90,17 @@ var apps;
             this.height = 520;
             this.margin = 6;
             this.pad = 12;
-            this.width = parseFloat($ts("@width"));
-            this.height = parseFloat($ts("@height"));
+            console.log("get display size:");
+            this.width = this.getDim("@width");
+            this.height = this.getDim("@height");
+            console.log({
+                width: this.width,
+                height: this.height
+            });
         }
+        Metabolic_pathway.prototype.getDim = function (key) {
+            return parseFloat($ts(key));
+        };
         Metabolic_pathway.prototype.redraw = function () {
             this.vis.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
         };

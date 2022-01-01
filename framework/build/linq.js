@@ -1343,7 +1343,7 @@ var Internal;
         var Selector;
         (function (Selector) {
             function getElementByIdUnderContext(id, context) {
-                if (context instanceof Window) {
+                if ((TypeExtensions.checkENV() == ENV.browser) && context instanceof Window) {
                     return context.document.getElementById(id);
                 }
                 else {
@@ -1352,7 +1352,7 @@ var Internal;
             }
             Selector.getElementByIdUnderContext = getElementByIdUnderContext;
             function selectElementsUnderContext(query, context) {
-                if (context instanceof Window) {
+                if ((TypeExtensions.checkENV() == ENV.browser) && context instanceof Window) {
                     return context
                         .document
                         .querySelector(query.expression);
@@ -1432,7 +1432,7 @@ var Internal;
                 var cssSelector = query.replace(":", "\\:");
                 // 返回节点集合
                 var nodes;
-                if (context instanceof Window) {
+                if ((TypeExtensions.checkENV() == ENV.browser) && context instanceof Window) {
                     nodes = context
                         .document
                         .querySelectorAll(cssSelector);
@@ -4925,7 +4925,26 @@ var TypeExtensions;
         }
     }
     TypeExtensions.isMessageObject = isMessageObject;
+    /**
+     * Check js environment
+    */
+    function checkENV() {
+        // https://stackoverflow.com/questions/5113374/javascript-check-if-variable-exists-is-defined-initialized
+        // JavaScript check if variable exists (is defined/initialized)
+        if (typeof Window !== 'undefined') {
+            return ENV.browser;
+        }
+        else {
+            return ENV.node;
+        }
+    }
+    TypeExtensions.checkENV = checkENV;
 })(TypeExtensions || (TypeExtensions = {}));
+var ENV;
+(function (ENV) {
+    ENV[ENV["browser"] = 0] = "browser";
+    ENV[ENV["node"] = 1] = "node";
+})(ENV || (ENV = {}));
 /// <reference path="./Abstract/Enumerator.ts" />
 /**
  * 按照某一个键值进行分组的集合对象

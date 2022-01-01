@@ -1740,6 +1740,14 @@ declare namespace TypeExtensions {
     function isPrimitive(any: any): boolean;
     function isElement(obj: any): boolean;
     function isMessageObject(obj: any): boolean;
+    /**
+     * Check js environment
+    */
+    function checkENV(): ENV;
+}
+declare enum ENV {
+    browser = 0,
+    node = 1
 }
 /**
  * 按照某一个键值进行分组的集合对象

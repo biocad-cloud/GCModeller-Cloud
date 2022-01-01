@@ -27,6 +27,7 @@ declare namespace apps {
         private outer;
         private vis;
         constructor();
+        private getDim;
         private redraw;
         savePng(): void;
         /**

@@ -80,6 +80,8 @@
         <div class="row">
             <div class="col-lg-12">
 
+                <h1>Fluxomics Analysis Report</h1>
+
                 <p>
                     Metabolic flux refers to the amount of a metabolite processed by one or more catalytic steps per
                     unit time, and it is typically normalized by cellular abundance (e.g., gram dry weight)
@@ -168,8 +170,17 @@
                         2000. [B859329]
 
                     </li>
-                    <li></li>
-                    <li></li>
+                    <li>
+                        The Virtual Cell.
+                        In Biocomputing: Proceedings of the 1999 Pacific Symposium. R. B. Altman, A. K. Dunker, L.
+                        Hunter, T. E. Klein and K. Lauderdale, editors. World Scientific, Singapore. (1999) 228-239.
+                        Schaff, J., and L. M. Loew.
+                    </li>
+                    <li>
+                        Blinov ML, Schaff JC, Vasilescu D, Moraru II, Bloom JE, Loew LM. Compartmental and Spatial
+                        Rule-Based Modeling with Virtual Cell. Biophys J. 2017 Oct 3;113(7):1365-1372. doi:
+                        10.1016/j.bpj.2017.08.022. PMID: 28978431; PMCID: PMC5627391.
+                    </li>
                 </ul>
                 </p>
             </div>
@@ -187,23 +198,6 @@
 
 <script type="text/javascript">
     new apps.Metabolic_pathway().init();
-</script>
-
-<script type="text/javascript">
-    var pdfInfo = {};
-    var x = document.location.search.substring(1).split('&');
-
-    for (var i in x) { var z = x[i].split('=', 2); pdfInfo[z[0]] = unescape(z[1]); }
-
-    function getPdfInfo() {
-        var page = pdfInfo.page || 1;
-
-        if (page != 1) {
-            document.getElementById('pHeader').style.display = 'none';
-        }
-    }
-
-    getPdfInfo();
 </script>
 
 </html>
