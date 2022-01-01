@@ -66,27 +66,16 @@
         p {
             font-size: 1.5em;
         }
+
+        li {
+            font-size: 1.25em;
+        }
     </style>
+
 </head>
 
 <body>
-
-    <div style="height: 120px;color: white;background-color: yellowgreen;padding: 10px;text-align: center;">
-        <h1 style="color:white;">Metabolic Flux Report</h1>
-    </div>
-
-
     <div class="container">
-
-        <div class="row">
-            <div class="col-lg-12">
-                <center>
-                    {$cover_image}
-                </center>
-            </div>
-        </div>
-
-        <div style="page-break-after: always;"></div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -173,8 +162,7 @@
                 <p>
                 <ul>
                     <li>
-                        Computational analysis of biochemical systems : a practical guide for biochemists and molecular
-                        biologists / Eberhard O. Voit.
+
                         Voit, Eberhard O. Computational analysis of biochemical systems : a practical guide for
                         biochemists and molecular biologists / Eberhard O. Voit. New York : Cambridge University Press,
                         2000. [B859329]
@@ -199,6 +187,23 @@
 
 <script type="text/javascript">
     new apps.Metabolic_pathway().init();
+</script>
+
+<script type="text/javascript">
+    var pdfInfo = {};
+    var x = document.location.search.substring(1).split('&');
+
+    for (var i in x) { var z = x[i].split('=', 2); pdfInfo[z[0]] = unescape(z[1]); }
+
+    function getPdfInfo() {
+        var page = pdfInfo.page || 1;
+
+        if (page != 1) {
+            document.getElementById('pHeader').style.display = 'none';
+        }
+    }
+
+    getPdfInfo();
 </script>
 
 </html>

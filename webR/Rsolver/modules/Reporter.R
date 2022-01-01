@@ -22,8 +22,8 @@ Report = function(model, workdir) {
 
 cover_image = function() {
     template = `${@dir}/../reports/PLAS_Dynamics/`;
-    cover = dataUri(`${template}/Eberhard_O._Voit_B859329.png`);
-    cover = `<img src="${cover}" style="width: 90%;"/>`;
+    cover = dataUri(`${template}/cover.png`);
+    cover = `<img src="${cover}" style="width: 100%;"/>`;
     cover; 
 }
 
