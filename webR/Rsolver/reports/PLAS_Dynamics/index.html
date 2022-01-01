@@ -2,10 +2,6 @@
 <html lang="en">
 
 <head>
-    <meta name="width" content="1400" />
-    <meta name="height" content="650" />
-    <meta name="url:graph" content="#plas_graph" />
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!-- Always force latest IE rendering engine or request Chrome Frame -->
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
@@ -24,45 +20,7 @@
         type="text/css" />
     <link href="{$WEBCONTEXT}/resources/styles/paper/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-    <script type="application/json" id="plas_graph">
-       {$plas_graph}
-    </script>
-
     <style>
-        .background {
-            stroke: white;
-            stroke-width: 1px;
-            fill: white;
-        }
-
-        .node {
-            stroke: black;
-            stroke-width: 1px;
-            cursor: move;
-            fill: beige;
-        }
-
-        .link {
-            fill: none;
-            stroke: #000;
-            stroke-width: 3px;
-            opacity: 0.7;
-            marker-end: url(#end-arrow);
-        }
-
-        .label {
-            fill: black;
-            font-family: Verdana;
-            font-size: 25px;
-            text-anchor: middle;
-            cursor: move;
-        }
-
-        .guideline {
-            stroke: orangered;
-            stroke-width: 4px;
-        }
-
         p {
             font-size: 1.5em;
         }
@@ -105,7 +63,7 @@
 
                 <div style="width: 100%; text-align: center; margin-top: 10px;">
                     <center>
-                        <div id="canvas"></div>
+                        {$plas_graph}
                     </center>
                 </div>
 
@@ -191,13 +149,5 @@
 <!-- JS Libraries -->
 <script src="{$WEBCONTEXT}/resources/vendor/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="{$WEBCONTEXT}/resources/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="{$WEBCONTEXT}/resources/typescripts/linq.min.js"></script>
-<script type="text/javascript" src="{$WEBCONTEXT}/resources/vendor/Cola/d3.v3.js"></script>
-<script type="text/javascript" src="{$WEBCONTEXT}/resources/vendor/Cola/cola.min.js"></script>
-<script type="text/javascript" src="{$WEBCONTEXT}/resources/typescripts/Metabolic_pathway.min.js"></script>
-
-<script type="text/javascript">
-    new apps.Metabolic_pathway().init();
-</script>
 
 </html>
