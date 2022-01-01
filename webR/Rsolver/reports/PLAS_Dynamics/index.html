@@ -15,15 +15,14 @@
     <meta charset="utf-8">
     <title>PLAS.NET report - biocad.cloud</title>
 
-    <script src="http://biocad.cloud:8848/resources/vendor/polyfill.min.js"></script>
+    <script src="{$WEBCONTEXT}/resources/vendor/polyfill.min.js"></script>
 
-    <base href="http://biocad.cloud:8848/">
-
-    <link href="http://biocad.cloud:8848/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-
-    <link href="http://biocad.cloud:8848/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://biocad.cloud:8848/resources/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://biocad.cloud:8848/resources/styles/paper/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$WEBCONTEXT}/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{$WEBCONTEXT}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$WEBCONTEXT}/resources/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{$WEBCONTEXT}/resources/styles/paper/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
     <script type="application/json" id="plas_graph">
        {$plas_graph}
@@ -63,18 +62,34 @@
             stroke: orangered;
             stroke-width: 4px;
         }
+
+        p {
+            font-size: 1.5em;
+        }
     </style>
 </head>
 
 <body>
+
+    <div style="height: 120px;color: white;background-color: yellowgreen;padding: 10px;text-align: center;">
+        <h1 style="color:white;">Metabolic Flux Report</h1>
+    </div>
+
+
     <div class="container">
 
         <div class="row">
             <div class="col-lg-12">
+                <center>
+                    {$cover_image}
+                </center>
+            </div>
+        </div>
 
-                <div class="bs-component">
-                    <h1>Metabolic Flux Report</h1>
-                </div>
+        <div style="page-break-after: always;"></div>
+
+        <div class="row">
+            <div class="col-lg-12">
 
                 <p>
                     Metabolic flux refers to the amount of a metabolite processed by one or more catalytic steps per
@@ -82,7 +97,20 @@
                     (Stephanopoulos et al., 1998 ).
                 </p>
 
+                <p>
+                    A true understanding of genetic and metabolic function and design is facilitated by mathematical and
+                    computational methods for analyzing biochemical systems. This hands-on reference teaches biochemists
+                    and molecular biologists the use of modern computational methods for the analysis of complex
+                    biomedical systems requiring a modest mathematical background. The book begins with representations
+                    of biochemical systems, provides guidelines for setting up models, details mathematical and
+                    computational methods of parameter estimation and model analysis, and connects to the modern
+                    literature with four detailed case studies. Every step is illustrated with examples and explored
+                    with accompanying PLAS software. The volume also features over 250 exercises with about one quarter
+                    fully or partially solved.
+                </p>
+
                 <h2>Graph View</h2>
+                <hr />
 
                 <div style="width: 100%; text-align: center; margin-top: 10px;">
                     <center>
@@ -102,7 +130,7 @@
             <div class="col-lg-12">
 
                 <h2>Pathway Dynamics</h2>
-
+                <hr />
                 <p>
                     All metabolic changes take place in multiple reactions and follow a particular pathway called the
                     metabolic pathway. The metabolic pathway includes a series of reactions. The metabolite flow, the
@@ -121,7 +149,7 @@
             <div class="col-lg-12">
 
                 <h2>Fluxomics Dynamics</h2>
-
+                <hr />
                 <p>
                     Metabolic flux analysis (MFA) is an increasingly important tool to study metabolism quantitatively.
                     Unlike the concentrations of metabolites, the fluxes, which are the rates at which intracellular
@@ -137,16 +165,37 @@
         </div>
 
 
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>References</h2>
+                <hr />
+
+                <p>
+                <ul>
+                    <li>
+                        Computational analysis of biochemical systems : a practical guide for biochemists and molecular
+                        biologists / Eberhard O. Voit.
+                        Voit, Eberhard O. Computational analysis of biochemical systems : a practical guide for
+                        biochemists and molecular biologists / Eberhard O. Voit. New York : Cambridge University Press,
+                        2000. [B859329]
+
+                    </li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 
 <!-- JS Libraries -->
-<script src="http://biocad.cloud:8848/resources/vendor/jquery/dist/jquery.min.js" type="text/javascript"></script>
-<script src="http://biocad.cloud:8848/resources/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://biocad.cloud:8848/resources/typescripts/linq.min.js"></script>
-<script type="text/javascript" src="http://biocad.cloud:8848/resources/vendor/Cola/d3.v3.js"></script>
-<script type="text/javascript" src="http://biocad.cloud:8848/resources/vendor/Cola/cola.min.js"></script>
-<script type="text/javascript" src="http://biocad.cloud:8848/resources/typescripts/Metabolic_pathway.min.js"></script>
+<script src="{$WEBCONTEXT}/resources/vendor/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="{$WEBCONTEXT}/resources/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="{$WEBCONTEXT}/resources/typescripts/linq.min.js"></script>
+<script type="text/javascript" src="{$WEBCONTEXT}/resources/vendor/Cola/d3.v3.js"></script>
+<script type="text/javascript" src="{$WEBCONTEXT}/resources/vendor/Cola/cola.min.js"></script>
+<script type="text/javascript" src="{$WEBCONTEXT}/resources/typescripts/Metabolic_pathway.min.js"></script>
 
 <script type="text/javascript">
     new apps.Metabolic_pathway().init();

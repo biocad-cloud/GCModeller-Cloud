@@ -6,8 +6,10 @@ require(JSON);
 Report = function(model, workdir) {
     report = reportTemplate(`${@dir}/../reports/PLAS_Dynamics`);
     report["plas_graph"] = model;
+    report["WEBCONTEXT"] = "http://biocad.cloud:8848/";
     report["pathway_dynamics"] = pathway_dynamics(workdir);
     report["flux_dynamics"]    = flux_dynamics(workdir);
+    report["cover_image"] = cover_image();
     report
     |> pdf::makePDF(
         pdfout = `${workdir}/report.pdf`,
@@ -16,6 +18,13 @@ Report = function(model, workdir) {
             loaderrorhandling = "ignore"
         )
     );
+}
+
+cover_image = function() {
+    template = `${@dir}/../reports/PLAS_Dynamics/`;
+    cover = dataUri(`${template}/Eberhard_O._Voit_B859329.png`);
+    cover = `<img src="${cover}" style="width: 90%;"/>`;
+    cover; 
 }
 
 pathway_dynamics = function(workdir) {
