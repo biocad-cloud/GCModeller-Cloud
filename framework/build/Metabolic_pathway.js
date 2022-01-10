@@ -21,6 +21,7 @@ var biodeep;
         function start() {
             Router.AddAppHandler(new apps.PathwayExplorer());
             Router.AddAppHandler(new apps.FlowEditor());
+            Router.AddAppHandler(new apps.KEGGNetwork());
             Router.RunApp();
         }
         app.start = start;
@@ -699,11 +700,11 @@ var apps;
 })(apps || (apps = {}));
 var apps;
 (function (apps) {
+    apps.assemblyKey = "ko00001-assembly";
     var PathwayExplorer = /** @class */ (function (_super) {
         __extends(PathwayExplorer, _super);
         function PathwayExplorer() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.assemblyKey = "ko00001-assembly";
             _this.canvas = new apps.Metabolic_pathway();
             return _this;
         }
@@ -718,7 +719,7 @@ var apps;
         PathwayExplorer.prototype.init = function () {
             var dataUrl = $ts("@data:repository");
             var vm = this;
-            var assembly = localStorage.getItem(this.assemblyKey);
+            var assembly = localStorage.getItem(apps.assemblyKey);
             if (!Strings.Empty(dataUrl, true)) {
                 if (Strings.Empty(assembly)) {
                     // get from server and cached into localstorage
@@ -771,10 +772,13 @@ var apps;
                 cacheKeys.push(cacheKey);
                 localStorage.setItem(cacheKey, JSON.stringify(data_1));
             }
-            localStorage.setItem(this.assemblyKey, JSON.stringify(cacheKeys));
+            localStorage.setItem(apps.assemblyKey, JSON.stringify(cacheKeys));
         };
         PathwayExplorer.prototype.loadCache = function () {
-            var assembly = localStorage.getItem(this.assemblyKey);
+            this.loadUITree(PathwayExplorer.loadKEGGTree());
+        };
+        PathwayExplorer.loadKEGGTree = function () {
+            var assembly = localStorage.getItem(apps.assemblyKey);
             var keys = JSON.parse(assembly);
             var keggTree = {
                 name: "ko00001",
@@ -787,7 +791,7 @@ var apps;
                 cache = localStorage.getItem(keyId);
                 keggTree.children.push(JSON.parse(cache));
             }
-            this.loadUITree(keggTree);
+            return keggTree;
         };
         return PathwayExplorer;
     }(Bootstrap));
@@ -823,6 +827,66 @@ var PathwayNavigator;
     }
     PathwayNavigator.parseJsTree = parseJsTree;
 })(PathwayNavigator || (PathwayNavigator = {}));
+/// <reference path="../../../build/biocad.d.ts" />
+var apps;
+(function (apps) {
+    apps.listDiv = "#sample_suggests";
+    apps.inputDiv = "#sample_search";
+    var KEGGNetwork = /** @class */ (function (_super) {
+        __extends(KEGGNetwork, _super);
+        function KEGGNetwork() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        Object.defineProperty(KEGGNetwork.prototype, "appName", {
+            get: function () {
+                return "kegg_network";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        KEGGNetwork.prototype.init = function () {
+            var _this = this;
+            var tree = PathwayNavigator.parseJsTree(apps.PathwayExplorer.loadKEGGTree());
+            var components = [];
+            KEGGNetwork.createSet(tree, components);
+            var terms = [];
+            for (var _i = 0, components_1 = components; _i < components_1.length; _i++) {
+                var koId = components_1[_i];
+                terms.push(new Application.Suggestion.term(koId.id, koId.text));
+            }
+            var suggest = Application.Suggestion.render.makeSuggestions(terms, apps.listDiv, function (term) { return _this.clickOnTerm(term); }, 13, true, "");
+            $ts(apps.inputDiv).onkeyup = function () {
+                var search = $ts.value(apps.inputDiv);
+                if (Strings.Empty(search, true)) {
+                    $ts(apps.listDiv).hide();
+                }
+                else {
+                    $ts(apps.listDiv).show();
+                    suggest(search);
+                }
+            };
+        };
+        KEGGNetwork.prototype.clickOnTerm = function (term) {
+            // const valueSel = "#pathway_list";
+            // $ts.value(valueSel, term.id.toString());
+            $ts(apps.listDiv).hide();
+            // this.updateChart(term.id);
+        };
+        KEGGNetwork.createSet = function (tree, components) {
+            for (var _i = 0, _a = tree.children; _i < _a.length; _i++) {
+                var node = _a[_i];
+                if (isNullOrUndefined(node.children)) {
+                    components.push(node);
+                }
+                else {
+                    this.createSet(node, components);
+                }
+            }
+        };
+        return KEGGNetwork;
+    }(Bootstrap));
+    apps.KEGGNetwork = KEGGNetwork;
+})(apps || (apps = {}));
 var Graph = /** @class */ (function () {
     function Graph(graph) {
         if (graph === void 0) { graph = null; }
