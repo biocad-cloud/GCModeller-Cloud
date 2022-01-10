@@ -850,8 +850,12 @@ var apps;
             var components = [];
             KEGGNetwork.createSet(tree, components);
             var terms = [];
-            for (var _i = 0, components_1 = components; _i < components_1.length; _i++) {
-                var koId = components_1[_i];
+            var unique = $from(components)
+                .GroupBy(function (t) { return t.text.split(/\s+/ig)[0]; })
+                .Select(function (t) { return t.First; })
+                .ToArray();
+            for (var _i = 0, unique_1 = unique; _i < unique_1.length; _i++) {
+                var koId = unique_1[_i];
                 terms.push(new Application.Suggestion.term(koId.id, koId.text));
             }
             var suggest = Application.Suggestion.render.makeSuggestions(terms, apps.listDiv, function (term) { return _this.clickOnTerm(term); }, 13, true, "");
@@ -865,7 +869,7 @@ var apps;
                     suggest(search);
                 }
             };
-            TypeScript.logging.log(terms.length + " kegg components has been loaded!", TypeScript.ConsoleColors.Magenta);
+            TypeScript.logging.log(components.length + " kegg components has been loaded!", TypeScript.ConsoleColors.Magenta);
             TypeScript.logging.log(" ~done!", TypeScript.ConsoleColors.Magenta);
         };
         KEGGNetwork.prototype.clickOnTerm = function (term) {
