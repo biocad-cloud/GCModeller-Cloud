@@ -704,9 +704,7 @@ var apps;
     var PathwayExplorer = /** @class */ (function (_super) {
         __extends(PathwayExplorer, _super);
         function PathwayExplorer() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.canvas = new apps.Metabolic_pathway();
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Object.defineProperty(PathwayExplorer.prototype, "appName", {
             get: function () {
@@ -716,10 +714,11 @@ var apps;
             configurable: true
         });
         ;
+        // readonly canvas: Metabolic_pathway = new Metabolic_pathway();
         PathwayExplorer.prototype.init = function () {
             var _this = this;
             PathwayExplorer.initKEGG(function () { return _this.loadCache(); });
-            this.canvas.init();
+            // this.canvas.init();
         };
         PathwayExplorer.initKEGG = function (loadCache) {
             var dataUrl = $ts("@data:repository");
@@ -753,6 +752,24 @@ var apps;
                         }
                     }
                 }
+            });
+            $("#" + target).on("click", ".jstree-anchor", function (e) {
+                var id = $("#" + target).jstree(true).get_node($(this)).id;
+                var mapId = "map" + id.split("_")[0];
+                $ts("#canvas")
+                    .clear()
+                    .display($ts("<iframe>", {
+                    src: "@url:readmap/" + mapId,
+                    width: "1024px",
+                    height: "840px",
+                    "max-width": "1024px",
+                    frameborder: "no",
+                    border: "0",
+                    marginwidth: "0",
+                    marginheight: "0",
+                    scrolling: "no",
+                    allowtransparency: "yes"
+                }));
             });
         };
         PathwayExplorer.addReactor = function (data) {
@@ -824,14 +841,15 @@ var PathwayNavigator;
             }
         }
         else {
+            var childs = $from(kegg_tree.children)
+                .Select(function (c) { return parseJsTree(c, showKONode); })
+                .Where(function (d) { return !isNullOrUndefined(d); })
+                .ToArray();
             return {
                 id: name.id + "_" + ++unique,
                 text: commonName,
-                children: $from(kegg_tree.children)
-                    .Select(function (c) { return parseJsTree(c, showKONode); })
-                    .Where(function (d) { return !isNullOrUndefined(d); })
-                    .ToArray(),
-                icon: folderIcon
+                children: childs,
+                icon: childs.length == 0 ? objectIcon : folderIcon
             };
         }
     }
