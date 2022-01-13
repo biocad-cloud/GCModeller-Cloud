@@ -717,22 +717,25 @@ var apps;
         });
         ;
         PathwayExplorer.prototype.init = function () {
+            var _this = this;
+            PathwayExplorer.initKEGG(function () { return _this.loadCache(); });
+            this.canvas.init();
+        };
+        PathwayExplorer.initKEGG = function (loadCache) {
             var dataUrl = $ts("@data:repository");
-            var vm = this;
             var assembly = localStorage.getItem(apps.assemblyKey);
             if (!Strings.Empty(dataUrl, true)) {
                 if (Strings.Empty(assembly)) {
                     // get from server and cached into localstorage
                     $ts.get(dataUrl, function (obj) {
-                        vm.saveCache(obj);
-                        vm.loadCache();
+                        PathwayExplorer.saveCache(obj);
+                        loadCache();
                     });
                 }
                 else {
-                    vm.loadCache();
+                    loadCache();
                 }
             }
-            vm.canvas.init();
         };
         PathwayExplorer.prototype.loadUITree = function (obj) {
             var tree = PathwayNavigator.parseJsTree(obj);
@@ -762,7 +765,7 @@ var apps;
                 // do nothing?
             }
         };
-        PathwayExplorer.prototype.saveCache = function (obj) {
+        PathwayExplorer.saveCache = function (obj) {
             var cacheKeys = [];
             for (var _i = 0, _a = obj.children; _i < _a.length; _i++) {
                 var data_1 = _a[_i];
@@ -846,6 +849,10 @@ var apps;
         });
         KEGGNetwork.prototype.init = function () {
             var _this = this;
+            apps.PathwayExplorer.initKEGG(function () { return _this.loadCache(); });
+        };
+        KEGGNetwork.prototype.loadCache = function () {
+            var _this = this;
             var tree = PathwayNavigator.parseJsTree(apps.PathwayExplorer.loadKEGGTree());
             var components = [];
             KEGGNetwork.createSet(tree, components);
@@ -876,6 +883,7 @@ var apps;
             // const valueSel = "#pathway_list";
             // $ts.value(valueSel, term.id.toString());
             $ts(apps.listDiv).hide();
+            console.log(term);
             // this.updateChart(term.id);
         };
         KEGGNetwork.createSet = function (tree, components) {
