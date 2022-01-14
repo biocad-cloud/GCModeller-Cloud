@@ -7,5 +7,8 @@ const run as function(id) {
 	const map  = kegg[[id]]; 
 	const html = keggMap.reportHtml(map, list());
 
+	print("get target map:");
+	print(toString(map));
+
 	writeLines(html, con = buffer("text"));
 }
