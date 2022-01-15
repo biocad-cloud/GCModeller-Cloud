@@ -22,6 +22,7 @@ var biodeep;
             Router.AddAppHandler(new apps.PathwayExplorer());
             Router.AddAppHandler(new apps.FlowEditor());
             Router.AddAppHandler(new apps.KEGGNetwork());
+            Router.AddAppHandler(new apps.Viewer());
             Router.RunApp();
         }
         app.start = start;
@@ -312,6 +313,30 @@ var apps;
         }
         translation.translateToColaGraph = translateToColaGraph;
     })(translation = apps.translation || (apps.translation = {}));
+})(apps || (apps = {}));
+var apps;
+(function (apps) {
+    var Viewer = /** @class */ (function (_super) {
+        __extends(Viewer, _super);
+        function Viewer() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.Metabolic_pathway = new apps.Metabolic_pathway();
+            return _this;
+        }
+        Object.defineProperty(Viewer.prototype, "appName", {
+            get: function () {
+                return "ModelViewer";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Viewer.prototype.init = function () {
+            this.Metabolic_pathway.init();
+        };
+        return Viewer;
+    }(Bootstrap));
+    apps.Viewer = Viewer;
 })(apps || (apps = {}));
 var apps;
 (function (apps) {
