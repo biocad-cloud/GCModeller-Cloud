@@ -704,7 +704,9 @@ var apps;
     var PathwayExplorer = /** @class */ (function (_super) {
         __extends(PathwayExplorer, _super);
         function PathwayExplorer() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.Metabolic_pathway = null;
+            return _this;
         }
         Object.defineProperty(PathwayExplorer.prototype, "appName", {
             get: function () {
@@ -714,11 +716,9 @@ var apps;
             configurable: true
         });
         ;
-        // readonly canvas: Metabolic_pathway = new Metabolic_pathway();
         PathwayExplorer.prototype.init = function () {
             var _this = this;
             PathwayExplorer.initKEGG(function () { return _this.loadCache(); });
-            // this.canvas.init();
         };
         PathwayExplorer.initKEGG = function (loadCache) {
             var dataUrl = $ts("@data:repository");
@@ -739,6 +739,7 @@ var apps;
         PathwayExplorer.prototype.loadUITree = function (obj) {
             var tree = PathwayNavigator.parseJsTree(obj);
             var target = $ts("@app:explorer");
+            var $vm = this;
             $("#" + target).jstree({
                 'core': {
                     data: tree.children
@@ -747,8 +748,8 @@ var apps;
                 'contextmenu': {
                     'items': {
                         "add_reactor": {
-                            label: "Add Reactor",
-                            action: PathwayExplorer.addReactor
+                            label: "Create Reactor",
+                            action: PathwayExplorer.createReactor
                         }
                     }
                 }
@@ -756,13 +757,15 @@ var apps;
             $("#" + target).on("click", ".jstree-anchor", function (e) {
                 var id = $("#" + target).jstree(true).get_node($(this)).id;
                 var mapId = "map" + id.split("_")[0];
+                $vm.Metabolic_pathway = mapId;
+                $ts("#do-createReactor").onclick = function () { PathwayExplorer.createReactor(mapId); };
                 $ts("#canvas")
                     .clear()
                     .display($ts("<iframe>", {
                     src: "@url:readmap/" + mapId,
-                    width: "1024px",
-                    height: "840px",
-                    "max-width": "1024px",
+                    width: "1600px",
+                    height: "1200px",
+                    "max-width": "1920px",
                     frameborder: "no",
                     border: "0",
                     marginwidth: "0",
@@ -772,15 +775,17 @@ var apps;
                 }));
             });
         };
-        PathwayExplorer.addReactor = function (data) {
-            var id = data.reference[0].id;
-            var kid = id.match(/K\d{4,}/g);
-            if (kid.length > 0) {
-                // K00000
-            }
-            else {
-                // do nothing?
-            }
+        PathwayExplorer.createReactor = function (data) {
+            var id = typeof (data) == "string" ? data : data.reference[0].id;
+            var mapId = "map" + id.split("_")[0];
+            $ts.post("@url:createmap", { mapid: mapId }, function (data) {
+                if (data.code == 0) {
+                    $goto(data.info);
+                }
+                else {
+                    // show error message
+                }
+            });
         };
         PathwayExplorer.saveCache = function (obj) {
             var cacheKeys = [];
