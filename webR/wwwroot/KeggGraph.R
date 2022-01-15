@@ -1,5 +1,7 @@
 imports ["network", "repository"] from "kegg_kit";
 
+require(JSON);
+
 # map00020
 const run as function(id) {
 	const kegg = GCModeller::kegg_maps(rawMaps = FALSE);
@@ -15,7 +17,7 @@ const run as function(id) {
 
 const editor_graph as function(v, e) {
 	const nodes = sapply(v, x -> list(key = x$label,category = "stock",label = x$text,loc = "0,0",group = NULL));
-	const links = sapply(e, l -> list(category = "flow",text = l$text,from = l$u$label,to = l$v$label,labelKeys = []));
+	const links = sapply(e, l -> list(category = "flow",text = l$ID,from = as.object(l$U)$label,to = as.object(l$V)$label,labelKeys = []));
 
 	list(
 		class = "GraphLinksModel",
