@@ -1,5 +1,6 @@
 imports ["network", "repository"] from "kegg_kit";
 
+# map00020
 const run as function(id) {
 	const kegg = GCModeller::kegg_maps(rawMaps = FALSE);
 	const map  = kegg[[id]]; 
