@@ -8,7 +8,11 @@ const run as function(id) {
 	const map  = kegg[[id]]; 	
 	const g    = map 
 	|> compoundsId() 
-	|> fromCompounds(GCModeller::kegg_reactions(), enzymeBridged = FALSE)
+	|> fromCompounds(
+		graph         = GCModeller::kegg_reactions(), 
+		compounds     = GCModeller::kegg_compounds(), 
+		enzymeBridged = FALSE
+	)
 	;
 	
 	editor_graph(V(g), E(g))	
