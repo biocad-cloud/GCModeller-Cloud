@@ -539,12 +539,21 @@ var apps;
             this.dosave();
         };
         FlowEditor.prototype.load = function () {
+            var _this = this;
+            var model_id = $ts("@data:model_id");
+            var uri = "@api:load?model_id=" + model_id;
+            if ((!Strings.Empty(model_id, true)) && model_id.charAt(0) == "#") {
+                this.loadModelFromJsonText($ts.text(model_id));
+            }
+            else {
+                $ts.getText(uri, function (json) { return _this.loadModelFromJsonText(json); });
+            }
+        };
+        FlowEditor.prototype.loadModelFromJsonText = function (json) {
+            var model = apps.ModelPatch(JSON.parse(json));
+            var jsonStr = JSON.stringify(model);
             var vm = this;
-            $ts.getText("@api:load?model_id=" + $ts("@data:model_id"), function (json) {
-                var model = apps.ModelPatch(JSON.parse(json));
-                var jsonStr = JSON.stringify(model);
-                vm.goCanvas.model = go.Model.fromJson(jsonStr);
-            });
+            vm.goCanvas.model = go.Model.fromJson(jsonStr);
         };
         FlowEditor.prototype.dosave = function (callback) {
             if (callback === void 0) { callback = null; }

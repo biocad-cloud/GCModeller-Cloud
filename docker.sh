@@ -3,6 +3,9 @@
 docker stop biocad_web
 docker rm biocad_web
 
+mkdir /tmp/biocad_tmp2
+mkdir /tmp/apache
+
 docker run -itd --name biocad_web \
     --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor=unconfined \
 	--privileged=true \
