@@ -630,6 +630,9 @@ var apps;
             .replace("*", "_")
             .replace("~", "_");
     }
+    /**
+     * fix of the invalid model property which it may crashed the editor system.
+    */
     function ModelPatch(model) {
         for (var _i = 0, _a = model.nodeDataArray; _i < _a.length; _i++) {
             var node = _a[_i];
@@ -638,6 +641,9 @@ var apps;
             }
             if (Strings.IsPattern(node.key.toString(), intId)) {
                 node.key = "T" + node.key;
+            }
+            if (isNullOrUndefined(node.group)) {
+                delete node.group;
             }
             node.key = makeSafeSymbol(node.key);
         }
