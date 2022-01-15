@@ -779,13 +779,21 @@ var apps;
             var id = typeof (data) == "string" ? data : data.reference[0].id;
             var mapId = "map" + id.split("_")[0];
             $ts.post("@url:createmap", { mapid: mapId }, function (data) {
-                if (data.code == 0) {
-                    $goto(data.info);
+                var url = PathwayExplorer.getUrl(data);
+                if (data.code == 0 && !Strings.Empty(url, true)) {
+                    $goto(url);
                 }
                 else {
                     // show error message
                 }
             });
+        };
+        PathwayExplorer.getUrl = function (data) {
+            if (isNullOrUndefined(data))
+                return null;
+            if (typeof (data.info) != "string")
+                return null;
+            return data.info;
         };
         PathwayExplorer.saveCache = function (obj) {
             var cacheKeys = [];
