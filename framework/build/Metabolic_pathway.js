@@ -753,8 +753,10 @@ var Editor;
                 var myDiagram = this.editor.goCanvas;
                 var vm = this;
                 myDiagram.startTransaction("generateCircle");
+                myDiagram.startTransaction("change Layout");
                 // force a diagram layout
                 vm.layout();
+                myDiagram.commitTransaction("change Layout");
                 myDiagram.commitTransaction("generateCircle");
             };
             /**
@@ -762,57 +764,68 @@ var Editor;
             */
             circle.prototype.layout = function () {
                 var myDiagram = this.editor.goCanvas;
-                myDiagram.startTransaction("change Layout");
                 var lay = myDiagram.layout;
-                var radius = "NaN";
-                if (radius !== "NaN")
-                    radius = parseFloat(radius, 10);
-                else
-                    radius = NaN;
-                lay.radius = radius;
-                var aspectRatio = 1;
-                lay.aspectRatio = aspectRatio;
-                var startAngle = 0;
-                lay.startAngle = startAngle;
-                var sweepAngle = 360;
-                lay.sweepAngle = sweepAngle;
-                var spacing = 6;
-                lay.spacing = spacing;
-                var arrangement = this.getArrangementValue();
-                if (arrangement === "ConstantDistance")
-                    lay.arrangement = go.CircularLayout.ConstantDistance;
-                else if (arrangement === "ConstantAngle")
-                    lay.arrangement = go.CircularLayout.ConstantAngle;
-                else if (arrangement === "ConstantSpacing")
-                    lay.arrangement = go.CircularLayout.ConstantSpacing;
-                else if (arrangement === "Packed")
-                    lay.arrangement = go.CircularLayout.Packed;
-                var diamFormula = this.getRadioValue();
-                if (diamFormula === "Pythagorean")
-                    lay.nodeDiameterFormula = go.CircularLayout.Pythagorean;
-                else if (diamFormula === "Circular")
-                    lay.nodeDiameterFormula = go.CircularLayout.Circular;
-                var direction = this.getDirectionValue();
-                if (direction === "Clockwise")
-                    lay.direction = go.CircularLayout.Clockwise;
-                else if (direction === "Counterclockwise")
-                    lay.direction = go.CircularLayout.Counterclockwise;
-                else if (direction === "BidirectionalLeft")
-                    lay.direction = go.CircularLayout.BidirectionalLeft;
-                else if (direction === "BidirectionalRight")
-                    lay.direction = go.CircularLayout.BidirectionalRight;
-                var sorting = this.getSortValue();
-                if (sorting === "Forwards")
-                    lay.sorting = go.CircularLayout.Forwards;
-                else if (sorting === "Reverse")
-                    lay.sorting = go.CircularLayout.Reverse;
-                else if (sorting === "Ascending")
-                    lay.sorting = go.CircularLayout.Ascending;
-                else if (sorting === "Descending")
-                    lay.sorting = go.CircularLayout.Descending;
-                else if (sorting === "Optimized")
-                    lay.sorting = go.CircularLayout.Optimized;
-                myDiagram.commitTransaction("change Layout");
+                lay.radius = circle.radiusValue("NaN");
+                lay.aspectRatio = 1;
+                lay.startAngle = 0;
+                lay.sweepAngle = 360;
+                lay.spacing = 6;
+                lay.arrangement = circle.mapArrangement(this.getArrangementValue());
+                lay.nodeDiameterFormula = circle.mapDiamFormula(this.getRadioValue());
+                lay.direction = circle.mapDirection(this.getDirectionValue());
+                lay.sorting = circle.mapSorting(this.getSortValue());
+                console.log(lay);
+            };
+            circle.radiusValue = function (radius) {
+                if (radius !== "NaN") {
+                    return parseFloat(radius, 10);
+                }
+                else {
+                    return NaN;
+                }
+                ;
+            };
+            circle.mapSorting = function (sorting) {
+                switch (sorting) {
+                    case "Forwards": return go.CircularLayout.Forwards;
+                    case "Reverse": return go.CircularLayout.Reverse;
+                    case "Ascending": return go.CircularLayout.Ascending;
+                    case "Descending": return go.CircularLayout.Descending;
+                    case "Optimized": return go.CircularLayout.Optimized;
+                    default:
+                        throw "invalid option: " + sorting + "!";
+                }
+            };
+            circle.mapDirection = function (direction) {
+                switch (direction) {
+                    case "Clockwise": return go.CircularLayout.Clockwise;
+                    case "Counterclockwise": return go.CircularLayout.Counterclockwise;
+                    case "BidirectionalLeft": return go.CircularLayout.BidirectionalLeft;
+                    case "BidirectionalRight": return go.CircularLayout.BidirectionalRight;
+                    default:
+                        throw "invalid option: " + direction + "!";
+                }
+            };
+            circle.mapDiamFormula = function (diamFormula) {
+                if (diamFormula === "Pythagorean") {
+                    return go.CircularLayout.Pythagorean;
+                }
+                else if (diamFormula === "Circular") {
+                    return go.CircularLayout.Circular;
+                }
+                else {
+                    throw "invalid option value: " + diamFormula + "!";
+                }
+            };
+            circle.mapArrangement = function (arrangement) {
+                switch (arrangement) {
+                    case "ConstantDistance": return go.CircularLayout.ConstantDistance;
+                    case "ConstantAngle": return go.CircularLayout.ConstantAngle;
+                    case "ConstantSpacing": return go.CircularLayout.ConstantSpacing;
+                    case "Packed": return go.CircularLayout.Packed;
+                    default:
+                        throw "invalid option: " + arrangement + "!";
+                }
             };
             circle.prototype.getSortValue = function () {
                 return "Forwards";
