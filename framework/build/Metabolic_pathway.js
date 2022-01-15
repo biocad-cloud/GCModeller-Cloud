@@ -555,6 +555,9 @@ var apps;
             }
             myDiagram.commitTransaction("mode changed");
         };
+        FlowEditor.prototype.autoLayout_click = function () {
+            new Editor.layouts.circle(this).generateCircle();
+        };
         /**
          * Show the diagram's model in JSON format
          * that the user may edit.
@@ -738,6 +741,96 @@ var apps;
         EditorTemplates.textStyle = textStyle;
     })(EditorTemplates = apps.EditorTemplates || (apps.EditorTemplates = {}));
 })(apps || (apps = {}));
+var Editor;
+(function (Editor) {
+    var layouts;
+    (function (layouts) {
+        var circle = /** @class */ (function () {
+            function circle(editor) {
+                this.editor = editor;
+            }
+            circle.prototype.generateCircle = function () {
+                var myDiagram = this.editor.goCanvas;
+                var vm = this;
+                myDiagram.startTransaction("generateCircle");
+                // force a diagram layout
+                vm.layout();
+                myDiagram.commitTransaction("generateCircle");
+            };
+            /**
+             * Update the layout from the controls, and then perform the layout again
+            */
+            circle.prototype.layout = function () {
+                var myDiagram = this.editor.goCanvas;
+                myDiagram.startTransaction("change Layout");
+                var lay = myDiagram.layout;
+                var radius = "NaN";
+                if (radius !== "NaN")
+                    radius = parseFloat(radius, 10);
+                else
+                    radius = NaN;
+                lay.radius = radius;
+                var aspectRatio = 1;
+                lay.aspectRatio = aspectRatio;
+                var startAngle = 0;
+                lay.startAngle = startAngle;
+                var sweepAngle = 360;
+                lay.sweepAngle = sweepAngle;
+                var spacing = 6;
+                lay.spacing = spacing;
+                var arrangement = this.getArrangementValue();
+                if (arrangement === "ConstantDistance")
+                    lay.arrangement = go.CircularLayout.ConstantDistance;
+                else if (arrangement === "ConstantAngle")
+                    lay.arrangement = go.CircularLayout.ConstantAngle;
+                else if (arrangement === "ConstantSpacing")
+                    lay.arrangement = go.CircularLayout.ConstantSpacing;
+                else if (arrangement === "Packed")
+                    lay.arrangement = go.CircularLayout.Packed;
+                var diamFormula = this.getRadioValue();
+                if (diamFormula === "Pythagorean")
+                    lay.nodeDiameterFormula = go.CircularLayout.Pythagorean;
+                else if (diamFormula === "Circular")
+                    lay.nodeDiameterFormula = go.CircularLayout.Circular;
+                var direction = this.getDirectionValue();
+                if (direction === "Clockwise")
+                    lay.direction = go.CircularLayout.Clockwise;
+                else if (direction === "Counterclockwise")
+                    lay.direction = go.CircularLayout.Counterclockwise;
+                else if (direction === "BidirectionalLeft")
+                    lay.direction = go.CircularLayout.BidirectionalLeft;
+                else if (direction === "BidirectionalRight")
+                    lay.direction = go.CircularLayout.BidirectionalRight;
+                var sorting = this.getSortValue();
+                if (sorting === "Forwards")
+                    lay.sorting = go.CircularLayout.Forwards;
+                else if (sorting === "Reverse")
+                    lay.sorting = go.CircularLayout.Reverse;
+                else if (sorting === "Ascending")
+                    lay.sorting = go.CircularLayout.Ascending;
+                else if (sorting === "Descending")
+                    lay.sorting = go.CircularLayout.Descending;
+                else if (sorting === "Optimized")
+                    lay.sorting = go.CircularLayout.Optimized;
+                myDiagram.commitTransaction("change Layout");
+            };
+            circle.prototype.getSortValue = function () {
+                return "Forwards";
+            };
+            circle.prototype.getDirectionValue = function () {
+                return "Clockwise";
+            };
+            circle.prototype.getArrangementValue = function () {
+                return "ConstantSpacing";
+            };
+            circle.prototype.getRadioValue = function () {
+                return "Circular";
+            };
+            return circle;
+        }());
+        layouts.circle = circle;
+    })(layouts = Editor.layouts || (Editor.layouts = {}));
+})(Editor || (Editor = {}));
 var apps;
 (function (apps) {
     apps.assemblyKey = "ko00001-assembly";
