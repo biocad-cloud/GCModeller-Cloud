@@ -1,3 +1,5 @@
+require(GCModeller);
+
 imports "report.utils" from "kegg_kit";
 
 const run as function(id) {
