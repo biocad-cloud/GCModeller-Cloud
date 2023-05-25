@@ -13,3 +13,6 @@
 [submodule "framework/pathway_cad"]
 	path = framework/pathway_cad
 	url = https://github.com/biocad-cloud/pathway_cad.git
+[submodule "repository"]
+	path = repository
+	url = https://github.com/biocad-cloud/git.git
