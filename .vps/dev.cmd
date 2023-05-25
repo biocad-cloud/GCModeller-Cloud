@@ -25,9 +25,8 @@ echo "init docker container for the httpd web..."
 
 %{{%
 
-docker run -itd --name biocad_web 
-    --cap-add SYS_ADMIN --security-opt apparmor=unconfined 
-    --privileged=true 
+    docker run -itd --name biocad_web --cap-add SYS_ADMIN --privileged=true 
+
     -v "%dev_tmp%/biocad_tmp2:/tmp:rw" 
     -v "%dev_tmp%/apache:/tmp/apache/:rw" 
     -v "%proj_root%/framework/php.NET/:/opt/runtime/:ro" 
@@ -39,6 +38,7 @@ docker run -itd --name biocad_web
     -v "%proj_root%/.vps/mnt:/mnt/biocad_cloud:rw" 
     -p 8848:80 
     -p 8843:443 
+    
     ubuntu:php8 /usr/sbin/init
 
 %}}%
