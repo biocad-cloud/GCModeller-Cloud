@@ -6,11 +6,20 @@ docker rm biocad_web
 SET proj_root=F:/bioCAD
 SET dev_tmp=%proj_root%/.vps/tmp
 
+echo "project source repository root:"
+echo %proj_root%
+echo "vps development dir:"
+echo %dev_tmp%
+
+echo "start to create the dev folders:"
+
 mkdir %dev_tmp%
 mkdir %dev_tmp%/biocad_tmp2
 mkdir %dev_tmp%/apache
 
 mkdir %proj_root%/.vps/mnt
+
+echo "init docker container for the httpd web..."
 
 docker run -itd --name biocad_web ^
     --cap-add SYS_ADMIN --security-opt apparmor=unconfined ^
@@ -27,6 +36,8 @@ docker run -itd --name biocad_web ^
     -p 8848:80 ^
     -p 8843:443 ^
     ubuntu:php8 /usr/sbin/init
+
+echo "start target web server!"
 
 docker exec -it biocad_web systemctl restart apache2
 
