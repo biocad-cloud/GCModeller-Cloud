@@ -37,7 +37,7 @@ echo "init docker container for the httpd web..."
     -v "%proj_root%/.vps/mnt:/mnt/biocad_cloud" 
     -p 8848:80 
     -p 8843:443 
-    ubuntu:php8 /usr/sbin/init
+    ubuntu:php8 /sbin/init
 
 %}}%
 
