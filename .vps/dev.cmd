@@ -45,5 +45,6 @@ echo "start target web server!"
 
 docker exec -it biocad_web systemctl restart httpd
 docker exec -it biocad_web /bin/bash
+docker exec -it biocad_web cat /var/log/httpd/biocad_error.log
 
 pause
