@@ -44,5 +44,6 @@ echo "init docker container for the httpd web..."
 echo "start target web server!"
 
 docker exec -it biocad_web systemctl restart httpd
+docker exec -it biocad_web /bin/bash
 
 pause
