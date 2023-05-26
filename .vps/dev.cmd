@@ -25,7 +25,7 @@ echo "init docker container for the httpd web..."
 
 %{{%
 
-    docker run -itd --name biocad_web  
+    docker run -itd --name biocad_web --cap-add SYS_ADMIN --device /dev/fuse "--privileged=true"    
     -v "%dev_tmp%/biocad_tmp2:/tmp" 
     -v "%dev_tmp%/apache:/tmp/apache/" 
     -v "%proj_root%/framework/php.NET/:/opt/runtime/" 
@@ -37,12 +37,12 @@ echo "init docker container for the httpd web..."
     -v "%proj_root%/.vps/mnt:/mnt/biocad_cloud" 
     -p 8848:80 
     -p 8843:443 
-    ubuntu:php8 /sbin/init
+    centos:php8 /usr/sbin/init
 
 %}}%
 
 echo "start target web server!"
 
-docker exec -it biocad_web systemctl restart apache2
+docker exec -it biocad_web systemctl restart httpd
 
 pause
