@@ -1,11 +1,22 @@
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -111,11 +122,11 @@ var Activator;
             }
             else {
                 console.error(type);
-                throw "Unsupport data type: " + type.class;
+                throw "Unsupport data type: ".concat(type.class);
             }
         }
         else {
-            throw "Unsupport data type: " + JSON.stringify(type);
+            throw "Unsupport data type: ".concat(JSON.stringify(type));
         }
         return obj;
     }
@@ -243,7 +254,7 @@ var data;
             }
             if (argv.length < convCount) {
                 // 格式化参数的数量少于占位符的数量，则抛出错误
-                throw "Mismatch format argument numbers (" + argv.length + " !== " + convCount + ")!";
+                throw "Mismatch format argument numbers (".concat(argv.length, " !== ").concat(convCount, ")!");
             }
             else {
                 return sprintf.doSubstitute(parsed.matches, parsed.strings);
@@ -379,7 +390,7 @@ var LINQIterator = /** @class */ (function () {
         get: function () {
             return this.sequence.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     LINQIterator.prototype.reset = function () {
@@ -440,10 +451,14 @@ var Enumerable;
     */
     function OrderBy(source, key) {
         // array clone
-        var clone = source.slice();
+        var clone = __spreadArray([], source, true);
         clone.sort(function (a, b) {
+            var va = key(a);
+            var vb = key(b);
+            var na = typeof va == "string" ? Strings.hashCode(va) : va;
+            var nb = typeof vb == "string" ? Strings.hashCode(vb) : vb;
             // a - b
-            return key(a) - key(b);
+            return na - nb;
         });
         // console.log("clone");
         // console.log(clone);
@@ -453,7 +468,8 @@ var Enumerable;
     function OrderByDescending(source, key) {
         return Enumerable.OrderBy(source, function (e) {
             // b - a
-            return -key(e);
+            var val = key(e);
+            return typeof val == "string" ? -Strings.hashCode(val) : -val;
         });
     }
     Enumerable.OrderByDescending = OrderByDescending;
@@ -610,7 +626,7 @@ var IEnumerator = /** @class */ (function (_super) {
         get: function () {
             return $ts.typeof(this.First);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ;
@@ -626,7 +642,7 @@ var IEnumerator = /** @class */ (function (_super) {
             index = 0;
         }
         else if (typeof index == "string") {
-            throw "Item index='" + index + "' must be an integer!";
+            throw "Item index='".concat(index, "' must be an integer!");
         }
         return this.sequence[index];
     };
@@ -634,7 +650,7 @@ var IEnumerator = /** @class */ (function (_super) {
      * 在明确类型信息的情况下进行强制类型转换
     */
     IEnumerator.prototype.ctype = function () {
-        return new IEnumerator(this.sequence.slice());
+        return new IEnumerator(__spreadArray([], this.sequence, true));
     };
     IEnumerator.getArray = function (source) {
         if (!source) {
@@ -643,10 +659,10 @@ var IEnumerator = /** @class */ (function (_super) {
         else if (Array.isArray(source)) {
             // 2018-07-31 为了防止外部修改source导致sequence数组被修改
             // 在这里进行数组复制，防止出现这种情况
-            return source.slice();
+            return __spreadArray([], source, true);
         }
         else {
-            return source.sequence.slice();
+            return __spreadArray([], source.sequence, true);
         }
     };
     IEnumerator.prototype.indexOf = function (x) {
@@ -659,7 +675,7 @@ var IEnumerator = /** @class */ (function (_super) {
         get: function () {
             return this.sequence[0];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IEnumerator.prototype, "Last", {
@@ -669,7 +685,7 @@ var IEnumerator = /** @class */ (function (_super) {
         get: function () {
             return this.sequence[this.Count - 1];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1063,7 +1079,7 @@ var IEnumerator = /** @class */ (function (_super) {
     IEnumerator.prototype.ToArray = function (clone) {
         if (clone === void 0) { clone = true; }
         if (clone) {
-            return this.sequence.slice();
+            return __spreadArray([], this.sequence, true);
         }
         else {
             return this.sequence;
@@ -1140,7 +1156,7 @@ var DOMEnumerator = /** @class */ (function (_super) {
         get: function () {
             return this.First.tagName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DOMEnumerator.prototype, "type", {
@@ -1157,7 +1173,7 @@ var DOMEnumerator = /** @class */ (function (_super) {
                 return this.tagName;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1300,6 +1316,9 @@ var DOMEnumerator = /** @class */ (function (_super) {
     */
     DOMEnumerator.prototype.onClick = function (handler) {
         this.ForEach(function (element) {
+            // clear event handler which is assigned
+            // to this html node before
+            element.removeAttribute('onclick');
             element.onclick = function (ev) {
                 handler(this, ev);
                 return false;
@@ -1441,7 +1460,7 @@ var Internal;
                     nodes = context.querySelectorAll(cssSelector);
                 }
                 else {
-                    throw "Unsupported context type: " + TypeScript.Reflection.getClass(context);
+                    throw "Unsupported context type: ".concat(TypeScript.Reflection.getClass(context));
                 }
                 var it = new DOMEnumerator(nodes);
                 return it;
@@ -1456,7 +1475,7 @@ var Internal;
                     var node = Handlers.Selector.getElementByIdUnderContext(query.expression, context);
                     if (isNullOrUndefined(node)) {
                         if (TypeScript.logging.outputWarning) {
-                            console.warn("Unable to found a node which its ID='" + expr + "'!");
+                            console.warn("Unable to found a node which its ID='".concat(expr, "'!"));
                         }
                         return null;
                     }
@@ -1492,7 +1511,7 @@ var Internal;
                 }
                 else {
                     if (TypeScript.logging.outputEverything) {
-                        console.warn("Apply querySelector for expression: '" + query.expression + "', no typescript extension was made!");
+                        console.warn("Apply querySelector for expression: '".concat(query.expression, "', no typescript extension was made!"));
                     }
                     // 只返回第一个满足条件的节点
                     var element = Handlers.Selector.selectElementsUnderContext(query, context);
@@ -1704,7 +1723,7 @@ var DataExtensions;
         if (typeof data.data !== "string") {
             data.data = arrayBufferToBase64(data.data);
         }
-        return "data:" + data.mime_type + ";base64," + data.data;
+        return "data:".concat(data.mime_type, ";base64,").concat(data.data);
     }
     DataExtensions.toUri = toUri;
     /**
@@ -1775,7 +1794,7 @@ var MapTuple = /** @class */ (function () {
         return [this.key, this.value];
     };
     MapTuple.prototype.toString = function () {
-        return "[" + this.key.toString() + ", " + this.value.toString() + "]";
+        return "[".concat(this.key.toString(), ", ").concat(this.value.toString(), "]");
     };
     return MapTuple;
 }());
@@ -1800,7 +1819,7 @@ var NamedValue = /** @class */ (function () {
         get: function () {
             return $ts.typeof(this.value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(NamedValue.prototype, "IsEmpty", {
@@ -1810,7 +1829,7 @@ var NamedValue = /** @class */ (function () {
         get: function () {
             return Strings.Empty(this.name) && (!this.value || this.value == undefined);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     NamedValue.prototype.valueOf = function () {
@@ -1930,7 +1949,7 @@ var Strings;
         var exp = Math.floor(Math.log(bytes) / Math.log(1000));
         var symbol = symbols[exp];
         var val = (bytes / Math.pow(1000, Math.floor(exp)));
-        return Strings.sprintf("%.2f " + symbol, val);
+        return Strings.sprintf("%.2f ".concat(symbol), val);
     }
     Strings.Lanudry = Lanudry;
     /**
@@ -2020,7 +2039,7 @@ var Strings;
         var n = Math.pow(10, decimals);
         if (isNaN(floatX)) {
             if (TypeScript.logging.outputWarning) {
-                console.warn("Invalid number value: '" + x + "'");
+                console.warn("Invalid number value: '".concat(x, "'"));
             }
             return false;
         }
@@ -2444,6 +2463,25 @@ var Strings;
         return sb;
     }
     Strings.WrappingLines = WrappingLines;
+    /**
+     * get hashcode of a given string
+     *
+     * @param str
+     * @returns
+     */
+    function hashCode(str) {
+        var hash = 0, i, chr;
+        if (!str)
+            return hash;
+        var len = str.length;
+        for (i = 0; i < len; i++) {
+            chr = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    }
+    Strings.hashCode = hashCode;
 })(Strings || (Strings = {}));
 var TypeScript;
 (function (TypeScript) {
@@ -2462,7 +2500,7 @@ var TypeScript;
                 get: function () {
                     return !this.class;
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             Object.defineProperty(TypeInfo.prototype, "isArray", {
@@ -2472,7 +2510,7 @@ var TypeScript;
                 get: function () {
                     return this.typeOf == "array";
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             Object.defineProperty(TypeInfo.prototype, "isEnumerator", {
@@ -2482,7 +2520,7 @@ var TypeScript;
                 get: function () {
                     return this.typeOf == "object" && ((this.class == "IEnumerator" || this.class == "DOMEnumerator") || Reflection.Internal.isEnumeratorSignature(this));
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             /**
@@ -2493,7 +2531,7 @@ var TypeScript;
             };
             TypeInfo.prototype.toString = function () {
                 if (this.typeOf == "object") {
-                    return "<" + this.typeOf + "> " + this.class;
+                    return "<".concat(this.typeOf, "> ").concat(this.class);
                 }
                 else {
                     return this.typeOf;
@@ -2900,7 +2938,7 @@ var Internal;
         StackTrace.prototype.toString = function () {
             var sb = new StringBuilder();
             this.ForEach(function (frame) {
-                sb.AppendLine("  at " + frame.toString());
+                sb.AppendLine("  at ".concat(frame.toString()));
             });
             return sb.toString();
         };
@@ -3035,7 +3073,7 @@ var Dictionary = /** @class */ (function (_super) {
         get: function () {
             return Framework.Extensions.extend(this.maps);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ///**
@@ -3074,7 +3112,7 @@ var Dictionary = /** @class */ (function (_super) {
         get: function () {
             return $from(Object.keys(this.maps));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Dictionary.prototype, "Values", {
@@ -3084,7 +3122,7 @@ var Dictionary = /** @class */ (function (_super) {
         get: function () {
             return this.Select(function (m) { return m.value; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Dictionary.FromMaps = function (maps) {
@@ -3171,7 +3209,7 @@ var TypeScript;
                 // 将页面的路径标准化
                 // 应该是一个从wwwroot起始的绝对路径
                 if (this.path.charAt(0) !== "/") {
-                    this.path = "/" + this.path;
+                    this.path = "/".concat(this.path);
                 }
             }
             else {
@@ -3196,7 +3234,7 @@ var TypeScript;
             get: function () {
                 return this.queryArguments.ToArray(false);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ;
@@ -3254,9 +3292,9 @@ var TypeScript;
         };
         URL.prototype.toString = function () {
             var query = $from(this.query)
-                .Select(function (q) { return q.name + "=" + encodeURIComponent(q.value); })
+                .Select(function (q) { return "".concat(q.name, "=").concat(encodeURIComponent(q.value)); })
                 .JoinBy("&");
-            var url = this.protocol + "://" + this.origin + "/" + this.path;
+            var url = "".concat(this.protocol, "://").concat(this.origin, "/").concat(this.path);
             if (query) {
                 url = url + "?" + query;
             }
@@ -3266,7 +3304,7 @@ var TypeScript;
             return url;
         };
         URL.Refresh = function (url) {
-            return url + "&refresh=" + Math.random() * 10000;
+            return "".concat(url, "&refresh=").concat(Math.random() * 10000);
         };
         /**
          * 获取所给定的URL之中的host名称字符串，如果解析失败会返回空值
@@ -3460,7 +3498,7 @@ var DOM;
         if (selectName === void 0) { selectName = null; }
         if (className === void 0) { className = null; }
         var options = $from(items)
-            .Select(function (item) { return "<option value=\"" + item.value + "\">" + item.key + "</option>"; })
+            .Select(function (item) { return "<option value=\"".concat(item.value, "\">").concat(item.key, "</option>"); })
             .JoinBy("\n");
         var html;
         if (isNullOrUndefined(selectName) && isNullOrUndefined(className)) {
@@ -3468,9 +3506,9 @@ var DOM;
             html = options;
         }
         else {
-            html = "\n                <select class=\"" + className + "\" multiple name=\"" + selectName + "\">\n                    " + options + "\n                </select>";
+            html = "\n                <select class=\"".concat(className, "\" multiple name=\"").concat(selectName, "\">\n                    ").concat(options, "\n                </select>");
         }
-        $ts("#" + containerID).innerHTML = html;
+        $ts("#".concat(containerID)).innerHTML = html;
     }
     DOM.AddSelectOptions = AddSelectOptions;
     /**
@@ -3480,9 +3518,10 @@ var DOM;
      *    + 如果这个参数不为空值，则会显示这个参数所指定的列出来
      *    + 可以通过``map [propertyName => display title]``来控制表头的标题输出
     */
-    function CreateHTMLTableNode(rows, headers, attrs) {
+    function CreateHTMLTableNode(rows, headers, attrs, foreachRow) {
         if (headers === void 0) { headers = null; }
         if (attrs === void 0) { attrs = null; }
+        if (foreachRow === void 0) { foreachRow = null; }
         var thead = $ts("<tr>");
         var tbody = $ts("<tbody>");
         var fields;
@@ -3496,6 +3535,9 @@ var DOM;
             var tr = $ts("<tr>");
             // 在这里将会控制列的显示
             fields.forEach(function (m) { return tr.appendChild($ts("<td>").display(r[m.key])); });
+            if (foreachRow) {
+                foreachRow(r, tr);
+            }
             return tr;
         };
         if (Array.isArray(rows)) {
@@ -3519,10 +3561,11 @@ var DOM;
      * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
      * @param attrs ``<table>``的属性值，包括id，class等
     */
-    function AddHTMLTable(rows, div, headers, attrs) {
+    function AddHTMLTable(rows, div, headers, attrs, foreachRow) {
         if (headers === void 0) { headers = null; }
         if (attrs === void 0) { attrs = null; }
-        var id = Strings.Trim(div, "#") + "-table";
+        if (foreachRow === void 0) { foreachRow = null; }
+        var id = "".concat(Strings.Trim(div, "#"), "-table");
         if (attrs) {
             if (!attrs.id) {
                 attrs.id = id;
@@ -3531,7 +3574,7 @@ var DOM;
         else {
             attrs = { id: id };
         }
-        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
+        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs, foreachRow));
     }
     DOM.AddHTMLTable = AddHTMLTable;
     /**
@@ -3556,7 +3599,7 @@ var DOM;
             return headers.ToArray();
         }
         else {
-            throw "Invalid sequence type: " + type.class;
+            throw "Invalid sequence type: ".concat(type.class);
         }
     }
 })(DOM || (DOM = {}));
@@ -3579,7 +3622,7 @@ var TypeScript;
             get: function () {
                 return $ts.mode <= warningLevel;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(logging, "outputEverything", {
@@ -3589,7 +3632,7 @@ var TypeScript;
             get: function () {
                 return $ts.mode == anyoutputLevel;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(logging, "outputError", {
@@ -3599,7 +3642,7 @@ var TypeScript;
             get: function () {
                 return $ts.mode == errorOnly;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         logging.warning = function (msg) {
@@ -3623,7 +3666,7 @@ var TypeScript;
                     console.log(obj);
                 }
                 else {
-                    console.log("%c" + obj, "color:" + color);
+                    console.log("%c" + obj, "color:".concat(color));
                 }
             }
             else {
@@ -3654,7 +3697,7 @@ var TypeScript;
             console.groupEnd();
             var endTime = Date.now();
             var costTime = endTime - startTime;
-            logging.log("Program '" + title + "' cost " + costTime + "ms to run.", "darkblue");
+            logging.log("Program '".concat(title, "' cost ").concat(costTime, "ms to run."), "darkblue");
         };
         return logging;
     }());
@@ -3747,7 +3790,7 @@ var DOM;
         function metaValue(name, Default, allowQueryParent) {
             if (Default === void 0) { Default = null; }
             if (allowQueryParent === void 0) { allowQueryParent = false; }
-            var selector = "meta[name~=\"" + name + "\"]";
+            var selector = "meta[name~=\"".concat(name, "\"]");
             var meta = document.querySelector(selector);
             var getContent = function () {
                 if (meta) {
@@ -3756,7 +3799,7 @@ var DOM;
                 }
                 else {
                     if (TypeScript.logging.outputWarning) {
-                        console.warn(selector + " not found in current context!");
+                        console.warn("".concat(selector, " not found in current context!"));
                     }
                     return Default;
                 }
@@ -3787,7 +3830,7 @@ var DOM;
                 case "textarea": return largeText(input);
                 default:
                     if (strict) {
-                        throw "Get value of <" + input.tagName + "> is not supported!";
+                        throw "Get value of <".concat(input.tagName, "> is not supported!");
                     }
                     else {
                         // 强制读取目标节点的value属性值
@@ -3985,7 +4028,7 @@ var data;
             get: function () {
                 return [this.min, this.max];
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(NumericRange.prototype, "Length", {
@@ -3997,7 +4040,7 @@ var data;
             get: function () {
                 return this.max - this.min;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         // #endregion
@@ -4049,7 +4092,7 @@ var data;
          * Display the range in format ``[min, max]``
         */
         NumericRange.prototype.toString = function () {
-            return "[" + this.min + ", " + this.max + "]";
+            return "[".concat(this.min, ", ").concat(this.max, "]");
         };
         return NumericRange;
     }());
@@ -4512,7 +4555,7 @@ var Internal;
             if (context === void 0) { context = window; }
             var dom = Internal.Handlers.stringEval.select(query, context);
             if (dom.Count == 0) {
-                TypeScript.logging.warning("select query of '" + query + "' returns no data...");
+                TypeScript.logging.warning("select query of '".concat(query, "' returns no data..."));
             }
             return dom;
         };
@@ -4595,7 +4638,7 @@ var Internal;
                 return unsureEval().doEval(any, type, args);
             }
             else {
-                throw "Unsupported data type: " + type.toString();
+                throw "Unsupported data type: ".concat(type.toString());
             }
         }
     }
@@ -4963,7 +5006,7 @@ var Group = /** @class */ (function (_super) {
         get: function () {
             return this.sequence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -5036,14 +5079,14 @@ var Matrix = /** @class */ (function (_super) {
         get: function () {
             return this.sequence.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Matrix.prototype, "columns", {
         get: function () {
             return this.sequence[0].length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Matrix.emptyMatrix = function (m, n, fill) {
@@ -5106,7 +5149,7 @@ var Matrix = /** @class */ (function (_super) {
         }
     };
     Matrix.prototype.toString = function () {
-        return "[" + this.rows + ", " + this.columns + "]";
+        return "[".concat(this.rows, ", ").concat(this.columns, "]");
     };
     return Matrix;
 }(IEnumerator));
@@ -5131,7 +5174,7 @@ var Pointer = /** @class */ (function (_super) {
         get: function () {
             return this.p >= this.Count;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Pointer.prototype, "Current", {
@@ -5141,7 +5184,7 @@ var Pointer = /** @class */ (function (_super) {
         get: function () {
             return this.sequence[this.p];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Pointer.prototype, "Next", {
@@ -5154,7 +5197,7 @@ var Pointer = /** @class */ (function (_super) {
             this.p = this.p + 1;
             return x;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -5427,7 +5470,7 @@ var DOM;
             return {
                 type: DOM.QueryTypes.name,
                 singleNode: isSingle,
-                expression: "[name='" + nameVal + "']"
+                expression: "[name='".concat(nameVal, "']")
             };
         };
         /**
@@ -5554,7 +5597,7 @@ var DOM;
             html.AppendLine("<meta name=\"ProgId\" content=\"Excel.Sheet\">");
             html.AppendLine("<meta name=\"Generator\" content=\"Microsoft Excel 11\">");
             html.AppendLine("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-            html.AppendLine("    \n<!--[if gte mso 9]>\n\t<xml>\n\t\t<x:ExcelWorkbook>\n\t\t\t<x:ExcelWorksheets>\n\t\t\t\t<x:ExcelWorksheet>\n\t\t\t\t\t<x:Name>" + sheetName + "</x:Name>\n\t\t\t\t\t<x:WorksheetOptions>\n\t\t\t\t\t\t<x:DisplayGridlines/>\n\t\t\t\t\t</x:WorksheetOptions>\n\t\t\t\t</x:ExcelWorksheet>\n\t\t\t</x:ExcelWorksheets>\n\t\t</x:ExcelWorkbook>\n\t</xml>\n<![endif]-->\n");
+            html.AppendLine("    \n<!--[if gte mso 9]>\n\t<xml>\n\t\t<x:ExcelWorkbook>\n\t\t\t<x:ExcelWorksheets>\n\t\t\t\t<x:ExcelWorksheet>\n\t\t\t\t\t<x:Name>".concat(sheetName, "</x:Name>\n\t\t\t\t\t<x:WorksheetOptions>\n\t\t\t\t\t\t<x:DisplayGridlines/>\n\t\t\t\t\t</x:WorksheetOptions>\n\t\t\t\t</x:ExcelWorksheet>\n\t\t\t</x:ExcelWorksheets>\n\t\t</x:ExcelWorkbook>\n\t</xml>\n<![endif]-->\n"));
             html.AppendLine("</head>");
             html.AppendLine("<body>");
             html.AppendLine(ToHtml(table, filters));
@@ -5585,19 +5628,19 @@ var DOM;
             var tagName = node.tagName.toLowerCase();
             var css = node.style.cssText;
             if (Strings.Empty(css, true)) {
-                return "<" + tagName + ">";
+                return "<".concat(tagName, ">");
             }
             else {
-                return "<" + tagName + " style=\"" + css + "\">";
+                return "<".concat(tagName, " style=\"").concat(css, "\">");
             }
         }
         function rowHtml(row, isTHead) {
             var keyword = isTHead ? "th" : "td";
             var columns = [];
             for (var i = 0; i < row.cells.length; i++) {
-                columns.push("<" + keyword + ">" + cellHtml(row.cells.item(i)) + "</" + keyword + ">");
+                columns.push("<".concat(keyword, ">").concat(cellHtml(row.cells.item(i)), "</").concat(keyword, ">"));
             }
-            return "" + tagOpenWithCssStyle(row) + columns.join("") + "</tr>";
+            return "".concat(tagOpenWithCssStyle(row)).concat(columns.join(""), "</tr>");
         }
         function cellHtml(cell) {
             var html = cell.innerHTML;
@@ -5645,7 +5688,7 @@ var DOM;
                         break;
                     default:
                         if (strict) {
-                            throw "Set value of <" + input.tagName + "> is not supported!";
+                            throw "Set value of <".concat(input.tagName, "> is not supported!");
                         }
                         else {
                             // 强制读取目标节点的value属性值
@@ -5704,7 +5747,7 @@ var DOM;
                     break;
                 default:
                     if (strict) {
-                        throw "Set value of <" + inputs.tagName + "> is not supported!";
+                        throw "Set value of <".concat(inputs.tagName, "> is not supported!");
                     }
                     else {
                         // 强制读取目标节点的value属性值
@@ -5874,7 +5917,7 @@ var DOM;
                         break;
                     default:
                         styledNode.style[name] = value;
-                        TypeScript.logging.warning("Set style '" + name + "' is not implements yet...");
+                        TypeScript.logging.warning("Set style '".concat(name, "' is not implements yet..."));
                 }
             }
         })(Setter = CSS.Setter || (CSS.Setter = {}));
@@ -5920,7 +5963,7 @@ var DOM;
             }
             else if (TypeScript.logging.outputEverything) {
                 TypeScript.logging.log("Add Document.ready event handler.", TypeScript.ConsoleColors.Green);
-                TypeScript.logging.log("document.readyState = " + docObj.readyState, TypeScript.ConsoleColors.Green);
+                TypeScript.logging.log("document.readyState = ".concat(docObj.readyState), TypeScript.ConsoleColors.Green);
             }
             // 2018-12-25 "interactive", "complete" 这两种状态都可以算作是DOM已经准备好了
             if (loadComplete.indexOf(docObj.readyState) > -1) {
@@ -6005,7 +6048,7 @@ var DOM;
                         return false;
                     }
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             return StatusChanged;
@@ -6032,7 +6075,7 @@ var HTMLTsElement = /** @class */ (function () {
         get: function () {
             return this.node;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -6214,7 +6257,7 @@ var TypeExtensions;
         obj.attr = function (name, value) {
             if ((name = name.toLowerCase()) == "src" || name == "href") {
                 value = Internal.urlSolver(value, true);
-                TypeScript.logging.log("set_attr " + name + "='" + value + "'");
+                TypeScript.logging.log("set_attr ".concat(name, "='").concat(value, "'"));
             }
             if (isNullOrUndefined(value)) {
                 node.removeAttribute(name);
@@ -6574,6 +6617,93 @@ var TypeScript;
         Data.quantile = quantile;
     })(Data = TypeScript.Data || (TypeScript.Data = {}));
 })(TypeScript || (TypeScript = {}));
+var OADate;
+(function (OADate) {
+    // https://github.com/blikblum/oadate
+    var defaultOffset = new Date().getTimezoneOffset();
+    // code below extracted from https://github.com/markitondemand/moment-msdate
+    var MINUTE_MILLISECONDS = 60 * 1000;
+    var DAY_MILLISECONDS = 86400000;
+    var MS_DAY_OFFSET = 25569;
+    var oaDateToTicks = function (oaDate) {
+        var ticks = (oaDate - MS_DAY_OFFSET) * DAY_MILLISECONDS;
+        if (oaDate < 0) {
+            var frac = (oaDate - Math.trunc(oaDate)) * DAY_MILLISECONDS;
+            if (frac !== 0) {
+                ticks -= frac * 2;
+            }
+        }
+        return ticks;
+    };
+    var ticksToOADate = function (ticks) {
+        var oad = ticks / DAY_MILLISECONDS + MS_DAY_OFFSET;
+        if (oad < 0) {
+            var frac = oad - Math.trunc(oad);
+            if (frac !== 0) {
+                oad = Math.ceil(oad) - frac - 2;
+            }
+        }
+        return oad;
+    };
+    function DateToOADate(value, offset) {
+        if (offset === void 0) { offset = defaultOffset; }
+        return ticksToOADate(value.valueOf() - offset * MINUTE_MILLISECONDS);
+    }
+    OADate.DateToOADate = DateToOADate;
+    function OADateToDate(value, offset) {
+        if (offset === void 0) { offset = defaultOffset; }
+        var ticks = oaDateToTicks(value);
+        return new Date(ticks + offset * MINUTE_MILLISECONDS);
+    }
+    OADate.OADateToDate = OADateToDate;
+    var TDateTime = /** @class */ (function (_super) {
+        __extends(TDateTime, _super);
+        function TDateTime() {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var _this = this;
+            if (args.length === 1 && typeof args[0] === 'number') {
+                _this = _super.call(this, OADate.OADateToDate(args[0])) || this;
+            }
+            else {
+                _this = _super.apply(this, args) || this;
+            }
+            return _this;
+        }
+        TDateTime.prototype.toJSON = function () {
+            return this.prepareOADate(DateToOADate(this));
+        };
+        TDateTime.prototype.prepareOADate = function (value) {
+            return value;
+        };
+        return TDateTime;
+    }(Date));
+    OADate.TDateTime = TDateTime;
+    var TDate = /** @class */ (function (_super) {
+        __extends(TDate, _super);
+        function TDate() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        TDate.prototype.prepareOADate = function (value) {
+            return Math.trunc(value);
+        };
+        return TDate;
+    }(TDateTime));
+    OADate.TDate = TDate;
+    var TTime = /** @class */ (function (_super) {
+        __extends(TTime, _super);
+        function TTime() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        TTime.prototype.prepareOADate = function (value) {
+            return Math.abs(value % 1);
+        };
+        return TTime;
+    }(TDateTime));
+    OADate.TTime = TTime;
+})(OADate || (OADate = {}));
 /// <reference path="../Collections/Abstract/Enumerator.ts" />
 var TypeScript;
 (function (TypeScript) {
@@ -6591,7 +6721,7 @@ var TypeScript;
                 get: function () {
                     return this.sequence;
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             /**
@@ -7549,7 +7679,7 @@ var TypeScript;
                         valid: false
                     };
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             w3color.prototype.toRgbString = function () {
@@ -7794,11 +7924,18 @@ var Base64;
     /**
      * 将base64字符串解码为字节数组->普通数组
      */
-    function bytes_decode(str) {
+    function bytes_decode(str, size) {
+        if (size === void 0) { size = null; }
         var arr = [];
         var base64 = new Uint8Array(decode_rawBuffer(str));
         var view = new DataView(base64.buffer);
         var num = base64.length / 8;
+        if (!isNullOrUndefined(size)) {
+            if (num != parseInt(size.toString())) {
+                console.log(str);
+                throw "invalid base64 string, decode size(".concat(num, ") is not equals to the size(").concat(size, ") verification!");
+            }
+        }
         for (var i = 0; i < num; i++) {
             arr.push(view.getFloat64(i * 8));
         }
@@ -8133,7 +8270,7 @@ var StringBuilder = /** @class */ (function () {
         get: function () {
             return this.buffer.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -8169,7 +8306,7 @@ var Internal;
                     return false;
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         /**
@@ -8206,7 +8343,7 @@ var Internal;
                 var placeholder = void 0;
                 for (var name in args) {
                     value = args[name];
-                    placeholder = "{$" + name + "}";
+                    placeholder = "{$".concat(name, "}");
                     // 进行模板上的占位符字符串进行值替换
                     scriptText = scriptText.replace(placeholder, value);
                 }
@@ -8236,7 +8373,7 @@ var Internal;
             // get script text from server
             $ts.getText(scriptUrl, function (script) {
                 var blobUrl = _this.buildWorker(script, args);
-                TypeScript.logging.log("Build worker blob url: " + blobUrl, TypeScript.ConsoleColors.Gray);
+                TypeScript.logging.log("Build worker blob url: ".concat(blobUrl), TypeScript.ConsoleColors.Gray);
                 register(blobUrl);
             });
         };
@@ -8362,7 +8499,7 @@ var Router;
             }
         }
         else {
-            throw "Module \"" + module + "\" is not exists in your web app.";
+            throw "Module \"".concat(module, "\" is not exists in your web app.");
         }
         if (TypeScript.logging.outputEverything) {
             // 在console中显示table
@@ -8425,11 +8562,11 @@ var Router;
     Router.register = register;
     function clientResize(appId) {
         var app = $ts("#" + appId);
-        var frame = $ts("#" + appId + "-frame");
+        var frame = $ts("#".concat(appId, "-frame"));
         var size = DOM.clientSize();
         if (!app) {
             if (TypeScript.logging.outputWarning) {
-                console.warn("[#" + appId + "] not found!");
+                console.warn("[#".concat(appId, "] not found!"));
             }
         }
         else {
@@ -8522,27 +8659,27 @@ var Bootstrap = /** @class */ (function () {
         get: function () {
             return Router.appName || getAllUrlParams().Item("app") || "/";
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Bootstrap.prototype, "appStatus", {
         get: function () {
             return this.status;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Bootstrap.prototype, "appHookMsg", {
         get: function () {
             return this.hookUnload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Bootstrap.prototype.isCurrentAppPath = function () {
         var path = $ts.location.path;
         if (TypeScript.logging.outputEverything) {
-            console.log("Current url path is '" + path + "'");
+            console.log("Current url path is '".concat(path, "'"));
         }
         return path == this.appName;
     };
@@ -8564,7 +8701,7 @@ var Bootstrap = /** @class */ (function () {
             return false;
         }
         else if (TypeScript.logging.outputEverything) {
-            console.log("%c[" + $ts.typeof(this).class + "] App(name:=" + this.appName + ") Init...", "color:blue;");
+            console.log("%c[".concat($ts.typeof(this).class, "] App(name:=").concat(this.appName, ") Init..."), "color:blue;");
         }
         return awake;
     };
@@ -8619,7 +8756,7 @@ var Bootstrap = /** @class */ (function () {
         // do nothing
     };
     Bootstrap.prototype.toString = function () {
-        return "[" + this.status + "] " + this.appName;
+        return "[".concat(this.status, "] ").concat(this.appName);
     };
     return Bootstrap;
 }());
@@ -8632,7 +8769,7 @@ var Internal;
         */
         function findAllElement(attr) {
             if (attr === void 0) { attr = "id"; }
-            var elements = document.querySelectorAll("*[" + attr + "]");
+            var elements = document.querySelectorAll("*[".concat(attr, "]"));
             var id = [];
             for (var _i = 0, _a = $ts(elements).ToArray(false); _i < _a.length; _i++) {
                 var node = _a[_i];
@@ -8662,22 +8799,28 @@ var Internal;
             if (elements.indexOf(publicMethodName) > -1) {
                 var arguments_1 = parseFunctionArgumentNames(app[publicMethodName]);
                 if (arguments_1.length == 0 || arguments_1.length == 2) {
-                    $ts("#" + publicMethodName).onclick = function (handler, evt) {
+                    $ts("#".concat(publicMethodName)).onclick = function (handler, evt) {
                         return app[eventRawName](handler, evt);
                     };
-                    TypeScript.logging.log("[EVENT " + eventRawName + "] hook onclick for #" + publicMethodName + "...", TypeScript.ConsoleColors.Green);
+                    TypeScript.logging.log("[EVENT ".concat(eventRawName, "] hook onclick for #").concat(publicMethodName, "..."), TypeScript.ConsoleColors.Green);
                     return true;
                 }
             }
             return false;
         }
         var onchangeToken = "_onchange";
+        var pars = {
+            "value": true,
+            "a": true,
+            "val": true,
+            "str": true
+        };
         // <input id="email" />
         // email_onchange(value: string) {
         //     ...
         // }
         function hookOnChange(app, elements, type) {
-            elements = $from(elements).Select(function (id) { return "" + id + onchangeToken; }).ToArray();
+            elements = $from(elements).Select(function (id) { return "".concat(id).concat(onchangeToken); }).ToArray();
             var _loop_1 = function (publicMethodName) {
                 if (elements.indexOf(publicMethodName) == -1) {
                     return "continue";
@@ -8687,7 +8830,10 @@ var Internal;
                 var id = publicMethodName.replace(onchangeToken, "");
                 var a = document.getElementById(id);
                 var tag = a.tagName.toLowerCase();
-                if (arguments_2.length == 1 && arguments_2[0] == "value") {
+                // 20221004 parameter name rule:
+                // 1. value, raw js script
+                // 2. a, compressed via gcc, resulted min js
+                if (arguments_2.length == 1 && arguments_2[0] in pars) {
                     if (tag == "input" || tag == "textarea") {
                         var type_1 = a.getAttribute("type");
                         if (!isNullOrUndefined(type_1) && type_1.toLowerCase() == "file") {
@@ -8710,7 +8856,7 @@ var Internal;
                         };
                     }
                     else {
-                        TypeScript.logging.log("invalid tag name: " + a.tagName + "!", "red");
+                        TypeScript.logging.log("invalid tag name: ".concat(a.tagName, "!"), "red");
                     }
                 }
                 else if (arguments_2.length == 0) {
@@ -8779,7 +8925,7 @@ var Framework;
                 array = data.ToArray();
             }
             else if (type.isArray) {
-                array = data.slice();
+                array = __spreadArray([], data, true);
             }
             else {
                 var x = data;
@@ -8859,16 +9005,16 @@ var TypeScript;
         garbageCollect.handler = getHandler();
         function getHandler() {
             if (typeof window.require === "function") {
-                var require_1 = window.require;
+                var require = window.require;
                 try {
-                    require_1("v8").setFlagsFromString('--expose_gc');
+                    require("v8").setFlagsFromString('--expose_gc');
                     if (window.global != null) {
-                        var global_1 = window.global;
-                        if (typeof global_1.gc == "function") {
-                            return global_1.gc;
+                        var global = window.global;
+                        if (typeof global.gc == "function") {
+                            return global.gc;
                         }
                     }
-                    var vm = require_1("vm");
+                    var vm = require("vm");
                     if (vm != null) {
                         if (typeof vm.runInNewContext == "function") {
                             var k = vm.runInNewContext("gc");
@@ -8903,9 +9049,9 @@ var TypeScript;
             //    }
             //}
             if (typeof window.global !== 'undefined') {
-                var global_2 = window.global;
-                if (global_2.gc) {
-                    return global_2.gc;
+                var global = window.global;
+                if (global.gc) {
+                    return global.gc;
                 }
             }
             //if (typeof Duktape == 'object') {
@@ -9035,7 +9181,7 @@ var Internal;
         function StackFrame() {
         }
         StackFrame.prototype.toString = function () {
-            return this.caller + " [as " + this.memberName + "](" + this.file + ":" + this.line + ":" + this.column + ")";
+            return "".concat(this.caller, " [as ").concat(this.memberName, "](").concat(this.file, ":").concat(this.line, ":").concat(this.column, ")");
         };
         StackFrame.Parse = function (line) {
             var frame = new StackFrame();
@@ -9078,7 +9224,7 @@ var Internal;
             var matches = line.match(/\(.+\)/);
             if (!matches || matches.length == 0) {
                 // 2018-09-14 可能是html文件之中
-                return "(" + line.substr(6).trim() + ")";
+                return "(".concat(line.substr(6).trim(), ")");
             }
             else {
                 return matches[0];
@@ -9124,7 +9270,7 @@ var TypeScript;
             get: function () {
                 return (new Date).getTime() - this.time;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         return CheckPoint;
@@ -9141,7 +9287,7 @@ var Cookies;
         throw "not implements";
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         expires = "expires=" + d.toUTCString();
-        document.cookie = name + "=" + value + "; " + expires + "; path=/";
+        document.cookie = "".concat(name, "=").concat(value, "; ").concat(expires, "; path=/");
     }
     Cookies.setCookie = setCookie;
     /**
@@ -9172,7 +9318,7 @@ var Cookies;
         exp.setTime(exp.getTime() - 1);
         if (cval != null) {
             var expires = exp.toGMTString();
-            expires = name + "=" + cval + ";expires=" + expires;
+            expires = "".concat(name, "=").concat(cval, ";expires=").concat(expires);
             document.cookie = expires;
         }
     }
@@ -9261,7 +9407,7 @@ var CanvasHelper;
             height: size[1],
             id: id,
             title: title,
-            style: "display: " + display + ";"
+            style: "display: ".concat(display, ";")
         });
         // check for canvas support before attempting anything
         if (!canvas.getContext) {
@@ -9294,13 +9440,13 @@ var CanvasHelper;
         };
         fontSize.css = function (size) {
             if (size.point) {
-                return size.point + "pt";
+                return "".concat(size.point, "pt");
             }
             else if (size.percent) {
-                return size.percent + "%";
+                return "".concat(size.percent, "%");
             }
             else if (size.em) {
-                return size.em + "em";
+                return "".concat(size.em, "em");
             }
             else {
                 return size.pixel.toString();
@@ -9517,7 +9663,7 @@ var CanvasHelper;
                     // here all fonts are inlined, so that we can render them properly.
                     var s = $ts('<style>', {
                         type: 'text/css'
-                    }).display("<![CDATA[\n" + css + "\n]]>");
+                    }).display("<![CDATA[\n".concat(css, "\n]]>"));
                     var defs = $ts('<defs>').display(s);
                     clone.insertBefore(defs, clone.firstChild);
                     if (cb) {
@@ -9686,7 +9832,7 @@ var CanvasHelper;
                     }
                     catch (err) {
                         if (TypeScript.logging.outputWarning) {
-                            console.warn("The following CSS rule has an invalid selector: \"" + rule + "\"", err);
+                            console.warn("The following CSS rule has an invalid selector: \"".concat(rule, "\""), err);
                         }
                     }
                     try {
@@ -9696,7 +9842,7 @@ var CanvasHelper;
                     }
                     catch (err) {
                         if (TypeScript.logging.outputWarning) {
-                            console.warn("Invalid CSS selector \"" + selectorText + "\"", err);
+                            console.warn("Invalid CSS selector \"".concat(selectorText, "\""), err);
                         }
                     }
                     if (match) {
@@ -9789,7 +9935,7 @@ var CanvasHelper;
                         style.processFontQueue(queue, css, cssLoadedCallback);
                     }
                     function updateFontStyle(font, fontInBase64) {
-                        var dataUrl = "url(\"data:" + font.format + ";base64," + fontInBase64 + "\")";
+                        var dataUrl = "url(\"data:".concat(font.format, ";base64,").concat(fontInBase64, "\")");
                         css += font.text.replace(font.fontUrlRegexp, dataUrl) + '\n';
                         // schedule next font download on next tick.
                         setTimeout(function () {
@@ -9812,7 +9958,7 @@ var CanvasHelper;
             };
             styles.warnFontNotSupport = function (fontUrl) {
                 // If you see this error message, you probably need to update code above.
-                console.warn("Unknown font format for " + fontUrl + "; Fonts may not be working correctly");
+                console.warn("Unknown font format for ".concat(fontUrl, "; Fonts may not be working correctly"));
             };
             return styles;
         }());
@@ -9970,7 +10116,12 @@ var HttpHelpers;
         /**
          * 传统的表单post格式
         */
-        www: "application/x-www-form-urlencoded"
+        www: "application/x-www-form-urlencoded",
+        /**
+         * ascii char bytes
+        */
+        blob: "text/plain; charset=x-user-defined",
+        binary: "application/octet-stream"
     };
     function measureContentType(obj) {
         if (obj instanceof FormData) {
@@ -9985,6 +10136,33 @@ var HttpHelpers;
         }
     }
     HttpHelpers.measureContentType = measureContentType;
+    /**
+     * Receiving binary data in older browsers
+    */
+    function binaryToBlob(data) {
+        var l = data.length, arr = new Uint8Array(l);
+        for (var i = 0; i < l; i++) {
+            arr[i] = data.charCodeAt(i) & 0xff; // 扔掉的高位字节 (f7)
+        }
+        return new Blob([arr], { type: HttpHelpers.contentTypes.binary });
+    }
+    HttpHelpers.binaryToBlob = binaryToBlob;
+    ;
+    function getBlob(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function (oEvent) {
+            var arrayBuffer = xhr.response; // 注意：不是 oReq.responseText
+            if (arrayBuffer) {
+                // var byteArray = new Uint8Array(arrayBuffer);
+                // var blob = new Blob([byteArray], { type: contentTypes.binary });
+                callback(new Uint8Array(arrayBuffer));
+            }
+        };
+        xhr.send(null);
+    }
+    HttpHelpers.getBlob = getBlob;
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null
      * (这个函数是同步方式的)
@@ -10007,7 +10185,8 @@ var HttpHelpers;
      *
      * @param callback ``callback(http.responseText, http.status)``
     */
-    function GetAsyn(url, callback) {
+    function GetAsyn(url, callback, mime_overrides) {
+        if (mime_overrides === void 0) { mime_overrides = null; }
         var http = new XMLHttpRequest();
         http.open("GET", url, true);
         http.onreadystatechange = function () {
@@ -10019,6 +10198,9 @@ var HttpHelpers;
                 callback(http.response || http.responseText, http.status, contentType);
             }
         };
+        if (!Strings.Empty(mime_overrides)) {
+            http.overrideMimeType(mime_overrides);
+        }
         http.send(null);
     }
     HttpHelpers.GetAsyn = GetAsyn;
@@ -10082,7 +10264,7 @@ var HttpHelpers;
             value = a[key];
             if (isNullOrUndefined(value)) {
                 if (nullAsStringFactor && TypeScript.logging.outputEverything) {
-                    console.warn(key + " value is nothing!");
+                    console.warn("".concat(key, " value is nothing!"));
                     value = "null";
                 }
                 else {
@@ -10090,7 +10272,7 @@ var HttpHelpers;
                     continue;
                 }
             }
-            sb.push(key + "=" + encodeURIComponent(value));
+            sb.push("".concat(key, "=").concat(encodeURIComponent(value)));
         }
         return sb.join("&");
     }
@@ -10140,7 +10322,7 @@ var csv;
             get: function () {
                 return new IEnumerator(this.sequence[0]);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(dataframe.prototype, "contents", {
@@ -10150,7 +10332,7 @@ var csv;
             get: function () {
                 return this.Skip(1);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         /**
@@ -10286,7 +10468,7 @@ var csv;
                         callback(data);
                     }
                     else {
-                        throw "Error while load csv data source, http " + code + ": " + text;
+                        throw "Error while load csv data source, http ".concat(code, ": ").concat(text);
                     }
                 });
             }
@@ -10322,7 +10504,7 @@ var csv;
                     .replace("\r", "")
                     .replace("\n", "");
             });
-            TypeScript.logging.log("Document data is a " + (tsv ? "tsv" : "csv") + " file.", TypeScript.ConsoleColors.Blue);
+            TypeScript.logging.log("Document data is a ".concat(tsv ? "tsv" : "csv", " file."), TypeScript.ConsoleColors.Blue);
             if ($ts.mode == Modes.debug) {
                 console.log("Peeks of your input table data:");
                 console.table(this.head(allTextLines, parse));
@@ -10368,13 +10550,13 @@ var csv;
         function toHTMLTable(data, tblClass) {
             if (tblClass === void 0) { tblClass = bootstrap; }
             var th = data.headers
-                .Select(function (h) { return "<th>" + h + "</th>"; })
+                .Select(function (h) { return "<th>".concat(h, "</th>"); })
                 .JoinBy("\n");
             var tr = data.contents
-                .Select(function (r) { return r.Select(function (c) { return "<td>" + c + "</td>"; }).JoinBy(""); })
-                .Select(function (r) { return "<tr>" + r + "</tr>"; })
+                .Select(function (r) { return r.Select(function (c) { return "<td>".concat(c, "</td>"); }).JoinBy(""); })
+                .Select(function (r) { return "<tr>".concat(r, "</tr>"); })
                 .JoinBy("\n");
-            return "\n            <table class=\"" + tblClass + "\">\n                <thead>\n                    <tr>" + th + "</tr>\n                </thead>\n                <tbody>\n                    " + tr + "\n                </tbody>\n            </table>";
+            return "\n            <table class=\"".concat(tblClass, "\">\n                <thead>\n                    <tr>").concat(th, "</tr>\n                </thead>\n                <tbody>\n                    ").concat(tr, "\n                </tbody>\n            </table>");
         }
         HTML.toHTMLTable = toHTMLTable;
         function createHTMLTable(data, tblClass) {
@@ -10402,9 +10584,9 @@ var csv;
              * 因为这个属性会返回这个行的数组值的复制对象
             */
             get: function () {
-                return this.sequence.slice();
+                return __spreadArray([], this.sequence, true);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(row.prototype, "rowLine", {
@@ -10416,7 +10598,7 @@ var csv;
                     .Select(row.autoEscape)
                     .JoinBy(",");
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         /**
@@ -10456,7 +10638,7 @@ var csv;
         };
         row.autoEscape = function (c) {
             if (c.indexOf(",") > -1) {
-                return "\"" + c + "\"";
+                return "\"".concat(c, "\"");
             }
             else {
                 return c;
@@ -10487,7 +10669,7 @@ var csv;
         var temp = [];
         var openStack = false;
         var buffer = $from(Strings.ToCharArray(s)).ToPointer();
-        var dblQuot = new RegExp("[" + quot + "]{2}", 'g');
+        var dblQuot = new RegExp("[".concat(quot, "]{2}"), 'g');
         var cellStr = function () {
             // https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
             // 2018-09-02
