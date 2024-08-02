@@ -76,6 +76,80 @@ CREATE TABLE `molecule` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pathway`
+--
+
+DROP TABLE IF EXISTS `pathway`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pathway` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(1024) COLLATE utf8mb3_bin NOT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `pathway_graph`
+--
+
+DROP TABLE IF EXISTS `pathway_graph`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pathway_graph` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `pathway_id` int unsigned NOT NULL,
+  `entity_id` int unsigned NOT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reaction`
+--
+
+DROP TABLE IF EXISTS `reaction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reaction` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(1024) COLLATE utf8mb3_bin NOT NULL,
+  `equation` mediumtext COLLATE utf8mb3_bin NOT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='the definition of the biological reaction process';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reaction_graph`
+--
+
+DROP TABLE IF EXISTS `reaction_graph`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reaction_graph` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `reaction` int unsigned NOT NULL,
+  `molecule_id` int unsigned NOT NULL,
+  `role` int unsigned NOT NULL,
+  `factor` double DEFAULT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sequence_graph`
 --
 
@@ -166,4 +240,4 @@ CREATE TABLE `vocabulary` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-02 22:39:31
+-- Dump completed on 2024-08-02 22:55:19
