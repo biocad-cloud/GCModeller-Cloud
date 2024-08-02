@@ -1,4 +1,4 @@
-@echo off
+REM @echo off
 
 set reflector="\graphQL\src\mysqli\App\Reflector.exe"
 set R_src="\biocad_registry\src\mysql"
