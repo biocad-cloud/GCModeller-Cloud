@@ -178,6 +178,7 @@ DROP TABLE IF EXISTS `subcellular_compartments`;
 CREATE TABLE `subcellular_compartments` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `compartment_name` varchar(1024) COLLATE utf8mb3_bin NOT NULL,
+  `topology` varchar(1024) COLLATE utf8mb3_bin DEFAULT NULL,
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
@@ -240,4 +241,4 @@ CREATE TABLE `vocabulary` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-02 22:55:19
+-- Dump completed on 2024-08-03  2:52:22
