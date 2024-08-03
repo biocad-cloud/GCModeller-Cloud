@@ -50,7 +50,8 @@ CREATE TABLE `db_xrefs` (
   `type` int unsigned NOT NULL,
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `unique_dblink` (`obj_id`,`db_key`,`xref`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,15 +64,16 @@ DROP TABLE IF EXISTS `molecule`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `molecule` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(1024) COLLATE utf8mb3_bin NOT NULL COMMENT 'the name of the molecule',
+  `name` varchar(512) COLLATE utf8mb3_bin NOT NULL COMMENT 'the name of the molecule',
   `mass` double NOT NULL COMMENT 'the molecular exact mass',
   `type` int unsigned NOT NULL COMMENT 'the molecule type, the id of the vocabulary term, value could be nucl(DNA), RNA, prot, metabolite, complex',
-  `formula` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'metabolite formula or nucl/prot sequence',
+  `formula` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'metabolite formula or nucl/prot sequence',
   `parent` int unsigned NOT NULL COMMENT 'the parent metabolite id, example as RNA is a parent of polypeptide, and gene is a parent of RNA sequence.',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'add time of current molecular entity',
   `note` longtext COLLATE utf8mb3_bin COMMENT 'description text about current entity object',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `unique_molecule` (`type`,`name`) /*!80000 INVISIBLE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='The molecular entity object';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,10 +200,12 @@ CREATE TABLE `subcellular_location` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `compartment_id` int unsigned NOT NULL,
   `obj_id` int unsigned NOT NULL,
+  `entity` int unsigned NOT NULL COMMENT 'the vocabulary type id of the entity object, could be molecule, reaction or pathways',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `unique_reference` (`compartment_id`,`obj_id`,`entity`) /*!80000 INVISIBLE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='associates the subcellular_compartments and the molecule objects';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -241,4 +245,4 @@ CREATE TABLE `vocabulary` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-03  2:52:22
+-- Dump completed on 2024-08-03 12:40:27
