@@ -31,8 +31,10 @@ CREATE TABLE `complex` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `molecule_info_idx` (`molecule_id`),
+  KEY `component_info_idx` (`component_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='the complex component composition graph data';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +53,10 @@ CREATE TABLE `db_xrefs` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `unique_dblink` (`obj_id`,`db_key`,`xref`,`type`)
+  UNIQUE KEY `unique_dblink` (`obj_id`,`db_key`,`xref`,`type`),
+  KEY `molecule_id_idx` (`obj_id`),
+  KEY `db_name_idx` (`db_key`),
+  KEY `object_type_idx` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,6 +69,7 @@ DROP TABLE IF EXISTS `molecule`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `molecule` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `xref_id` varchar(32) COLLATE utf8mb3_bin NOT NULL COMMENT 'the source external reference id of current molecule, for a gene should be a locus_tag, and protein should be a main uniprot accession id and for metabolite should be pubchem cid or chebi id',
   `name` varchar(512) COLLATE utf8mb3_bin NOT NULL COMMENT 'the name of the molecule',
   `mass` double NOT NULL COMMENT 'the molecular exact mass',
   `type` int unsigned NOT NULL COMMENT 'the molecule type, the id of the vocabulary term, value could be nucl(DNA), RNA, prot, metabolite, complex',
@@ -72,9 +78,13 @@ CREATE TABLE `molecule` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'add time of current molecular entity',
   `note` longtext COLLATE utf8mb3_bin COMMENT 'description text about current entity object',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `unique_molecule` (`type`,`name`) /*!80000 INVISIBLE */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='The molecular entity object';
+  UNIQUE KEY `id_UNIQUE` (`id`) /*!80000 INVISIBLE */,
+  UNIQUE KEY `unique_molecule` (`type`,`name`) /*!80000 INVISIBLE */,
+  KEY `data_type_idx` (`type`),
+  KEY `parent_molecule_idx` (`parent`),
+  KEY `name_index` (`name`),
+  KEY `xref_index` (`xref_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='The molecular entity object inside a cell';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +96,8 @@ DROP TABLE IF EXISTS `pathway`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pathway` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(1024) COLLATE utf8mb3_bin NOT NULL,
+  `xref_id` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'the external reference id of the pathway',
+  `name` varchar(1024) COLLATE utf8mb3_bin NOT NULL COMMENT 'the pathway name',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
@@ -109,7 +120,9 @@ CREATE TABLE `pathway_graph` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `pathway_info_idx` (`pathway_id`),
+  KEY `molecule_data_idx` (`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -147,7 +160,10 @@ CREATE TABLE `reaction_graph` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `reaction_info_idx` (`reaction`),
+  KEY `molecule_data_idx` (`molecule_id`),
+  KEY `role_term_idx` (`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,14 +176,15 @@ DROP TABLE IF EXISTS `sequence_graph`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sequence_graph` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `molecule_id` int unsigned NOT NULL,
-  `sequence` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'the sequence data',
+  `molecule_id` int unsigned NOT NULL COMMENT 'the molecule reference id inside biocad registry system',
+  `sequence` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'the sequence data, for metabolite should be the SMILES structure string data',
   `seq_graph` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'base64 encoded double vector of the embedding result',
   `embedding` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'the embedding keys, for dna, always ATGC, for RNA always AUGC, for popypeptide always 20 Amino acid, for small metabolite, is the atom groups that parsed from the smiles graph ',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `molecules_idx` (`molecule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='the sequence composition data';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +222,10 @@ CREATE TABLE `subcellular_location` (
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `unique_reference` (`compartment_id`,`obj_id`,`entity`) /*!80000 INVISIBLE */
+  UNIQUE KEY `unique_reference` (`compartment_id`,`obj_id`,`entity`) /*!80000 INVISIBLE */,
+  KEY `subcellular_compartments_idx` (`compartment_id`),
+  KEY `molecule_obj_idx` (`obj_id`),
+  KEY `link_entity_type_idx` (`entity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='associates the subcellular_compartments and the molecule objects';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -224,7 +244,8 @@ CREATE TABLE `vocabulary` (
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `search_term` (`category`,`term`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -245,4 +266,4 @@ CREATE TABLE `vocabulary` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-03 12:40:27
+-- Dump completed on 2024-08-04 21:32:29
