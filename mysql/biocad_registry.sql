@@ -49,7 +49,7 @@ CREATE TABLE `db_xrefs` (
   `obj_id` int unsigned NOT NULL,
   `db_key` int unsigned NOT NULL,
   `xref` varchar(255) COLLATE utf8mb3_bin NOT NULL,
-  `type` int unsigned NOT NULL,
+  `type` int unsigned NOT NULL COMMENT 'the target type of obj_id that point to, could be molecules, reactions, pathways',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -79,12 +79,32 @@ CREATE TABLE `molecule` (
   `note` longtext COLLATE utf8mb3_bin COMMENT 'description text about current entity object',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`) /*!80000 INVISIBLE */,
-  UNIQUE KEY `unique_molecule` (`type`,`name`) /*!80000 INVISIBLE */,
+  UNIQUE KEY `unique_molecule` (`type`,`xref_id`),
   KEY `data_type_idx` (`type`),
   KEY `parent_molecule_idx` (`parent`),
   KEY `name_index` (`name`),
   KEY `xref_index` (`xref_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='The molecular entity object inside a cell';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `molecule_function`
+--
+
+DROP TABLE IF EXISTS `molecule_function`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `molecule_function` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `molecule_id` int unsigned NOT NULL,
+  `regulation_term` int unsigned NOT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `molecule_entity_idx` (`molecule_id`),
+  KEY `regulation_info_idx` (`regulation_term`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,8 +175,8 @@ CREATE TABLE `reaction_graph` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `reaction` int unsigned NOT NULL,
   `molecule_id` int unsigned NOT NULL,
-  `role` int unsigned NOT NULL,
-  `factor` double DEFAULT NULL,
+  `role` int unsigned NOT NULL COMMENT 'the vocabulary term of the molecule role inside this reaction model',
+  `factor` double NOT NULL DEFAULT '1',
   `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` longtext COLLATE utf8mb3_bin,
   PRIMARY KEY (`id`),
@@ -164,6 +184,27 @@ CREATE TABLE `reaction_graph` (
   KEY `reaction_info_idx` (`reaction`),
   KEY `molecule_data_idx` (`molecule_id`),
   KEY `role_term_idx` (`role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `regulation_graph`
+--
+
+DROP TABLE IF EXISTS `regulation_graph`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `regulation_graph` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `term` varchar(64) COLLATE utf8mb3_bin NOT NULL,
+  `role` int unsigned NOT NULL,
+  `reaction_id` int unsigned NOT NULL,
+  `add_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` longtext COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `role_term_idx` (`role`),
+  KEY `reaction_process_idx` (`reaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,7 +287,7 @@ CREATE TABLE `vocabulary` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `search_term` (`category`,`term`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,4 +307,4 @@ CREATE TABLE `vocabulary` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-04 21:32:29
+-- Dump completed on 2024-08-07 20:41:03
