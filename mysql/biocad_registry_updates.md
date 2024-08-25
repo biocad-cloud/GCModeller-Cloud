@@ -27,7 +27,13 @@ CREATE TABLE IF NOT EXISTS `kinetic_law` (
   `function_id` INT UNSIGNED NOT NULL COMMENT 'the internal reference id of the molecule function record',
   `add_time` DATETIME NOT NULL DEFAULT now(),
   `note` LONGTEXT NULL COMMENT 'description note text about current enzyme kinetics lambda model',
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  INDEX `regulation_id_idx` (`function_id` ASC) INVISIBLE,
+  INDEX `xrefs_index` (`db_xref` ASC) INVISIBLE,
+  INDEX `ph_filter` (`pH` ASC) INVISIBLE,
+  INDEX `temperature_filter` (`temperature` ASC) VISIBLE,
+  INDEX `uniprot_index` (`uniprot` ASC) VISIBLE)
 ENGINE = InnoDB
 COMMENT = 'the enzymatic catalytic kinetics lambda model';
 
