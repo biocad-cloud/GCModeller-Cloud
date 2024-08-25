@@ -18,17 +18,18 @@ Current database schema didn't has this table, a new table will be created:
 ```sql
 CREATE TABLE IF NOT EXISTS `kinetic_law` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `db_xref` VARCHAR(64) NOT NULL,
-  `lambda` VARCHAR(1024) NOT NULL,
-  `params` VARCHAR(1024) NOT NULL,
-  `temperature` DOUBLE NOT NULL DEFAULT 37,
-  `pH` DOUBLE UNSIGNED NOT NULL DEFAULT 7.5,
-  `uniprot` VARCHAR(45) NOT NULL,
-  `function_id` INT UNSIGNED NOT NULL,
+  `db_xref` VARCHAR(64) NOT NULL COMMENT 'the external reference id of current kinetics lambda model',
+  `lambda` VARCHAR(1024) NOT NULL COMMENT 'the lambda expression of the kinetics',
+  `params` VARCHAR(1024) NOT NULL COMMENT 'parameter set of the current kinetics lambda epxression',
+  `temperature` DOUBLE NOT NULL DEFAULT 37 COMMENT 'temperature of the enzyme catalytic kinetics',
+  `pH` DOUBLE UNSIGNED NOT NULL DEFAULT 7.5 COMMENT 'pH of the enzyme catalytic kinetics',
+  `uniprot` VARCHAR(45) NOT NULL COMMENT 'the uniprot id of the current enzyme model',
+  `function_id` INT UNSIGNED NOT NULL COMMENT 'the internal reference id of the molecule function record',
   `add_time` DATETIME NOT NULL DEFAULT now(),
-  `note` LONGTEXT NULL,
+  `note` LONGTEXT NULL COMMENT 'description note text about current enzyme kinetics lambda model',
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+COMMENT = 'the enzymatic catalytic kinetics lambda model';
 
 ```
 
