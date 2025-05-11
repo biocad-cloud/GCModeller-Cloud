@@ -18,6 +18,11 @@ class App {
      * @access *
     */
     public function molecule($id) {
-        View::Display();
+        include_once APP_PATH . "/scripts/molecule_info.php";
+
+        $page = molecule_info::get_info($id);
+        $page["title"] = $page["name"];
+
+        View::Display($page);
     }
 }
