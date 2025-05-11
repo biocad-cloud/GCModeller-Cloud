@@ -1,0 +1,38 @@
+RewriteEngine On
+
+# RewriteCond %{SERVER_PORT} !^443$
+# RewriteRule (.*) https://%{SERVER_NAME}/$1 [R]
+
+Header set Access-Control-Allow-Origin "*"
+
+# cache images for 1 month, do not require revalidation
+<FilesMatch "\.(gif|jpe?g|png|flv|swf|ico)$">
+Header set Cache-Control: "max-age=1296000"
+</FilesMatch>
+#
+# cache scripts, css, and documents for 1 week, do not require revalidation
+<FilesMatch "\.(js|css|pdf)$">
+Header set Cache-Control: "max-age=10800"
+</FilesMatch>
+#
+# Cache txt, html, and htm pages for 1 week, require revalidation
+<FilesMatch "\.(txt|html?)$">
+Header set Cache-Control: "max-age=604800, must-revalidate"
+</FilesMatch>
+#
+# disable caching for dynamic files
+<FilesMatch "\.(pl|php|[sf]?cgi|spl)$">
+Header set Cache-Control: "max-age=0, no-store"
+</FilesMatch>
+
+RewriteRule ^pull/(.+)/$ /pull.php?app=$1
+RewriteRule ^put/(.+)/$ /put.php?app=$1
+
+RewriteRule ^exportServlet/motif_sites/(.+)/$ /exportServlet.php?app=motif_sites_$1
+RewriteRule ^exportServlet/gene/(.+)/$ /exportServlet.php?app=gene_$1
+
+RewriteRule ^ncbi_tax/(.+)/$ /ncbi_tax.php?app=$1
+RewriteRule ^gene_ontology/(.+)/$ /gene_ontology.php?app=$1
+
+# RewriteRule ^(.+)/$ /index.php?app=$1
+RewriteRule ^install/$ /index.php?app=install

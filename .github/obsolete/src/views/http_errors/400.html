@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${../includes/head.html}
+</head>
+
+<body class="index">
+    ${../includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br />
+        <br /><br />
+        <br /><br />
+
+        <div class="row">
+
+            <h1>{$title}</h1>
+            <br />
+
+            <blockquote>
+                <span style="color:gray;">{$url}</span>
+            </blockquote>
+
+            <p>The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat
+                the request without modifications!</p>
+            <p>
+                {$message}
+            </p>
+
+            <hr /> ${footer.html}
+        </div>
+
+    </div>
+
+    ${../includes/footer.html}
+
+</body>
+
+</html>

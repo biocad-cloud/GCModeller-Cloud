@@ -1,0 +1,12 @@
+@media all and (max-width: 799px) and (min-width: 220px){
+	
+	.wrapper{
+		width:91%;
+		margin:15px auto;
+	}
+	
+	.wrapper:before, .wrapper:after{
+		display:none;
+	}
+	
+}

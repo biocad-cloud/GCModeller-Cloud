@@ -1,0 +1,108 @@
+${../../includes/data_view.html}
+
+<body>
+
+    <br />
+
+    <h1>GeneSet Enrichment Analysis</h1>
+
+    <h3>Select Organism</h3>
+
+    <p>
+        <input type="text" id="species" name="species" class="form-control" placeholder="Type the scientific name here" />
+
+        <div id="suggestions">
+
+        </div>
+
+        <script type="text/javascript" src="/modules/build/kegg_organism.js"></script>
+        <script type="text/javascript" src="/modules/build/linq.js"></script>
+        <script type="text/javascript" src="/modules/build/suggestion_list.js"></script>
+        <script type="text/javascript">
+
+            var organism_background;
+
+            loadKEGGOrganism("/repository/br08601.json", function (organisms) {
+                var terms = [];
+
+                // console.log(organisms);
+
+                organisms.forEach(function (org) {
+                    terms.push(new term(org.id, org.name));
+                });
+
+                // console.log(terms);
+
+                var input = document.getElementById("species");
+                // makeSuggestions(terms: term[], div: string, click: (term: term) => void)
+                var update = makeSuggestions(terms, "suggestions", function (term) {
+                    console.log(term);
+
+                    organism_background = term;
+                    input.value = term.term;
+                }, 10, true);
+
+                input.onkeypress = function () {
+                    update(input.value);
+                };
+
+                // 初始化完毕之后，显示默认值，人类基因组
+                // 否则界面太空旷了
+                update("Homo sapiens");
+            });
+
+        </script>
+    </p>
+
+    <h3>Input GeneID list</h3>
+
+    <p>Input
+        <span style="color:red;">UniProtKB AC</span>, one id in one line:</p>
+
+    <p>
+        <textarea id="idlist" name="idlist" rows="6" cols="10" class="form-control"></textarea>
+    </p>
+
+    <!-- 进行提交按钮点击之后就会在后台产生一个数据库的搜索计算任务和结果绘图的任务 -->
+    <button type="button" class="btn btn-primary" data-toggle="button" onclick="submit();">Submit</button>
+
+    <script type="text/javascript">
+
+        function submit() {
+            var geneSet = $("#idlist").val().split("\n");
+
+            if (!organism_background) {
+                parent.msgbox("Please select a genome background!", 5);
+                return;
+            } else if (geneSet.length == 0 || $("#idlist").val().length == 0) {
+                parent.msgbox("GeneSet should contains at least on gene!", 5);
+                return;
+            }
+
+            var package = {
+                "org_id": organism_background.id,
+                "org_name": organism_background.term,
+                "geneSet": geneSet
+            };
+
+            console.log(package);
+
+            // post请求提交新的计算任务
+            $.post("{<biostack>api/enrichment_task}", package, function (data) {
+                var info = JSON.parse(data);
+                var url = info.info;
+
+                console.log(info);
+
+                if (info.code == 0) {
+                    parent.msgbox("Task submit!", 0, function () {
+                        parent.window.location = url;
+                    });
+                } else {
+                    parent.msgbox(info.info, 5);
+                }
+            });
+        }
+
+    </script>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+
+${imports.html}
+
+<body>
+	<div class="wrapper">
+		<div class="content">
+			<header class="header">
+				<h1>
+					<a href="#" onclick="gotoIndex();">bioCAD™ Cloud</a>
+				</h1>
+				<p>Sign up</p>
+			</header>
+			<form action="#" method="post" class="form">
+				<div class="username">
+					<i class="username-icon"></i>
+					<input class="inputs" type="text" id="username" name="username" value="" placeholder="Username" required="">
+				</div>
+				<div class="email">
+					<i class="email-icon"></i>
+					<input class="inputs" type="email" id="email" name="email" value="" placeholder="E-mail" required="">
+				</div>
+				<div class="password">
+					<i class="password-icon"></i>
+					<input class="inputs" type="password" id="password" name="password" value="" placeholder="Password" required="">
+				</div>
+				<div class="password-content">
+					<input id="check_terms_of_use" type="checkbox" name="terms" value="1" class="check-password" checked="">
+					<label for="check_terms_of_use">I agree
+						<a target="_blank" href="{index/terms_of_use}">Terms of service.</a>
+					</label>
+				</div>
+				<button type="submit" class="submit" name="submit" id="doRegister">Sign up</button>
+				<div class="if-have">
+					<a href="#" onclick="gotoLogin();">Have account? Login.</a>
+				</div>
+
+				<script type="text/javascript">
+					function doRegister() {
+						var msg = login_script.register("{<platform>user/register}", md5);
+
+						if (msg.code == 0) {
+							
+						}
+					}
+				</script>
+			</form>
+			${footer.html}
+		</div>
+
+	</div>
+
+	<div class="row">
+		<br />
+		<br />
+	</div>
+
+</body>
+
+</html>

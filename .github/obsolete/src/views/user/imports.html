@@ -1,0 +1,33 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="api:login" content="{<platform>user/login}" />
+    <meta name="api:register" content="{<platform>user/register}" />
+
+    <link rel="stylesheet" type="text/css" media="all" href="/resources/styles/user/reset.css">
+    <link rel="stylesheet" type="text/css" media="all"
+        href="http://cdn.biodeep.cn/styles/font-awesome-4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="/resources/styles/user/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/resources/styles/user/colors.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/resources/styles/user/responsive.css">
+
+    <script type="text/javascript" src="http://cdn.biodeep.cn/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/resources/styles/user/placeholders.min.js"></script>
+    <script type="text/javascript" src="/resources/styles/user/animation.js"></script>
+
+    <script type="text/javascript">
+        function _goto(url) {
+            parent.window.location = url;
+        }
+
+        function gotoLogin() { _goto("{<platform>passport/portal}&type=login"); }
+        function gotoRegister() { _goto("{<platform>passport/portal}&type=register"); }
+        function gotoRecover() { _goto("{<platform>passport/portal}&type=recover"); }
+        function gotoIndex() { _goto("/"); }
+
+    </script>
+
+    <script src="/resources/typescripts/linq.min.js"></script>
+    <script type="text/javascript" src="/resources/typescripts/biocad.min.js"></script>
+</head>

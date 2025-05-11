@@ -1,0 +1,12 @@
+{
+  "name": "table_editor",
+  "version": "0.0.0",
+  "description": "table_editor",
+  "main": "app.js",
+  "author": {
+    "name": "Administrator"
+  },
+  "devDependencies": {
+    "@types/node": "^6.14.2"
+  }
+}

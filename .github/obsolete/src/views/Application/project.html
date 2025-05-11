@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${../includes/head.html} ${../includes/avgrund.html}
+
+
+    <script type="text/javascript">
+        // 客户的数据库编号，以及是否注册？
+        var user_id = { $user_id };
+        var is_certified = { $is_certified };
+    </script>
+</head>
+
+<body class="index">
+    ${../includes/nav.html}
+
+
+    <div id="wrapper">
+
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-lg-12">
+                ${../includes/breadcrumb.html}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-12 columns">
+                <span style="font-size:2em;">
+                    <a href="#" onclick="javascript:openDialog();">
+                        <i class="fa fa-file"></i> &nbsp;New Project</a>
+                </span>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="large-12 columns">
+                {$projects}
+            </div>
+        </div>
+    </div>
+
+    ${../includes/footer.html}
+
+    <aside id="default-popup" class="avgrund-popup" style="display:none;">
+        <form>
+            <p>
+                Project Name:
+                <input type="text" class="form-control" id="name" name="name"></input>
+            </p>
+            <p>
+                Project Type:
+                <select id="type" name="type">
+
+                </select>
+            </p>
+            <p>
+                Note:
+                <textarea id="note" name="note"></textarea>
+            </p>
+        </form>
+        <br />
+        <button onclick="javascript:cancel();" style="float: right;">Cancel</button>
+        <button onclick="javascript:submit();" style="float: right;">Submit</button>
+        <script type="text/javascript">
+            var project_types = { $project_types };
+
+            $(function () {
+                var options = document.getElementById("type");
+
+                project_types.forEach(function (type) {
+                    var opt = document.createElement("option");
+
+                    opt.innerText = type.name;
+                    opt.setAttribute("title", type.note);
+                    opt.setAttribute("value", type.id);
+
+                    options.appendChild(opt);
+                });
+            });
+
+            function cancel() {
+                $("#name").val("");
+                $("select[name=type]").val(project_types[0].id);
+                $("#note").val("");
+
+                closeDialog();
+            }
+
+            function submit() {
+                var project = {
+                    "name": $("#name").val(),
+                    "type": $("select[name=type]").val(),
+                    "note": $("#note").val()
+                };
+
+                $.post("{api/new_project}", project, function (json) {
+                    var result = $.parseJSON(json);
+
+                    if (result.code != 0) {
+                        layer.msg(result.info, { icon: 5 }, function () {
+
+                        });
+                    } else {
+                        layer.msg(result.info, { icon: 1 }, function () {
+                            location.reload();
+                        });
+                    }
+                });
+            }
+        </script>
+    </aside>
+
+    <div class="avgrund-cover"></div>
+
+</body>
+
+</html>

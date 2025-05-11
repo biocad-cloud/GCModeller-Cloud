@@ -1,0 +1,35 @@
+<!-- 公共页面框架 -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${../../includes/head.html}
+</head>
+
+<body class="index">
+    ${../../includes/nav.html}
+
+    <div id="wrapper" style="min-height: 400px;">   
+
+        <!-- 因为bootstrap框架和网站目前使用css框架不兼容，所以在这里使用iframe -->
+        <script type="text/javascript">
+            function setPageHeight(height) {
+                document.getElementById("page-display").height = height;
+            }
+        </script>
+
+        <center>
+
+            <iframe id="page-display" width="1366" height="800" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"
+                allowtransparency="yes" src="{$iframe}"></iframe>
+
+        </center>
+
+    </div>
+
+    ${../../includes/footer.html}
+
+</body>
+
+</html>

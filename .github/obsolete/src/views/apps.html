@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${includes/head.html}
+
+    <link href="/resources/styles/card-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="index">
+    ${includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br />
+
+        <div class="row">
+            <div class="col-lg-12">
+                ${includes/breadcrumb.html}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Applications</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="gallery" class="col-lg-12">
+
+                <div class="card-container">
+
+                    <a href="{app/project}" class="card education">
+
+                        <img class="icon-image" src="/resources/images/apps/Projects.png">
+                        <!-- <div class="overlay"></div> -->
+
+                        <p>Projects</p>
+                    </a>
+
+                    <a href="{app/explorer}" class="card credentialing">
+
+                        <img class="icon-image" src="/resources/images/apps/Explorer.png">
+
+                        <p>File Explorer</p>
+                    </a>
+
+                    <a href="/biostack/" class="card wallet">
+
+                        <img class="icon-image" src="/resources/images/apps/Reports.png">
+
+                        <p>Biostack</p>
+                    </a>
+
+                    <a href="/apps/task" class="card human-resources">
+
+                        <img class="icon-image" src="/resources/images/apps/Tasks.png">
+
+                        <p>Task Manager</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <blockquote>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <img style="margin-left: 5px;" width="18px" src="/resources/images/fa-version.svg" />
+                            </td>
+                            <td>BioCAD Version:
+
+                                <strong>
+                                    <code>1.0.0.021356</code>
+                                </strong>
+                            </td>
+                            <td>[
+                                <a href="{index/change_log}">Change Log</a> ]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img width="24px" src="/resources/images/fa-commit.svg" />
+                            </td>
+                            <td>Github commit:</td>
+                            <td>[
+                                <a href="" target="__blank">cb9a891</a> ]
+                            </td>
+                        </tr>
+                    </table>
+
+                </blockquote>
+
+            </div>
+        </div>
+    </div>
+
+    ${includes/footer.html}
+
+</body>
+
+</html>

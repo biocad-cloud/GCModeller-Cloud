@@ -1,0 +1,76 @@
+/* Colors */
+
+body{
+	background-color:white;
+	color:#999;
+}
+
+.wrapper, .wrapper:before, .wrapper:after{
+	background-color:#fff;
+	box-shadow: 0 0 1px 0 #ccc !important;
+}
+
+.header h1{
+	color:#3399cc;
+}
+
+.header a{
+	color:#3399cc;
+}
+
+.header p{
+	color:#999;
+}
+
+.form input.inputs{
+	border-color:#ccc;
+	color:#999;
+	background-color:#fff;
+}
+
+.form input.inputs:focus{
+	border-color:#bbb;
+}
+
+.username-icon:before, .password-icon:before, .email-icon:before{
+	color:#bbb;
+}
+
+.username:before, .password:before, .email:before{
+	background-color:#3399cc;
+}
+
+.password-content label:before{
+	background-color:#fff;
+	border-color:#3399cc;
+}
+
+input.check-password:checked + label:before{
+	color:#3399cc;
+}
+
+.password-content label{
+	color:#999;
+}
+
+.form a{
+	color:#3399cc;
+}
+
+.submit{
+	background-color:#3399cc !important;
+	border-color:#3399cc !important;
+	color:#fff !important;
+}
+
+.submit:after{
+	color:#fff;
+}
+
+.footer{
+	border-color:#eee;
+}
+
+.footer p, .footer a{
+	color:#bbb;
+}

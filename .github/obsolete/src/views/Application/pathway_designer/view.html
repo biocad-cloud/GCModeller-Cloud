@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="app:explorer" content="explorer" />
+    <meta name="app" content="ModelViewer" />
+    <meta name="width" content="1400" />
+    <meta name="height" content="650" />
+    <meta name="url:graph" content="{$graph}" />
+    <meta name="data:model_id" , content="{$model_id}" />
+
+    ${../../includes/head.html}
+
+    <style>
+        .background {
+            stroke: white;
+            stroke-width: 1px;
+            fill: white;
+        }
+
+        .node {
+            stroke: black;
+            stroke-width: 1px;
+            cursor: move;
+            fill: beige;
+        }
+
+        .link {
+            fill: none;
+            stroke: #000;
+            stroke-width: 3px;
+            opacity: 0.7;
+            marker-end: url(#end-arrow);
+        }
+
+        .label {
+            fill: black;
+            font-family: Verdana;
+            font-size: 25px;
+            text-anchor: middle;
+            cursor: move;
+        }
+
+        .guideline {
+            stroke: orangered;
+            stroke-width: 4px;
+        }
+    </style>
+</head>
+
+<body class="index">
+    ${../../includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br /> <br /> <br /> <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>{$model_name} [<a href="/biostack/pathway_design/flowEditor?guid={$model_id}">Edit</a>]</h3>
+
+                <p>
+                    Edit Time: {$time}<br />
+                    Note: {$note}
+                </p>
+            </div>
+        </div>
+        <br />
+
+        <div class="row" style="width: 90% !important;">
+            <div class="col-lg-12">
+
+                <div style="width: 100%; text-align: center; margin-top: 10px;">
+                    <center>
+                        <div id="canvas"></div>
+                    </center>
+
+                    <div>
+                        <strong>
+                            <i class="fa fa-cloud-download" aria-hidden="true"></i> <a id="savePng"
+                                href="javascript:void(0);">{$savePng}</a> |
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> <a
+                                href="/biostack/pathway_design/flowEditor?guid={$model_id}">{$edit}</a> |
+                            <i class="fa fa-cloud-download" aria-hidden="true"></i> <a id="download-model"
+                                href="/biostack/pathway_design/download?guid={$model_id}">Download Model</a>
+                        </strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    ${../../includes/footer.html}
+
+</body>
+
+<script type="text/javascript" src="/resources/vendor/Cola/d3.v3.js"></script>
+<script type="text/javascript" src="/resources/vendor/Cola/cola.min.js"></script>
+<script type="text/javascript" src="/resources/typescripts/Metabolic_pathway.min.js"></script>
+
+</html>

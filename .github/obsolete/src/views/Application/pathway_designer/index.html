@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="data:repository" content="https://cdn.biodeep.cn/assets/ko00001.json" />
+    <meta name="app:explorer" content="explorer" />
+    <meta name="app" content="Pathway_explorer" />
+    <meta name="width" content="1200" />
+    <meta name="height" content="800" />
+    <meta name="url:graph" content="{$graph}" />
+    <meta name="url:readmap" content="/biostack/pathway_design/kegg_template" />
+    <meta name="url:createmap" content="/biostack/pathway_design/create_map" />
+
+    ${../../includes/head.html}
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jstree@3.3.12/dist/jstree.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.12/dist/themes/default/style.min.css" />
+
+    <style>
+        .jstree-themeicon-custom {
+            background-size: contain !important;
+        }
+    </style>
+
+    <style>
+        .background {
+            stroke: white;
+            stroke-width: 1px;
+            fill: white;
+        }
+
+        .node {
+            stroke: black;
+            stroke-width: 1px;
+            cursor: move;
+            fill: beige;
+        }
+
+        .link {
+            fill: none;
+            stroke: #000;
+            stroke-width: 3px;
+            opacity: 0.7;
+            marker-end: url(#end-arrow);
+        }
+
+        .label {
+            fill: black;
+            font-family: Verdana;
+            font-size: 25px;
+            text-anchor: middle;
+            cursor: move;
+        }
+
+        .guideline {
+            stroke: orangered;
+            stroke-width: 4px;
+        }
+    </style>
+</head>
+
+<body class="index">
+    ${../../includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br /> <br /> <br /> <br /> <br />
+
+        <div class="row">
+            <div class="col-lg-12" style="width: 175%; position: relative; left: -35%;">
+                <h1>Pathway Designer | Select Template</h1>
+                <hr />
+                <div style="width: 100%;">
+                    <div style="position: relative; width: 25%; max-width: 25%; float: left;" id="explorer">
+                        <!-- left: view kegg pathway maps brite -->
+                    </div>
+                    <div style="position: relative; width: 70%; float: left;">
+                        <!-- right: show pathway graph -->
+
+                        <div>
+                            <div id="canvas"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="#" class="btn btn-primary btn-lg" onclick="javascript:void(0);" id="do-createReactor">Create
+                    Reactor</a>
+            </div>
+        </div>
+    </div>
+
+    <br /> <br /> <br /> <br /> <br />
+
+    ${../../includes/footer.html}
+
+</body>
+
+<script type="text/javascript" src="/resources/vendor/Cola/d3.v3.js"></script>
+<script type="text/javascript" src="/resources/vendor/Cola/cola.min.js"></script>
+<script type="text/javascript" src="/resources/typescripts/Metabolic_pathway.min.js"></script>
+
+</html>

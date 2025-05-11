@@ -1,0 +1,111 @@
+<!-- 属于某一个项目之下的文件管理器 -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=800, user-scalable=no">
+    <meta name="app" content="FileExplorer" />
+    <meta name="data:fetch" content="/biostack/repository/fetchMy" />
+    <meta name="data:bio_mimetype" content="/biostack/repository/bio_mimetypes" />
+    <meta name="view:model" content="/biostack/pathway_design/view" >
+
+    ${../includes/head.html}
+    ${../includes/avgrund.html}
+
+    <script id="bio_mimetype" type="application/json">{$bio_mimetype}</script>
+
+    <link rel="stylesheet" href="/resources/styles/file-explorer.min.css" />
+</head>
+
+<body class="index">
+    ${../includes/nav.html}
+
+    <div class="container" id="wrapper" style="min-height: 600px;">
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-lg-12">
+                ${../includes/breadcrumb.html}
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span style="font-size:2em;">
+                        <a href="#" onclick="javascript:openDialog();">
+                            <i class="fa fa-cloud-upload"></i> Upload</a>
+                    </span>
+                    <span style="font-size:2em;">
+                        <a href="{app/imports}&project_id={$project_id}">
+                            <i class="fa fa-paste"></i> Imports
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="file-explorer-display" class="col-lg-12">
+
+            </div>
+
+        </div>
+    </div>
+
+    ${../includes/footer.html}
+
+    <aside id="default-popup" class="avgrund-popup" style="display:none;">
+        <div style="position: absolute;left:0;top:0;">
+            <!-- <iframe width="750" height="500" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"
+                allowtransparency="yes" src="{app/upload}&project_id={$project_id}">
+            </iframe> -->
+        </div>
+        <br />
+        <a title="Close" href="javascript:closeDialog();" style="position: absolute;
+        top: -18px;
+        right: -18px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        z-index: 8040;">
+            <svg data-prefix="far" data-icon="times-circle" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512" class="svg-inline--fa fa-times-circle fa-w-16 fa-9x" fill="white">
+                <path fill="black"
+                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
+                    class=""></path>
+            </svg>
+        </a>
+    </aside>
+
+    <div class="avgrund-cover"></div>
+
+    <div class="bs-component">
+        <div class="modal" id="viewer-modal">
+            <div class="modal-dialog" style="width: 1600px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="diag-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body" id="diag-body">
+                        <p>One fine body…</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!-- 属于某一个项目之下的文件管理器 -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=800, user-scalable=no"> ${../includes/head.html}
+
+    <script type="text/javascript">
+        // 客户的数据库编号，以及是否注册？
+        var user_id = { $user_id };
+        var is_certified = { $is_certified };
+    </script>
+</head>
+
+<body class="index">
+    ${../includes/nav.html}
+
+    <div id="wrapper">
+        <div class="hero">
+            <div class="row">
+                <div class="large-12 columns">
+
+                    <!-- 
+                       对于注册用户而言，项目是持久性存在的，因为可以从数据库之中找得到一个永久的唯一标识符来标记项目的关系 
+                       但是对于非注册用户而言，项目与用户的关联主要是依赖于session数据，所以假若非注册客户将浏览器的cookie
+                       清除掉了的话则会丢失前面所建立的所有的分析项目。
+
+                       如果是非注册用户的话，在这里给出一条警告信息
+                    -->
+
+                    <script type="text/javascript">
+                        $(function () {
+
+                            if (!is_certified) {
+                                // warning to non-certified user, if the setting turn on the warning option.
+                            }
+
+                        })
+                    </script>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <span style="font-size:2em;">
+                        <a href="{app/explorer}&project_id={$project_id}">
+                            <i class="fa fa-arrow-left"></i> Back</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-2 columns">
+
+                <!--文件类型筛选器-->
+
+                {$content_types}
+            </div>
+            <div class="large-10 columns">
+
+                <!--文件列表网格-->
+
+                {$files}
+            </div>
+        </div>
+    </div>
+
+    ${../includes/footer.html}
+
+</body>
+
+</html>

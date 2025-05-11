@@ -1,0 +1,1 @@
+Pages that required of user login

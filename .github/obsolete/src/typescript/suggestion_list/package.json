@@ -1,0 +1,12 @@
+{
+  "name": "suggestion_list",
+  "version": "0.0.0",
+  "description": "suggestion_list",
+  "main": "app.js",
+  "author": {
+    "name": "Administrator"
+  },
+  "devDependencies": {
+    "@types/node": "^6.14.2"
+  }
+}

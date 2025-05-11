@@ -1,0 +1,188 @@
+/* Reset */
+html, body, div, span, button, textarea, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	vertical-align: baseline;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font: inherit;
+	font-weight:inherit;
+	background:transparent;
+}
+
+html {
+     font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body{
+	line-height:1;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+    display: block;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: "";
+}
+blockquote, q {
+    quotes: "" "";
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    text-decoration:none;
+}
+
+a:focus {
+    outline: 0;
+}
+a:hover,
+a:active {
+    outline: 0;
+}
+a img {
+    border: 0;
+}
+
+table{
+border-collapse: collapse;
+border-spacing: 0;
+}
+
+caption, th, td {
+    font-weight: normal;
+    text-align: center;
+}
+
+input{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+font-size: 100%;
+background:transparent;
+}
+
+input[type="submit"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+input[type="file"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+input[type="text"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+input[type="email"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+input[type="url"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+form[method="get"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+form[method="post"]{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+background:transparent;
+}
+
+input, textarea {
+box-shadow:0;
+@include border-radius(0);  /* remove border-radius in iOS */
+border-radius:0;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#555;
+    color:#fff;
+    text-decoration:none;
+}
+/* change colours to suit your needs */
+mark {
+    background-color:#555;
+    color:#fff;
+    font-style:italic;
+    font-weight:bold;
+}
+del {
+    text-decoration: line-through;
+}
+abbr[title], dfn[title] {
+    border-bottom:1px solid #ccc;
+    cursor:help;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #cccccc;
+    margin:0;
+    padding:0;
+}
+select {
+    vertical-align:middle;
+}
+
+textarea {
+    overflow: auto;
+    vertical-align: top; 
+}

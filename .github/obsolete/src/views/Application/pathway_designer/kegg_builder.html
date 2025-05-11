@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="app" content="kegg_network" />
+    <meta name="data:repository" content="https://cdn.biodeep.cn/assets/ko00001.json" />
+
+    ${../../includes/head.html}
+</head>
+
+<body class="index">
+
+    ${../../includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="large-12 columns">
+
+                <form>
+                    <div>
+                        <h5>Search KEGG component:</h5>
+                        <p>
+                            Search: <input type="text" id="sample_search" class="form-control"></input>
+                        </p>
+                        <p>
+                            <select id="pathway_list" class="form-control">
+                            </select>
+                        </p>
+                        <div id="sample_suggests"></div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    ${../../includes/footer.html}
+
+</body>
+
+<script type="text/javascript" src="/resources/typescripts/Metabolic_pathway.min.js"></script>
+
+</html>

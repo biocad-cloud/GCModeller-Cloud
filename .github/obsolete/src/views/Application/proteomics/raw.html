@@ -1,0 +1,185 @@
+<link href="http://cdn.biodeep.cn/styles/bootstrap.min.css" rel="stylesheet" />
+<link href="http://cdn.biodeep.cn/styles/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<script src="http://cdn.biodeep.cn/vendor/jquery.min.js"></script>
+<script src="http://www.biodeep.cn/js/bootstrap.min.js"></script>
+<script src="http://www.biodeep.cn/js/layer-v2.1/layer/layer.js"></script>
+
+<script src="/modules/build/table_editor.js"></script>
+
+<body>
+
+    <!--
+        假设iTraq输入的原始矩阵数据任然是使用同位素的通道数字id来标记的
+        则这里就是将
+    -->
+
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#home">iTraq Symbols</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#menu1">Sample Info</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#menu2">Experiment Designer</a>
+        </li>
+    </ul>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+
+                    <br />
+
+                    <center>
+
+                        <div id="itraq-symbols" class="table-responsive">
+
+                        </div>
+
+                        <div style="width:100%; text-align: left;">
+
+                            <span style="margin-left: 5em;">
+                                <a href="#" onclick="addSymbol();">
+                                    <i class="fa fa-plus"></i> Add Symbol
+                                </a>
+                            </span>
+
+                        </div>
+
+                        <script type="text/javascript">
+                            var iTraqSymbols = new tableEditor(
+                                ["Symbol", "Sample ID"],
+                                "itraq-symbols",
+                                "width: 85%;",
+                                "table",
+                                ["width: 10%", "width: 30%", "width: 30%"],
+                                function () {
+                                    console.log("please commit current change");
+                                });
+
+                            function addSymbol() {
+                                iTraqSymbols.addNew();
+                            }
+
+                            function preview_iTraqSymbols() {
+                                console.log(iTraqSymbols.TableData());
+                            }
+                        </script>
+                    </center>
+
+                </div>
+                <div id="menu1" class="tab-pane fade">
+
+                    <br />
+
+                    <center>
+
+                        <div id="sample-info" class="table-responsive">
+
+                        </div>
+
+                        <div style="width:100%; text-align: left;">
+
+                            <span style="margin-left: 5em;">
+                                <a href="#" onclick="addsampleInfo();">
+                                    <i class="fa fa-plus"></i> Add Sample
+                                </a>
+                            </span>
+
+                        </div>
+
+                        <script type="text/javascript">
+                            var sampleInfo = new tableEditor(
+                                ["Sample ID", "Color", "Shape", "Sample Name"],
+                                "sample-info",
+                                "width: 85%;",
+                                "table",
+                                ["width: 5%", "width: 15%", "width: 15%", "width: 15%", "width: 15%"],
+                                function () {
+                                    console.log("please commit current change");
+                                });
+
+                            function addsampleInfo() {
+                                sampleInfo.addNew();
+                            }
+
+                            function preview_sampleInfo() {
+                                console.log(sampleInfo.TableData());
+                            }
+                        </script>
+
+                    </center>
+
+                </div>
+                <div id="menu2" class="tab-pane fade">
+
+                    <br />
+
+                    <center>
+
+                        <div id="designer" class="table-responsive">
+
+                        </div>
+
+                        <div style="width:100%; text-align: left;">
+
+                            <span style="margin-left: 5em;">
+                                <a href="#" onclick="addDesigner();">
+                                    <i class="fa fa-plus"></i> Add Experiment
+                                </a>
+                            </span>
+
+                        </div>
+
+                        <script type="text/javascript">
+                            var designer = new tableEditor(
+                                ["Controls", "Treatment", "Note"],
+                                "designer",
+                                "width: 85%;",
+                                "table",
+                                ["width: 10%", "width: 30%", "width: 30%", "width: 30%"],
+                                function () {
+                                    console.log("please commit current change");
+                                });
+
+                            function addDesigner() {
+                                designer.addNew();
+                            }
+
+                            function preview_Designer() {
+                                console.log(designer.TableData());
+                            }
+                        </script>
+
+                    </center>
+
+                </div>
+            </div>
+
+            <hr />
+
+            <button type="button" style="padding-top: 0.85rem; padding-bottom: 0.25rem;" class="btn btn-primary" data-toggle="button"
+                onclick="previews();">
+                <span>
+                    <i class="fa fa-eye"></i>
+                </span>
+                <strong>Previews</strong>
+            </button>
+
+            <script type="text/javascript">
+                function previews() {
+                    preview_iTraqSymbols();
+                    preview_sampleInfo();
+                    preview_Designer();
+                }
+            </script>
+
+        </div>
+    </div>
+
+
+</body>

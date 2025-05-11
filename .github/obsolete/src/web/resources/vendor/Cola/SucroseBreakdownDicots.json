@@ -1,0 +1,976 @@
+{
+  "nodes": [
+    {
+      "label": "P",
+      "dunnartid": "1",
+      "index": 0,
+      "width": 60,
+      "height": 40,
+      "x": 172,
+      "y": 238,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "sucrose phosphate phosphatase",
+      "dunnartid": "2",
+      "index": 1,
+      "width": 60,
+      "height": 40,
+      "x": 191,
+      "y": 172,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "sucrose 6-phosphate",
+      "dunnartid": "4",
+      "index": 2,
+      "width": 60,
+      "height": 40,
+      "x": 308,
+      "y": 179,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "sucrose",
+      "dunnartid": "6",
+      "index": 3,
+      "width": 60,
+      "height": 40,
+      "x": 203,
+      "y": 251,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "invertase",
+      "dunnartid": "8",
+      "index": 4,
+      "width": 60,
+      "height": 40,
+      "x": 202,
+      "y": 303,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "fructose",
+      "dunnartid": "10",
+      "index": 5,
+      "width": 60,
+      "height": 40,
+      "x": 203,
+      "y": 345,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "fructokinase",
+      "dunnartid": "12",
+      "index": 6,
+      "width": 60,
+      "height": 40,
+      "x": 194,
+      "y": 395,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "fructose 6-phosphate",
+      "dunnartid": "14",
+      "index": 7,
+      "width": 60,
+      "height": 40,
+      "x": 191,
+      "y": 485,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "phosphoglucose isomerase",
+      "dunnartid": "20",
+      "index": 8,
+      "width": 60,
+      "height": 40,
+      "x": 283,
+      "y": 485,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "glucose 6-phosphate",
+      "dunnartid": "22",
+      "index": 9,
+      "width": 60,
+      "height": 40,
+      "x": 393,
+      "y": 485,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "glucose",
+      "dunnartid": "28",
+      "index": 10,
+      "width": 60,
+      "height": 40,
+      "x": 306,
+      "y": 356,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "hexokinase",
+      "dunnartid": "30",
+      "index": 11,
+      "width": 60,
+      "height": 40,
+      "x": 309,
+      "y": 419,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "sucrose synthase",
+      "dunnartid": "33",
+      "index": 12,
+      "width": 60,
+      "height": 40,
+      "x": 309,
+      "y": 259,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "UDP - glucose",
+      "dunnartid": "36",
+      "index": 13,
+      "width": 60,
+      "height": 40,
+      "x": 404,
+      "y": 276,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "sucrose phosphate synthase",
+      "dunnartid": "38",
+      "index": 14,
+      "width": 60,
+      "height": 40,
+      "x": 400,
+      "y": 172,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "UDP",
+      "dunnartid": "41",
+      "index": 15,
+      "width": 60,
+      "height": 40,
+      "x": 354,
+      "y": 227,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "fructose 6-phosphate",
+      "dunnartid": "44",
+      "index": 16,
+      "width": 60,
+      "height": 40,
+      "x": 384,
+      "y": 125,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "ATP",
+      "dunnartid": "46",
+      "index": 17,
+      "width": 60,
+      "height": 40,
+      "x": 348,
+      "y": 388,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ATP",
+      "dunnartid": "47",
+      "index": 18,
+      "width": 60,
+      "height": 40,
+      "x": 313,
+      "y": 451,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ATP",
+      "dunnartid": "52",
+      "index": 19,
+      "width": 60,
+      "height": 40,
+      "x": 149,
+      "y": 378,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ADP",
+      "dunnartid": "57",
+      "index": 20,
+      "width": 60,
+      "height": 40,
+      "x": 149,
+      "y": 411,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "PP",
+      "dunnartid": "66",
+      "index": 21,
+      "width": 60,
+      "height": 40,
+      "x": 486,
+      "y": 292,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "UTP",
+      "dunnartid": "71",
+      "index": 22,
+      "width": 60,
+      "height": 40,
+      "x": 484,
+      "y": 372,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "UDP glucose pyrophosphorylase",
+      "dunnartid": "76",
+      "index": 23,
+      "width": 60,
+      "height": 40,
+      "x": 374,
+      "y": 324,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "glucose 1-phosphate",
+      "dunnartid": "80",
+      "index": 24,
+      "width": 60,
+      "height": 40,
+      "x": 394,
+      "y": 372,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "phospho- glucomutase (cPGM)",
+      "dunnartid": "86",
+      "index": 25,
+      "width": 60,
+      "height": 40,
+      "x": 390,
+      "y": 419,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "G1P transporter",
+      "dunnartid": "89",
+      "index": 26,
+      "width": 60,
+      "height": 40,
+      "x": 536,
+      "y": 398,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "P",
+      "dunnartid": "90",
+      "index": 27,
+      "width": 60,
+      "height": 40,
+      "x": 496,
+      "y": 423,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "P",
+      "dunnartid": "95",
+      "index": 28,
+      "width": 60,
+      "height": 40,
+      "x": 628,
+      "y": 390,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "P",
+      "dunnartid": "102",
+      "index": 29,
+      "width": 60,
+      "height": 40,
+      "x": 496,
+      "y": 482,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "P",
+      "dunnartid": "103",
+      "index": 30,
+      "width": 60,
+      "height": 40,
+      "x": 630,
+      "y": 526,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "G6P transporter",
+      "dunnartid": "104",
+      "index": 31,
+      "width": 60,
+      "height": 40,
+      "x": 536,
+      "y": 502,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "glucose 6-phosphate",
+      "dunnartid": "109",
+      "index": 32,
+      "width": 60,
+      "height": 40,
+      "x": 628,
+      "y": 558,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "phospho- glucomutase (cPGM)",
+      "dunnartid": "115",
+      "index": 33,
+      "width": 60,
+      "height": 40,
+      "x": 628,
+      "y": 422,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "glucose 1-phosphate",
+      "dunnartid": "121",
+      "index": 34,
+      "width": 60,
+      "height": 40,
+      "x": 628,
+      "y": 337,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "ADPglucose pyrophosphorylase (pAGPase)",
+      "dunnartid": "128",
+      "index": 35,
+      "width": 60,
+      "height": 40,
+      "x": 718,
+      "y": 346,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "ADP - glucose",
+      "dunnartid": "130",
+      "index": 36,
+      "width": 60,
+      "height": 40,
+      "x": 748,
+      "y": 408,
+      "rx": 17,
+      "ry": 17
+    },
+    {
+      "label": "PP",
+      "dunnartid": "136",
+      "index": 37,
+      "width": 60,
+      "height": 40,
+      "x": 818,
+      "y": 408,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ATP",
+      "dunnartid": "141",
+      "index": 38,
+      "width": 60,
+      "height": 40,
+      "x": 848,
+      "y": 345,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "inorganic diphosphatase",
+      "dunnartid": "148",
+      "index": 39,
+      "width": 60,
+      "height": 40,
+      "x": 838,
+      "y": 440,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "P",
+      "dunnartid": "149",
+      "index": 40,
+      "width": 60,
+      "height": 40,
+      "x": 874,
+      "y": 488,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "phosphate transporter",
+      "dunnartid": "156",
+      "index": 41,
+      "width": 60,
+      "height": 40,
+      "x": 948,
+      "y": 497,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "P",
+      "dunnartid": "158",
+      "index": 42,
+      "width": 60,
+      "height": 40,
+      "x": 1042,
+      "y": 521,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "starch synthase (simpl.)",
+      "dunnartid": "164",
+      "index": 43,
+      "width": 60,
+      "height": 40,
+      "x": 728,
+      "y": 456,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "ADP",
+      "dunnartid": "166",
+      "index": 44,
+      "width": 60,
+      "height": 40,
+      "x": 760,
+      "y": 504,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "starch",
+      "dunnartid": "172",
+      "index": 45,
+      "width": 60,
+      "height": 40,
+      "x": 806,
+      "y": 504,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ATP/ADP transporter",
+      "dunnartid": "178",
+      "index": 46,
+      "width": 60,
+      "height": 40,
+      "x": 948,
+      "y": 359,
+      "rx": 5,
+      "ry": 5
+    },
+    {
+      "label": "ADP",
+      "dunnartid": "179",
+      "index": 47,
+      "width": 60,
+      "height": 40,
+      "x": 881,
+      "y": 384,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ADP",
+      "dunnartid": "184",
+      "index": 48,
+      "width": 60,
+      "height": 40,
+      "x": 1042,
+      "y": 351,
+      "rx": 9,
+      "ry": 9
+    },
+    {
+      "label": "ATP",
+      "dunnartid": "189",
+      "index": 49,
+      "width": 60,
+      "height": 40,
+      "x": 1042,
+      "y": 384,
+      "rx": 9,
+      "ry": 9
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 0
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 4,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 9
+    },
+    {
+      "source": 3,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 5
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 2
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 12
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 19,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 20
+    },
+    {
+      "source": 17,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 18
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 23,
+      "target": 21
+    },
+    {
+      "source": 23,
+      "target": 13
+    },
+    {
+      "source": 24,
+      "target": 23
+    },
+    {
+      "source": 9,
+      "target": 25
+    },
+    {
+      "source": 25,
+      "target": 24
+    },
+    {
+      "source": 28,
+      "target": 26
+    },
+    {
+      "source": 26,
+      "target": 27
+    },
+    {
+      "source": 29,
+      "target": 31
+    },
+    {
+      "source": 24,
+      "target": 26
+    },
+    {
+      "source": 31,
+      "target": 32
+    },
+    {
+      "source": 33,
+      "target": 32
+    },
+    {
+      "source": 34,
+      "target": 26
+    },
+    {
+      "source": 34,
+      "target": 33
+    },
+    {
+      "source": 34,
+      "target": 35
+    },
+    {
+      "source": 35,
+      "target": 36
+    },
+    {
+      "source": 38,
+      "target": 35
+    },
+    {
+      "source": 35,
+      "target": 37
+    },
+    {
+      "source": 37,
+      "target": 39
+    },
+    {
+      "source": 39,
+      "target": 40
+    },
+    {
+      "source": 40,
+      "target": 41
+    },
+    {
+      "source": 41,
+      "target": 42
+    },
+    {
+      "source": 36,
+      "target": 43
+    },
+    {
+      "source": 43,
+      "target": 44
+    },
+    {
+      "source": 46,
+      "target": 47
+    },
+    {
+      "source": 48,
+      "target": 46
+    },
+    {
+      "source": 46,
+      "target": 49
+    },
+    {
+      "source": 38,
+      "target": 46
+    },
+    {
+      "source": 31,
+      "target": 30
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 43,
+      "target": 45
+    },
+    {
+      "source": 9,
+      "target": 31
+    }
+  ],
+  "constraints": [
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 1,
+          "offset": 0
+        },
+        {
+          "node": 2,
+          "offset": 0
+        },
+        {
+          "node": 14,
+          "offset": 0
+        }
+      ],
+      "axis": "y"
+    },
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 1,
+          "offset": 0
+        },
+        {
+          "node": 3,
+          "offset": 0
+        },
+        {
+          "node": 4,
+          "offset": 0
+        },
+        {
+          "node": 5,
+          "offset": 0
+        },
+        {
+          "node": 6,
+          "offset": 0
+        },
+        {
+          "node": 7,
+          "offset": 0
+        }
+      ],
+      "axis": "x"
+    },
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 7,
+          "offset": 0
+        },
+        {
+          "node": 8,
+          "offset": 0
+        },
+        {
+          "node": 9,
+          "offset": 0
+        }
+      ],
+      "axis": "y"
+    },
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 9,
+          "offset": 0
+        },
+        {
+          "node": 13,
+          "offset": 0
+        },
+        {
+          "node": 14,
+          "offset": 0
+        },
+        {
+          "node": 23,
+          "offset": 0
+        },
+        {
+          "node": 24,
+          "offset": 0
+        },
+        {
+          "node": 25,
+          "offset": 0
+        }
+      ],
+      "axis": "x"
+    },
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 21,
+          "offset": 0
+        },
+        {
+          "node": 22,
+          "offset": 0
+        }
+      ],
+      "axis": "x"
+    },
+    {
+      "type": "alignment",
+      "offsets": [
+        {
+          "node": 35,
+          "offset": 0
+        },
+        {
+          "node": 36,
+          "offset": 0
+        },
+        {
+          "node": 43,
+          "offset": 0
+        },
+        {
+          "node": 44,
+          "offset": 0
+        }
+      ],
+      "axis": "x"
+    }
+  ],
+  "groups": [
+    {
+      "leaves": [
+        29,
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        27
+      ],
+      "style": "fill:#ffdd3c;fill-opacity:0.37254902000000001;stroke:#ffdd3c;stroke-opacity:1",
+      "padding": 10
+    },
+    {
+      "leaves": [
+        28,
+        30,
+        45,
+        44,
+        43,
+        38,
+        37,
+        36,
+        35,
+        34,
+        33,
+        32,
+        47,
+        39,
+        40
+      ],
+      "style": "fill:#4db987;fill-opacity:0.31764700000000001;stroke:#4db987;stroke-opacity:1",
+      "padding": 10
+    },
+    {
+      "leaves": [
+        48,
+        49,
+        42
+      ],
+      "style": "fill:#ec1dff;fill-opacity:0.37254902000000001;stroke:#ec1dff;stroke-opacity:1",
+      "padding": 10
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${includes/head.html}
+</head>
+
+<body class="index">
+
+    ${includes/nav.html}
+
+    <div class="container" id="wrapper" style="height: 100%; min-height: 600px;">
+
+        <br />
+        <br /> <br />
+        <br /> <br />
+
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <p>
+                    <span style="font-size: 64px; margin-top: 100px;">
+                        <strong>
+                            <i class="fa fa-windows"></i>
+                        </strong>
+                    </span>
+
+                    &nbsp;&nbsp;
+
+                    <button type="button" style="padding-top: 0.85rem; padding-bottom: 0.25rem;" class="btn btn-primary"
+                        data-toggle="button" onclick="open_downloadPage();">
+                        <span style="font-size: 42px;">
+                            <i class="fa fa-download"></i>
+                        </span>
+                        <strong>Download GCModeller</strong>
+                    </button>
+                </p>
+                <script type="text/javascript">
+                    function open_downloadPage() {
+                        var url = "https://github.com/SMRUCC/GCModeller/releases";
+                        var win = window.open(url, '_blank');
+                        win.focus();
+                    }                    
+                </script>
+
+                <br />
+                <br />
+
+                <p>GCModeller is developed using latest VisualStudio and writen in VB.NET language.</p>
+                <p>System Requirements:
+
+                <ul>
+                    <li>x64 based system.</li>
+                    <li>.NET Framework 4.7</li>
+                </ul>
+
+                Recommend for build GCModeller micro-services local computing cluster backend:
+
+                <ul>
+                    <li>Windows Server 2016 (X64)</li>
+                    <li>i7 7700 / E3-1285 v4 and 16GB memory</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <p>
+                    bioCAD is a cloud platform for biological system computer assitent design. Power by
+                    GCModeller(genomics CAD Modeller system)
+                    at server backend.
+                </p>
+                <p>
+                    bioCAD cloud provides:
+
+                <ul>
+                    <li>1. Multiple Omics data analysis platform</li>
+                    <li>2. Biological system simulation platform</li>
+                    <li>3. Biological system CAD tool</li>
+                </ul>
+                </p>
+                <p>
+                    bioCAD and GCModeller was developed by master
+                    <a href="https://github.com/xieguigang">@xieguigang</a> and project was funding by
+                    <a href="http://www.bionovogene.com/">BioNovoGene™</a> Corporation.
+                </p>
+
+                <br />
+
+                <a href="http://www.bionovogene.com/" target="__blank">
+                    <img width="250px" src="/images/BioNovoGene.png" />
+                </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="http://www.biodeep.cn/" target="__blank">
+                    <img width="300px" src="/images/BioDeep.png" />
+                </a>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    ${includes/footer.html}
+
+</body>
+
+</html>

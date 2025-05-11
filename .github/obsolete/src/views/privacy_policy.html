@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    ${includes/head.html}
+
+    <script type="text/javascript" src="http://cdn.biodeep.cn/vendor/marked.min.js"></script>
+    <script type="text/javascript">
+        function displayMarkdown(div, markdown) {
+            $("#" + div).html(marked(markdown));
+        }
+    </script>
+</head>
+
+<body class="index">
+    ${includes/nav.html}
+
+    <div id="wrapper">
+
+        <br />
+        <br />
+        <div class="row">
+            <div class="column-12-large" id="markdown-page">
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $.get("/etc/privacy_notice.md", function (markdown) {
+                    displayMarkdown("markdown-page", markdown);
+                });
+            });
+        </script>
+
+    </div>
+
+    ${includes/footer.html}
+
+</body>
+
+</html>

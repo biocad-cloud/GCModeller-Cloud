@@ -1,0 +1,219 @@
+${../../includes/data_view.html}
+
+<link href="http://cdn.biodeep.cn/vendor/bootstrap-data-table/jquery.bdt.min.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="http://cdn.biodeep.cn/vendor/jquery.sortelements.js"></script>
+<script type="text/javascript" src="http://cdn.biodeep.cn/vendor/bootstrap-data-table/jquery.bdt.min.js"></script>
+
+<body>
+
+    <div id="wrapper" style="margin: 50px; min-height: 400px;">
+        <div class="row">
+            <h3>{$title}</h3>
+
+            <p>
+                Using organism:
+                <strong>{$organism}</strong>
+            </p>
+        </div>
+
+        <script type="text/javascript">        
+            var taskID = "{$taskID}";
+        </script>
+
+        <?php if ({$task_success}) : ?>
+
+        <!-- 任务成功则显示结果表格，下载按钮和富集的结果图片 -->
+
+        <div class="row">
+            <div class="col-lg-6" style="margin-bottom: -10px;">
+                <h3>Enrichment Terms</h3>
+            </div>
+            <div class="col-lg-6" style="text-align: right;">
+                <br />
+                <br />
+                <a href="{<biostack>api/download}&id={$taskID}" target="__blank">
+                    <i class="fa fa-download"></i> Download zip</a>
+            </div>
+        </div>
+
+        <hr style="margin-top:5px;" />
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-success" style="width:100%;">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    Terms table&nbsp;
+                                    <span class="glyphicons glyphicons-unchecked"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body" id="upload_standards">
+
+                                <div class="container" style="margin-left: 10;">
+                                    <div class="row">
+                                        <div class="box clearfix">
+
+                                            <table class="table table-hover" id="bootstrap-table" data-page-length='15' width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>term</th>
+                                                        <th>score</th>
+                                                        <th>pvalue</th>
+                                                        <th>FDR</th>
+                                                        <th>cluster</th>
+                                                        <th>enriched</th>
+                                                        <th>geneIDs</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="terms" style="font-size: 0.8em;">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $.get("{<biostack>api/enrichment_terms}&id=" + taskID, function (data) {
+                                            var all = $.csv.toObjects(data);
+                                            var headers = Object.keys(all[0]);
+                                            var tbody = document.getElementById("terms");
+
+                                            console.log(headers);
+                                            console.log(all);
+
+                                            all.forEach(function (term) {
+                                                var tr = document.createElement("tr");
+                                                var append = function (s) {
+                                                    var td = document.createElement("td");
+                                                    td.innerHTML = s;
+                                                    tr.appendChild(td);
+                                                }
+
+                                                append(term.term);
+                                                append(new Number(term.score).toFixed(4));
+                                                append(new Number(term.pvalue).toExponential(3).toUpperCase());
+                                                append(term.FDR);
+                                                append(term.cluster);
+                                                append(term.enriched);
+                                                append("<span style='font-size:0.8em;'>" + term.geneIDs + "</span>");
+
+                                                tbody.appendChild(tr);
+                                            });
+
+                                            $('#bootstrap-table').bdt({
+                                                "showSearchForm": 0,
+                                                "showEntriesPerPageField": 0,
+                                                "pageRowCount": 15
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-warning" style="width:100%;">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Enrichment Plot&nbsp;
+                                    <span class="glyphicons glyphicons-unchecked"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body" id="upload_standards">
+
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#home">KEGG</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#menu1">GO</a>
+                                    </li>
+                                </ul>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                        <div class="tab-content">
+
+                                            <div id="home" class="tab-pane fade in active">
+
+                                                <br />
+
+                                                <center>
+                                                    <img id="kegg-plot" width="95%" src="{<biostack>image/enrichment}&type=kegg&id={$taskID}" />
+                                                </center>
+
+                                                <hr />
+                                                <a href="#" onclick="custom_kegg();">
+                                                    <i class="fa fa-pencil"></i> &nbsp; Customize</a>
+
+                                            </div>
+                                            <div id="menu1" class="tab-pane fade">
+
+                                                <br />
+
+                                                <center>
+                                                    <img id="go-plot" width="95%" src="{<biostack>image/enrichment}&type=go&id={$taskID}" />
+                                                </center>
+
+                                                <hr />
+                                                <a href="#" onclick="custom_go();">
+                                                    <i class="fa fa-pencil"></i> &nbsp; Customize</a>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    parent.setPageHeight("1200");
+
+                    $(function () {
+                        $('#collapseOne').collapse('show')
+                    });
+
+                    function custom_go() {
+                        parent.gotoURL("{<biostack>web/custom_enrichment_plot}&type=go&id={$taskID}");
+                    }
+
+                    function custom_kegg() {
+                        parent.gotoURL("{<biostack>web/custom_enrichment_plot}&type=kegg&id={$taskID}");
+                    }
+                </script>
+
+                <!--在这里只包含有GO富集和KEGG富集的结果可视化图片-->
+
+                <?php else : ?>
+
+                <br />
+                <br />
+                <br />
+
+                <blockquote>
+                    Your task is {$status_text}, please wait for a while...
+                </blockquote>
+
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</body>

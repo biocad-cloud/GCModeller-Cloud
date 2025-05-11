@@ -1,0 +1,170 @@
+${../../includes/data_view.html}
+
+<link href="http://cdn.biodeep.cn/styles/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css">
+
+<body>
+
+    <div id="wrapper" style="margin: 50px; min-height: 400px;">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="panel-group" id="accordion">
+
+                    <div class="panel panel-success" style="width:100%;">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Customize Enrichment Plot&nbsp;
+                                    <span class="glyphicons glyphicons-unchecked"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body" id="upload_standards">
+
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#home">Plot</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#menu1">Customize</a>
+                                    </li>
+                                </ul>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                        <div class="tab-content">
+
+                                            <div id="home" class="tab-pane fade in active">
+
+                                                <br />
+
+                                                <center>
+                                                    <img id="kegg-plot" width="95%" src="{<biostack>image/enrichment}&type={$type}&id={$taskID}" />
+                                                </center>
+
+                                                <hr />
+                                                <a href="{<biostack>image/enrichment}&type={$type}&id={$taskID}" target="__blank">
+                                                    <i class="fa fa-download"></i> &nbsp; Download</a>
+
+                                            </div>
+                                            <div id="menu1" class="tab-pane fade">
+
+                                                <br />
+
+                                                <form>
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th width="10%">Label align:</th>
+                                                                <td width="20%">
+                                                                    <div class="checkbox checkbox-primary">
+                                                                        <input id="label-align-right" class="styled" type="checkbox">
+                                                                        <label for="label-align-right">
+                                                                            Align right
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Gray scale:</th>
+                                                                <td>
+                                                                    <div class="checkbox checkbox-primary">
+                                                                        <input id="plot-gray-scale" class="styled" type="checkbox">
+                                                                        <label for="plot-gray-scale">
+                                                                            Yes
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tick:</th>
+                                                                <td>
+                                                                    <input type="text" class="form-control" id="tick" placeholder="default = -1" />
+                                                                </td>
+                                                                <td>
+                                                                    &nbsp;&nbsp;
+                                                                    <span style="color:gray;">
+                                                                        <code>default = -1</code>, means measure ticks internal automaticlly.</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Size: </th>
+                                                                <td colspan="2">
+                                                                    <div class="row" style="width:50%;padding-top:1.25em;padding-bottom:0px;">
+                                                                        <div class="col-sm-4">[width, height] =</div>
+                                                                        <div class="col-sm-3">
+                                                                            <input type="text" class="form-control" width="20px" placeholder="2200" id="px-width" />
+                                                                        </div>
+                                                                        <div class="col-sm-1"> x</div>
+                                                                        <div class="col-sm-3">
+                                                                            <input type="text" class="form-control" width="20px" placeholder="1600" id="px-height" />
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </form>
+
+                                                <button type="button" class="btn btn-primary" data-toggle="button" onclick="apply();">Apply</button>
+
+                                                <script type="text/javascript">
+                                                    var taskID = "{$taskID}";
+
+                                                    function apply() {
+                                                        parent.becomesBusy("Apply parameters...");
+
+                                                        var labelAlign = $("#label-align-right").prop('checked');
+                                                        var grayScale = $("#plot-gray-scale").prop('checked');
+                                                        var ticks = $("#tick").val() || -1;
+                                                        var pxW = $("#px-width").val() || 2200;
+                                                        var pxH = $("#px-height").val() || 1600;
+
+                                                        var tweaks = {
+                                                            "label_align_right": labelAlign,
+                                                            "grayScale": grayScale,
+                                                            "ticks": ticks,
+                                                            "size": [pxW, pxH]
+                                                        };
+
+                                                        console.log(tweaks);
+
+                                                        $.post("http://biocad.cloud:83/biostack/CustomEnrichmentPlot.vbs?type={$type}&id={$taskID}", tweaks, function (rtvl) {
+                                                            console.log(rtvl);
+
+                                                            $("#home").attr("class", "tab-pane fade in active");
+                                                            $("#menu1").attr("class", "tab-pane fade");
+
+                                                            $("#kegg-plot").attr("src", "{<biostack>image/enrichment}&type={$type}&id={$taskID}&" + Math.random());
+                                                        });
+                                                    }
+                                                </script>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    parent.setPageHeight("1000");
+
+                    $(function () {
+                        $('#collapseOne').collapse('show')
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>

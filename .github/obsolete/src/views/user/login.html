@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+${imports.html}
+
+<body>
+	<div class="wrapper">
+		<div class="content">
+			<header class="header">
+				<h1>
+					<a href="#" onclick="gotoIndex();">bioCAD™ Cloud</a>
+				</h1>
+				<p>Login</p>
+			</header>
+			<form action="#" method="post" class="form">
+				<div class="username">
+					<i class="username-icon"></i>
+					<input class="inputs" type="text" id="username" name="username" value="" placeholder="Username" required="">
+				</div>
+				<div class="password">
+					<i class="password-icon"></i>
+					<input class="inputs" type="password" id="password" name="password" value="" placeholder="Password" required="">
+				</div>
+				<div class="password-content clear-fix">
+					<input id="check" type="checkbox" name="remember" value="1" class="check-password" checked="">
+					<label for="check">Remember me.</label>
+					<a href="#" onclick="gotoRecover();" class="forgot">Forgot password?</a>
+				</div>
+				<button type="submit" class="submit" name="submit" id="login">Login</button>
+				<div class="if-have">
+					<a href="#" onclick="gotoRegister();">New to bioCAD Cloud? Sign up.</a>
+				</div>
+			</form>
+			${footer.html}
+		</div>
+	</div>
+
+</body>
+
+</html>
