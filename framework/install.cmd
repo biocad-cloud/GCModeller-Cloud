@@ -3,7 +3,7 @@
 REM install the compiled typescript project into the web source folder
 SET jscompress=java -jar ./tools/closure-compiler-v20181125.jar
 SET built=./build
-SET app_release=../src/web/resources/typescripts/
+SET app_release=../src/resources/javascript/
 SET jump=linq_js
 
 echo "Google GCC engine found at:"
@@ -29,6 +29,7 @@ SET _js_min=%app_release%/%_src%.min.js
 echo "Do javascript script minify compression... package %_src%!"
 echo "  --> %_js_src%"
 echo "  --> minify: %_js_min%"
+echo %jscompress% --js %_js_src% --js_output_file "%_js_min%"
 
 REM clean works and rebuild libraries
 %jscompress% --js %_js_src% --js_output_file "%_js_min%" > %logfile% & type %logfile%
