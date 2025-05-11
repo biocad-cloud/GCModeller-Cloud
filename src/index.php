@@ -12,6 +12,13 @@ class App {
     }
 
     /**
+     * @access *
+    */
+    public function phpinfo() {
+        echo phpinfo();
+    }
+
+    /**
      * View molecule content
      * 
      * @param integer $id the reference id of the molecule object inside the registry system.
