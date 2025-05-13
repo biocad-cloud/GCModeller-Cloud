@@ -37,6 +37,11 @@ class App {
      * @access *
     */
     public function organism($id) {
-        
+        include_once APP_PATH . "/scripts/taxonomy_info.php";
+
+        $page = taxonomy_info::get_info($id);
+        $page["title"] = $page["taxname"];
+
+        View::Display($page);
     }
 }

@@ -12,6 +12,14 @@
             padding-bottom: .1rem;
             border-left: .125rem solid #00a6d5;
         }
+
+        .key-item {
+            flex-grow: 1;
+            text-align: left;
+            padding-right: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+        }
     </style>
 </head>
 
@@ -21,15 +29,30 @@
 
         <div class="row">
             <div class="col">
-                <h1>{$name}</h1>
-
+                <h1>Taxonomy - {$taxname}({$rank})</h1>
+                <br />
                 <div class="row">
                     <div class="col">
-                        Entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value-item"
-                            style="color:{$color}">{$type}</span> <br />
-                        Molecule&nbsp;&nbsp;<span class="value-item">{$formula} [{$mass}]</span><br />
-                        Organism&nbsp;<span class="value-item">{$organism}</span><br />
-                        Parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value-item">{$parent}</span>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="key-item">Entity</td>
+                                    <td class="value-item" style="color:{$color}">{$type}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Molecule</td>
+                                    <td class="value-item">{$formula} [{$mass}]</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Organism</td>
+                                    <td class="value-item">{$organism}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Parent</td>
+                                    <td class="value-item">{$parent}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -37,9 +60,9 @@
 
                 <div class="bg-body-tertiary" style="padding:25px;">
                     <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Function</h2>
+                        <h2 class="hero-container__title big">Description</h2>
 
-                        <p>{$note}
+                        <p>{$description}
                         </p>
                     </section>
                 </div>
@@ -48,6 +71,8 @@
 
         ${includes/disclaimer.html}
     </main>
+
+    ${includes/footer.html}
 </body>
 
 </html>
