@@ -5,6 +5,8 @@ include dirname(__DIR__) . "/etc/bootstrap.php";
 class App {
 
     /**
+     * BioCAD Cloud Platform
+     * 
      * @access *
     */
     public function index() {
