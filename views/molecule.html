@@ -3,6 +3,16 @@
 
 <head>
     ${includes/head.html}
+
+    <style>
+        .value-item {
+            flex-grow: 1;
+            padding-left: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+            border-left: .125rem solid #00a6d5;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,6 +43,31 @@
         </div>
     </nav>
     <main class="container">
+
+        <div class="row">
+            <div class="col">
+                <h1>{$name}</h1>
+
+                <div class="row">
+                    <div class="col">
+                        Entity <span class="value-item">{$type}</span> <br />
+                        Molecule <span class="value-item">{$formula} [{$mass}]</span>
+                        Organism <span class="value-item">{$organism}</span>
+                        Parent <span class="value-item">{$parent}</span>
+                    </div>
+                </div>
+
+                <div class="bg-body-tertiary" style="padding:25px;">
+                    <section class="hero-container hero-container--side-padding">
+                        <h2 class="hero-container__title big">Function</h2>
+
+                        <p>{$note}
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-body-tertiary" style="padding:25px;">
             <section class="hero-container hero-container--side-padding">
                 <h2 class="hero-container__title big">Disclaimer</h2>
