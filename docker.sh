@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# configs for the ubuntu server
+# apache2 + php 8.4
+
 docker stop biocad_web
 docker rm biocad_web
 
@@ -14,12 +17,12 @@ docker run -itd --name biocad_web \
     -v "/tmp/biocad_tmp2:/tmp:rw" \
     -v "/tmp/apache/:/tmp/apache/:rw" \
     -v "/mnt/sdb/bioCAD/:/var/www/html/:ro" \
-    -v "/mnt/sdb/bioCAD/etc/vhost:/etc/httpd/vhost" \
-    -p 8848:80 \
-    -p 8843:443 \
+    -v "/mnt/sdb/bioCAD/etc/vhost/biocad.cloud.conf:/etc/apache2/sites-available/biocad.cloud.conf" \
+    -p 80:80 \
+    -p 443:443 \
     php:8.4 /usr/sbin/init
 
 # wait container server init
 sleep 3
 # start web servcies
-docker exec -it biocad_web systemctl restart httpd
+docker exec -it biocad_web systemctl restart apache2
