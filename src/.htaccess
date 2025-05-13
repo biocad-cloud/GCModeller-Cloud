@@ -29,6 +29,6 @@ Header set Cache-Control: "max-age=0, no-store"
 RewriteRule ^([a-zA-Z_0-9]+)$ /index.php?app=$1
 RewriteRule ^([a-zA-Z_0-9]+)/$ /index.php?app=$1
 
-# index/ view molecule data
-RewriteRule ^molecule/([a-zA-Z_0-9]+)$ /index.php?app=molecule&id=$1
-RewriteRule ^molecule/([a-zA-Z_0-9]+)/$ /index.php?app=molecule&id=$1
+# index/ view molecule/organism data
+RewriteRule ^([a-zA-Z_0-9]+)/([a-zA-Z_0-9]+)$ /index.php?app=$1&id=$2
+RewriteRule ^([a-zA-Z_0-9]+)/([a-zA-Z_0-9]+)/$ /index.php?app=$1&id=$2

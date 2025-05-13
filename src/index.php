@@ -32,4 +32,11 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+    */
+    public function organism($id) {
+        
+    }
 }
