@@ -17,6 +17,9 @@ docker run -itd --name biocad_web \
     -v "/mnt/sdb/bioCAD/etc/vhost:/etc/httpd/vhost" \
     -p 8848:80 \
     -p 8843:443 \
-    web_env:php /usr/sbin/init
+    php:8.4 /usr/sbin/init
 
+# wait container server init
+sleep 3
+# start web servcies
 docker exec -it biocad_web systemctl restart httpd
