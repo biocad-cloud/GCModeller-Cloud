@@ -1,0 +1,53 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    ${includes/head.html}
+
+    <style>
+        .value-item {
+            flex-grow: 1;
+            padding-left: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+            border-left: .125rem solid #00a6d5;
+        }
+    </style>
+</head>
+
+<body>
+    ${includes/nav.html}
+    <main class="container">
+
+        <div class="row">
+            <div class="col">
+                <h1>{$name}</h1>
+
+                <div class="row">
+                    <div class="col">
+                        Entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value-item"
+                            style="color:{$color}">{$type}</span> <br />
+                        Molecule&nbsp;&nbsp;<span class="value-item">{$formula} [{$mass}]</span><br />
+                        Organism&nbsp;<span class="value-item">{$organism}</span><br />
+                        Parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value-item">{$parent}</span>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="bg-body-tertiary" style="padding:25px;">
+                    <section class="hero-container hero-container--side-padding">
+                        <h2 class="hero-container__title big">Function</h2>
+
+                        <p>{$note}
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        ${includes/disclaimer.html}
+    </main>
+</body>
+
+</html>
