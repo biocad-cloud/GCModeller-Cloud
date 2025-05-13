@@ -16,7 +16,7 @@ docker run -itd --name biocad_web \
     -v "/var/run/docker.sock:/run/docker.sock" \
     -v "/tmp/biocad_tmp2:/tmp:rw" \
     -v "/tmp/apache/:/tmp/apache/:rw" \
-    -v "/mnt/sdb/bioCAD/:/var/www/html/:ro" \
+    -v "/mnt/sdb/bioCAD/:/opt/biocad_web/:ro" \
     -v "/mnt/sdb/bioCAD/etc/vhost/biocad.cloud.conf:/etc/apache2/sites-available/biocad.cloud.conf" \
     -p 80:80 \
     -p 443:443 \
