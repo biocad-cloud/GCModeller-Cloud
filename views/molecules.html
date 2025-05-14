@@ -13,6 +13,39 @@
             <div class="col">
                 <h1>Biological Molecules</h1>
 
+                <table class="table">
+                    <thead style="background-color: blue; color:aliceblue;">
+                        <tr>
+                            <th>
+                                Common Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Formula
+                            </th>
+                            <th>
+                                Organism
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @page>
+                            <tr>
+                                <td><strong><a href='/molecule/@page["id"]/' class="text-truncate d-inline-block"
+                                            style="max-width: 350px;">@page["name"]</a></strong></td>
+                                <td>@page["type"]</td>
+                                <td>@page["formula"] (@page["mass"])</td>
+                                <td>@page["organism"]</td>
+                                <td>@page["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
 
                 <div class="bg-body-tertiary" style="padding:25px;">
                     <section class="hero-container hero-container--side-padding">

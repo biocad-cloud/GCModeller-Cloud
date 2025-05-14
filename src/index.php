@@ -48,9 +48,18 @@ class App {
     }
 
     /**
+     * Browse Molecule List
+     * 
      * @access *
     */
     public function molecules($page = 1, $page_size=100) {
-        View::Display();
+        include_once APP_PATH . "/scripts/molecule_list.php";
+
+        $page = molecule_list::browse_list($page,$page_size);
+        $page = [
+            "page" => $page
+        ];
+
+        View::Display($page);
     }
 }
