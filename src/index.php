@@ -10,7 +10,8 @@ class App {
      * @access *
     */
     public function index() {
-        View::Display();
+        include_once APP_PATH . "/scripts/index.php";
+        View::Display(index_page::index_info());
     }
 
     /**
