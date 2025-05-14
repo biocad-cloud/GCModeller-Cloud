@@ -46,4 +46,11 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+    */
+    public function molecules($page = 1, $page_size=100) {
+        View::Display();
+    }
 }
