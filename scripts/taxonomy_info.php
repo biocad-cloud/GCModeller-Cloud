@@ -28,6 +28,18 @@ class taxonomy_info {
             }
         }
 
+        $genome = (new Table(["cad_registry"=>"genomics"]))->where(["ncbi_taxid"=>$id])->find();
+
+        if (!Utils::isDbNull($genome)) {
+            $tax["db_xref"] = $genome["db_xref"];
+            $tax["size"] = $genome["length"];
+            $tax["def"] = $genome["def"];
+        } else {
+            $tax["db_xref"] = taxonomy_info::none;
+            $tax["size"] = "NA";
+            $tax["def"] = taxonomy_info::none;
+        }
+
         return $tax;
     }
 }
