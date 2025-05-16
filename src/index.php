@@ -18,6 +18,19 @@ class App {
     /**
      * @access *
     */
+    public function search($q) {
+        include_once APP_PATH . "/scripts/search.php";
+
+        $q = urldecode($q);
+        $page = search_tool::get_result($q);
+        $page["title"] = "Search Result Of '{$q}'";
+
+        View::Display($page);
+    }
+
+    /**
+     * @access *
+    */
     public function phpinfo() {
         echo phpinfo();
     }

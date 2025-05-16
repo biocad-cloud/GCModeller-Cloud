@@ -1,0 +1,83 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    ${includes/head.html}
+</head>
+
+<body>
+    ${includes/nav.html}
+    <main class="container">
+
+        <div class="row">
+            <div class="col">
+                <h1>{$title}</h1>
+
+                <br />
+
+                <h2>Molecules Search</h2>
+
+                <table class="table">
+                    <thead style="background-color: blue; color:aliceblue;">
+                        <tr>
+                            <th>
+                                Common Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Formula
+                            </th>
+                            <th>
+                                Organism
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @mol>
+                            <tr>
+                                <td><strong><a href='/molecule/@mol["id"]/' class="text-truncate d-inline-block"
+                                            style="max-width: 350px;">@mol["name"]</a></strong></td>
+                                <td>@mol["type"]</td>
+                                <td>@mol["formula"] (@mol["mass"])</td>
+                                <td>@mol["organism"]</td>
+                                <td>@mol["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+
+                <h2>Reaction Search</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reaction Name</th>                            
+                            <th>Equation</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @rxn>
+                            <tr>
+                                <td><a href='/reaction/@rxn["id"]'>@rxn["name"]</a>
+                                </td>                                
+                                <td>@rxn["equation"]</td>
+                                <td>@rxn["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </main>
+
+    ${includes/footer.html}
+</body>
+
+</html>
