@@ -48,11 +48,28 @@ class molecule_info {
 
         if ($mol["type"] == "Metabolite") {
             $mol["reaction"] = self::load_reaction_net($id);
+            $mol["odor"] = self::odor_list($id);
         } else {
             $mol["reaction"] = [];
+            $mol["odor"] = [];
         }
 
         return $mol;
+    }
+
+    public static function odor_list($id) {
+        return (new Table(["cad_registry"=>"odor"]))
+            ->left_join("vocabulary")
+            ->on(["vocabulary"=>"id","odor"=>"category"])
+            ->where(["molecule_id"=>$id])
+            ->group_by("term")
+            ->select([
+                "term",
+                "GROUP_CONCAT(DISTINCT CONCAT('<a href=\"/odor/',
+        odor,
+        '\">',
+        odor,
+        '</a>') SEPARATOR '; ') as odor"]);
     }
 
     public static function load_reaction_net($id) {

@@ -11,7 +11,7 @@ class App {
     */
     public function index() {
         include_once APP_PATH . "/scripts/index.php";
-        
+
         View::Display(index_page::index_info());
     }
 
@@ -61,6 +61,18 @@ class App {
         $page = [
             "page" => $page
         ];
+
+        View::Display($page);
+    }
+
+    /**
+     * @access *
+    */
+    public function reaction($id) {
+        include_once APP_PATH . "/scripts/reaction_info.php";
+
+        $page = reaction_info::get_data($id);
+        $page["title"] = $page["name"];
 
         View::Display($page);
     }
