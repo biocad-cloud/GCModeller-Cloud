@@ -1,0 +1,98 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    ${includes/head.html}
+
+    <style>
+        .value-item {
+            flex-grow: 1;
+            padding-left: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+            border-left: .125rem solid #00a6d5;
+        }
+
+        .key-item {
+            flex-grow: 1;
+            text-align: left;
+            padding-right: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+        }
+    </style>
+</head>
+
+<body>
+    ${includes/nav.html}
+    <main class="container">
+
+        <div class="row">
+            <div class="col">
+                <h1>Enzyme - {$ec_id}</h1>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="key-item">EC Number</td>
+                                    <td class="value-item">{$ec_id}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Organism</td>
+                                    <td class="value-item">{$organism}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <td class="key-item">Equation</td>
+                                    <td class="value-item">{$equation}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="bg-body-tertiary" style="padding:25px;">
+                    <section class="hero-container hero-container--side-padding">
+                        <h2 class="hero-container__title big">Description</h2>
+
+                        <p>{$note}
+                        </p>
+                    </section>
+                </div>
+
+                <br />
+
+                <h2>Enzymatic Catalysts</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reaction Name</th>
+                            <th>Equation</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @reaction>
+                            <tr>
+                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a>
+                                </td>
+                                <td>@reaction["equation"]</td>
+                                <td>@reaction["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        ${includes/disclaimer.html}
+    </main>
+
+    ${includes/footer.html}
+</body>
+
+</html>

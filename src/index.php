@@ -76,4 +76,16 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+    */
+    public function enzyme($id) {
+        include_once APP_PATH . "/scripts/enzyme_info.php";
+
+        $page = enzyme_info::get_data($id);
+        $page["title"] = $id;
+
+        View::Display($page);
+    }
 }
