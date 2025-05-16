@@ -79,6 +79,11 @@ class molecule_info {
             'name',
             name)) AS graph"])
             ;
+        $regs = (new Table(["cad_registry"=>"regulation_graph"]))
+            ->where(["reaction_id"=> in($rid)])
+            ->group_by("reaction_id")
+            ->select(["concat('R',reaction_id) as `rid`", "JSON_ARRAYAGG(`term`) as reg"], "rid")
+        ;
         $graph = array_map(function($r) {
             $r["graph"] = json_decode($r["graph"], true);
             return $r;
@@ -94,14 +99,23 @@ class molecule_info {
             $index_graph["R{$g["reaction"]}"] = $eq;
         }
 
-        return array_map(function($rxn) use ($index_graph) {
+        return array_map(function($rxn) use ($index_graph, $regs) {
             $rid = "R{$rxn["id"]}";
             $eq = $index_graph[$rid];
 
             if (!Utils::isDbNull($eq)) {
                 $rxn["equation"] = $eq;
             }
-            
+            if (array_key_exists($rid, $regs)) {
+                $ec = json_decode($regs[$rid]["reg"]);
+                $ec = array_map(function($id) {
+                    return "<a href='/enzyme/{$id}'>{$id}</a>";
+                }, $ec);
+                $rxn["enzyme"] = Strings::Join($ec, ", ");
+            } else {
+                $rxn["enzyme"] = "-";
+            }
+
             return $rxn;
         }, $net);
     }
