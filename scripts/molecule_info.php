@@ -68,7 +68,7 @@ class molecule_info {
         $graph = (new Table(["cad_registry"=>"reaction_graph"]))
             ->left_join("molecule")
             ->on(["molecule"=>"id","reaction_graph"=>"molecule_id"])
-            ->where(["reaction" => in($rid)])
+            ->where(["reaction" => in($rid),"molecule_id" => gt("0")])
             ->group_by("reaction")
             ->select(["reaction","JSON_ARRAYAGG(JSON_OBJECT('mol_id',
             molecule_id,
