@@ -13,6 +13,14 @@ class reaction_info {
             ->select(["`molecule`.*","term"])
             ;
         $data["graph"] = $graph;
+        $data["enzyme"] = (new Table(["cad_registry"=>"regulation_graph"]))
+            ->where(["reaction_id"=>$id])
+            ->distinct()
+            ->project("term")
+            ;
+        $data["enzyme"] = Strings::Join(array_map(function($ec) {
+            return "<a href='/enzyme/{$ec}'>{$ec}</a>";
+        }, $data["enzyme"]), ", ");
 
         return $data;
     }
