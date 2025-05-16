@@ -11,6 +11,7 @@ class App {
     */
     public function index() {
         include_once APP_PATH . "/scripts/index.php";
+        
         View::Display(index_page::index_info());
     }
 

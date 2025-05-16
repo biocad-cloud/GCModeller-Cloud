@@ -66,6 +66,29 @@
                         </p>
                     </section>
                 </div>
+
+                <br />
+
+                <h2>Metabolic Network</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reaction Name</th>
+                            <th>Equation</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @reaction>
+                            <tr>
+                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a></td>
+                                <td>@reaction["equation"]</td>
+                                <td>@reaction["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
             </div>
         </div>
 
