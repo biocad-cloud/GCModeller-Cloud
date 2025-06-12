@@ -82,7 +82,23 @@
                 <h2>Gene/Proteins</h2>
 
                 <table class="table">
-                    
+                    <thead>
+                        <tr>
+                            <th>Gene/Protein</th>
+                            <th>Organism</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @protein>
+                            <tr>
+                                <td><a href='/molecule/@protein["id"]'>@protein["name"]</a>
+                                </td>
+                                <td><a href='/organism/@protein["tax_id"]'>@protein["taxname"]</a></td>
+                                <td>@protein["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
                 </table>
             </div>
         </div>
