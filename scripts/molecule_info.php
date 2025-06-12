@@ -54,6 +54,8 @@ class molecule_info {
             $mol["odor"] = [];
         }
 
+        $mol["db_xref"] = self::load_db_xrefs($id);
+
         return $mol;
     }
 
@@ -70,6 +72,29 @@ class molecule_info {
         '\">',
         odor,
         '</a>') SEPARATOR '; ') as odor"]);
+    }
+
+    public static function load_db_xrefs($id) {
+        $list = (new Table(["cad_registry"=>"db_xrefs"]))
+            ->left_join("vocabulary")
+            ->on(["vocabulary"=>"id","db_xrefs"=>"db_key"])
+            ->where(["obj_id"=>$id])
+            ->group_by("term")
+            ->select([
+                "`term` as db",
+                "CONCAT('[\"',
+                GROUP_CONCAT(DISTINCT `xref`
+                    SEPARATOR '\",\"'),
+                '\"]') AS `xref`"])
+            ;
+
+        for($i=0;$i<count($list);$i++) {
+            $link = $list[$i];
+            $link["xref"] = Strings::Join( json_decode($link["xref"]), ",&nbsp;");
+            $list[$i] = $link;
+        }
+
+        return $list;
     }
 
     public static function load_reaction_net($id) {

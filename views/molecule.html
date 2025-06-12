@@ -110,6 +110,26 @@
                         </foreach>
                     </tbody>
                 </table>
+
+                <h2>Database CrossReference</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Database Name</th>
+                            <th>Xref IDs</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @db_xref>
+                            <tr>
+                                <td>@db_xref["db"]
+                                </td>
+                                <td>@db_xref["xref"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
             </div>
         </div>
 
