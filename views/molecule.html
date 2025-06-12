@@ -69,24 +69,31 @@
 
                 <br />
 
-                <h2>Odor Information</h2>
+                <foreach @synonym>
+                    <h4>Synonym Names [@synonym["lang"]]</h4>
+                    <p>@synonym["names"]</p>
+                </foreach>
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Odors</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @odor>
+                <div style="display: {$odor_display};">
+                    <h2>Odor Information</h2>
+
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>@odor["term"]</td>
-                                <td>@odor["odor"]</td>
+                                <th>Category</th>
+                                <th>Odors</th>
                             </tr>
-                        </foreach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <foreach @odor>
+                                <tr>
+                                    <td>@odor["term"]</td>
+                                    <td>@odor["odor"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h2>Metabolic Network</h2>
 
@@ -101,8 +108,9 @@
                     <tbody>
                         <foreach @reaction>
                             <tr>
-                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a><br /><p class="text-truncate d-inline-block"
-                                    style="max-width: 500px;">@reaction["note"]</p>
+                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a><br />
+                                    <p class="text-truncate d-inline-block" style="max-width: 500px;">@reaction["note"]
+                                    </p>
                                 </td>
                                 <td>@reaction["enzyme"]</td>
                                 <td>@reaction["equation"]</td>
@@ -117,7 +125,7 @@
                     <thead>
                         <tr>
                             <th>Database Name</th>
-                            <th>Xref IDs</th>                            
+                            <th>Xref IDs</th>
                         </tr>
                     </thead>
                     <tbody>

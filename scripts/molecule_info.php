@@ -49,14 +49,26 @@ class molecule_info {
         if ($mol["type"] == "Metabolite") {
             $mol["reaction"] = self::load_reaction_net($id);
             $mol["odor"] = self::odor_list($id);
+            $mol["odor_display"] = "block";
         } else {
             $mol["reaction"] = [];
             $mol["odor"] = [];
+            $mol["odor_display"] = "none";
         }
 
         $mol["db_xref"] = self::load_db_xrefs($id);
+        $mol["synonym"] = self::synonym_list($id);
 
         return $mol;
+    }
+
+    public static function synonym_list($id) {
+        return (new Table(["cad_registry"=>"synonym"]))
+            ->where(["obj_id"=>$id])
+            ->group_by("lang")
+            ->select(["lang",
+            "GROUP_CONCAT(DISTINCT synonym SEPARATOR ';&nbsp;') AS `names`"])
+            ;
     }
 
     public static function odor_list($id) {
