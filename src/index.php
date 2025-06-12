@@ -67,10 +67,15 @@ class App {
      * 
      * @access *
     */
-    public function molecules($page = 1, $page_size=100) {
+    public function molecules($page = 1, $page_size=100, $type = null) {
         include_once APP_PATH . "/scripts/molecule_list.php";
 
-        $page = molecule_list::browse_list($page,$page_size);
+        if (!Utils::isDbNull($type)) {
+            $page = molecule_list::browse_type($type, $page, $page_size);
+        } else {
+            $page = molecule_list::browse_list($page,$page_size);
+        }
+        
         $page = [
             "page" => $page
         ];
