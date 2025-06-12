@@ -66,6 +66,27 @@
                         </p>
                     </section>
                 </div>
+
+                <h2>Gene/Proteins</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @prots>
+                            <tr>
+                                <td>
+                                    <a href='/molecule/@prots["id"]'>@prots["name"]</a>
+                                </td>
+                                <td>@prots["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
             </div>
         </div>
 

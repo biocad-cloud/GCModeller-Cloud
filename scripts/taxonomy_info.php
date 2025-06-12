@@ -29,6 +29,11 @@ class taxonomy_info {
         }
 
         $genome = (new Table(["cad_registry"=>"genomics"]))->where(["ncbi_taxid"=>$id])->find();
+        $tax["prots"] = (new Table(["cad_registry"=>"molecule"]))
+            ->where(["tax_id"=>$id,'type'=>210])
+            ->order_by("name")
+            ->select(["id","name","note"])
+            ;
 
         if (!Utils::isDbNull($genome)) {
             $tax["db_xref"] = $genome["db_xref"];
