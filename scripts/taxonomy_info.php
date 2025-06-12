@@ -29,11 +29,29 @@ class taxonomy_info {
         }
 
         $genome = (new Table(["cad_registry"=>"genomics"]))->where(["ncbi_taxid"=>$id])->find();
+        $ec_id = (new Table(["cad_registry"=>"vocabulary"]))->where(["term"=>"EC"])->findfield("id");
+        $prots_sql = "SELECT 
+        molecule.id,
+        molecule.name,
+        MIN(molecule.note) AS note,
+        GROUP_CONCAT(DISTINCT xref
+            SEPARATOR '; ') AS ec
+    FROM
+        cad_registry.molecule
+            LEFT JOIN
+        molecule prot ON prot.parent = molecule.id
+            LEFT JOIN
+        db_xrefs ON db_xrefs.obj_id = prot.id
+            AND db_key = $ec_id
+    WHERE
+        molecule.tax_id = $id
+            AND molecule.type = 210
+    GROUP BY molecule.id , molecule.name
+    ORDER BY ec DESC"
+        ;
         $tax["prots"] = (new Table(["cad_registry"=>"molecule"]))
-            ->where(["tax_id"=>$id,'type'=>210])
-            ->order_by("name")
-            ->select(["id","name","note"])
-            ;
+            ->getDriver()
+            ->Fetch($prots_sql);
 
         if (!Utils::isDbNull($genome)) {
             $tax["db_xref"] = $genome["db_xref"];
