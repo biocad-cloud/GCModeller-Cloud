@@ -138,6 +138,27 @@
                         </foreach>
                     </tbody>
                 </table>
+
+                <h2>Related Molecules</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Molecules</th>
+                            <th>Taxonomy</th>
+                            <th>Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @relates>
+                            <tr>
+                                <td><a href='/molecule/@relates["id"]'>@relates["name"]</a> </td>
+                                <td> <a href='/organism/@relates["tax_id"]'>@relates["taxname"]</a> </td>
+                                <td>@relates["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
             </div>
         </div>
 

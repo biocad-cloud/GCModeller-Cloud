@@ -50,16 +50,28 @@ class molecule_info {
             $mol["reaction"] = self::load_reaction_net($id);
             $mol["odor"] = self::odor_list($id);
             $mol["odor_display"] = "block";
+            $mol["relates"] = [];
         } else {
             $mol["reaction"] = [];
             $mol["odor"] = [];
             $mol["odor_display"] = "none";
+            $mol["relates"] = self::related_mols($mol["name"]);
         }
 
         $mol["db_xref"] = self::load_db_xrefs($id);
         $mol["synonym"] = self::synonym_list($id);
 
         return $mol;
+    }
+
+    public static function related_mols($name) {
+        return (new Table(["cad_registry"=>"molecule"]))
+            ->left_join("ncbi_taxonomy")
+            ->on(["ncbi_taxonomy"=>"id","molecule"=>"tax_id"])
+            ->where(["name"=>$name])
+            ->order_by("tax_id")
+            ->select(["`molecule`.id", "name", "tax_id", "note", "taxname"])
+            ;
     }
 
     public static function synonym_list($id) {
