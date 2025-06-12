@@ -4,6 +4,15 @@ class taxonomy_info {
 
     public const none = "<span style='color: gray;'>None</span>";
 
+    public static function taxonomy_childs($id) {
+        return (new Table(["cad_registry"=>"taxonomy_tree"]))
+            ->left_join("ncbi_taxonomy")->on(["ncbi_taxonomy"=>"id","taxonomy_tree"=>"child_tax"])
+            ->left_join("vocabulary")->on(["vocabulary"=>"id","ncbi_taxonomy"=>"rank"])
+            ->where(["tax_id"=>$id])
+            ->select(["`ncbi_taxonomy`.id", "taxname", "nsize", "term AS `rank`"])
+            ;
+    }
+
     public static function get_info($id) {
         $tax = (new Table(["cad_registry"=>"ncbi_taxonomy"]))
             ->left_join("vocabulary")
@@ -52,6 +61,7 @@ class taxonomy_info {
         $tax["prots"] = (new Table(["cad_registry"=>"molecule"]))
             ->getDriver()
             ->Fetch($prots_sql);
+        $tax["child"] = self::taxonomy_childs($id);
 
         if (!Utils::isDbNull($genome)) {
             $tax["db_xref"] = $genome["db_xref"];
