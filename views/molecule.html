@@ -159,6 +159,24 @@
                         </foreach>
                     </tbody>
                 </table>
+
+                <h2>Ontology Information</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>Ontology Source</tr>
+                        <tr>ID</tr>
+                        <tr>Name</tr>
+                    </thead>
+                    <tbody>
+                        <foreach @ontology>
+                            <tr>@ontology["db_source"]</tr>
+                            <tr><a href='/ontology/@ontology["id"]'>@ontology["db_xref"]</a></tr>
+                            <tr>@ontology["name"]</tr>
+                        </foreach>
+                    </tbody>
+                </table>
+
             </div>
         </div>
 

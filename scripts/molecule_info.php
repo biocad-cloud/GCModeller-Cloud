@@ -60,6 +60,12 @@ class molecule_info {
 
         $mol["db_xref"] = self::load_db_xrefs($id);
         $mol["synonym"] = self::synonym_list($id);
+        $mol["ontology"] = (new Table(["cad_registry" => "molecule_ontology"]))
+            ->left_join("ontology")->on(["ontology"=>"id","molecule_ontology"=>"ontology_id"])
+            ->left_join("vocabulary")->on(["vocabulary"=>"id","ontology"=>"db_source"])
+            ->where(["molecule_id"=>$id])
+            ->select(["`ontology`.id", "db_xref", "name", "`term` AS db_source"])
+            ;
 
         return $mol;
     }
