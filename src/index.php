@@ -106,4 +106,16 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+    */
+    public function ontology($id) {
+        include_once APP_PATH . "/scripts/ontology_info.php";
+
+        $page = ontology_info::page_data($id);
+        $page["title"] = $page["name"];
+
+        View::Display($page);
+    }
 }

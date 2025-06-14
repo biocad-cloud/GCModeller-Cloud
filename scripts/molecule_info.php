@@ -72,6 +72,15 @@ class molecule_info {
             ->distinct()
             ->select(["tag_id as id","term","color"])
             ;
+        $mol["subcellular"] = (new Table(["cad_registry"=>"subcellular_location"]))
+            ->left_join("subcellular_compartments")
+            ->on(["subcellular_compartments"=>"id","subcellular_location"=>"compartment_id"])
+            ->where(["obj_id"=>$id])
+            ->distinct()
+            ->select(["`subcellular_compartments`.id",
+            "compartment_name AS name",
+            "topology"])
+            ;
 
         return $mol;
     }

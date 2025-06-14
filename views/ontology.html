@@ -1,0 +1,113 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    ${includes/head.html}
+
+    <style>
+        .value-item {
+            flex-grow: 1;
+            padding-left: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+            border-left: .125rem solid #00a6d5;
+        }
+
+        .key-item {
+            flex-grow: 1;
+            text-align: left;
+            padding-right: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+        }
+    </style>
+</head>
+
+<body>
+    ${includes/nav.html}
+    <main class="container">
+
+        <div class="row">
+            <div class="col">
+                <h1>Ontology - {$name}</h1>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="key-item">Accession ID</td>
+                                    <td class="value-item">{$db_xref}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Source</td>
+                                    <td class="value-item">{$db_name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="bg-body-tertiary" style="padding:25px;">
+                    <section class="hero-container hero-container--side-padding">
+                        <h2 class="hero-container__title big">Description</h2>
+
+                        <p>{$description}
+                        </p>
+                    </section>
+                </div>
+
+                <br />
+
+                <h3>Is_a</h3>
+
+                <ul>
+                    <foreach @parent>
+                        <li>
+                            <a href='/ontology/@parent["is_a"]'>@parent["db_xref"] - @parent["name"]</a>
+                        </li>
+                    </foreach>
+                </ul>
+
+                <h3>Child Ontology</h3>
+
+                <ul>
+                    <foreach @child>
+                        <li>
+                            <a href='/ontology/@child["id"]'>@child["db_xref"] - @child["name"]</a>
+                        </li>
+                    </foreach>
+                </ul>
+
+                <h2>Molecules</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>                            
+                            <th>Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @mol>
+                            <tr>
+                                <td>
+                                    <a href='/molecule/@mol["id"]'>@mol["name"]</a>
+                                </td>                                
+                                <td>@mol["note"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        ${includes/disclaimer.html}
+    </main>
+
+    ${includes/footer.html}
+</body>
+
+</html>

@@ -128,6 +128,17 @@
                     </tbody>
                 </table>
 
+                <h3>Subcellular Location</h3>
+
+                <div class="row">
+                    <div class="col">
+                        <foreach @subcellular>
+                            <a href='/subcellular/@subcellular["id"]'> <span
+                                    class="badge text-bg-primary">@subcellular["name"]</span></a>
+                        </foreach>
+                    </div>
+                </div>
+
                 <h2>Database CrossReference</h2>
 
                 <table class="table">
