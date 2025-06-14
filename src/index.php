@@ -130,4 +130,16 @@ class App {
 
         View::Display($page);
     }
+    
+    /**
+     * @access *
+    */
+    public function subcellular($id,$page=1,$page_size=100) {
+        include_once APP_PATH . "/scripts/subcellular_data.php";
+
+        $page = subcellular_data::list($id, $page, $page_size);
+        $page["title"] = $page["term"];
+
+        View::Display($page);
+    }
 }

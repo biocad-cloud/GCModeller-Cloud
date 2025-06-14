@@ -106,6 +106,17 @@
 
                 <h2>Metabolic Network</h2>
 
+                <div class="row">
+                    <div class="col">
+                        <p>Subcellular Location:
+                            <foreach @subcellular>
+                                <a href='/subcellular/@subcellular["id"]'> <span
+                                        class="badge text-bg-primary">@subcellular["name"]</span></a>
+                            </foreach>
+                        </p>
+                    </div>
+                </div>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -127,17 +138,6 @@
                         </foreach>
                     </tbody>
                 </table>
-
-                <h3>Subcellular Location</h3>
-
-                <div class="row">
-                    <div class="col">
-                        <foreach @subcellular>
-                            <a href='/subcellular/@subcellular["id"]'> <span
-                                    class="badge text-bg-primary">@subcellular["name"]</span></a>
-                        </foreach>
-                    </div>
-                </div>
 
                 <h2>Database CrossReference</h2>
 
@@ -184,9 +184,11 @@
 
                 <table class="table">
                     <thead>
-                        <tr>Ontology Source</tr>
-                        <tr>ID</tr>
-                        <tr>Name</tr>
+                        <tr>
+                            <th>Ontology Source</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <foreach @ontology>
