@@ -118,4 +118,16 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+    */
+    public function tag($id,$page=1,$page_size=100) {
+        include_once APP_PATH . "/scripts/tag_list.php";
+
+        $page = tagdata::list($id, $page, $page_size);
+        $page["title"] = $page["term"];
+
+        View::Display($page);
+    }
 }
