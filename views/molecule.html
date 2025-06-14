@@ -51,6 +51,15 @@
                                     <td class="key-item">Parent</td>
                                     <td class="value-item">{$parent}</td>
                                 </tr>
+                                <tr>
+                                    <td class="key-item">Tags</td>
+                                    <td class="value-item">
+                                        <foreach @tags>
+                                            <a href='/tag/@tags["id"]'> <span
+                                                    class="badge text-bg-primary">@tags["term"]</span></a>
+                                        </foreach>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -170,9 +179,11 @@
                     </thead>
                     <tbody>
                         <foreach @ontology>
-                            <tr>@ontology["db_source"]</tr>
-                            <tr><a href='/ontology/@ontology["id"]'>@ontology["db_xref"]</a></tr>
-                            <tr>@ontology["name"]</tr>
+                            <tr>
+                                <td>@ontology["db_source"]</td>
+                                <td><a href='/ontology/@ontology["id"]'>@ontology["db_xref"]</a></td>
+                                <td>@ontology["name"]</td>
+                            </tr>
                         </foreach>
                     </tbody>
                 </table>

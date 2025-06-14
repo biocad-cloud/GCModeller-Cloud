@@ -66,6 +66,12 @@ class molecule_info {
             ->where(["molecule_id"=>$id])
             ->select(["`ontology`.id", "db_xref", "name", "`term` AS db_source"])
             ;
+        $mol["tags"] = (new Table(["cad_registry" =>"molecule_tags"]))
+            ->left_join("vocabulary")->on(["vocabulary"=>"id","molecule_tags"=>"tag_id"])
+            ->where(["molecule_id"=>$id])
+            ->distinct()
+            ->select(["tag_id as id","term","color"])
+            ;
 
         return $mol;
     }
