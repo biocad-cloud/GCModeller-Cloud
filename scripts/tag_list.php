@@ -15,6 +15,7 @@ class tagdata {
             ->on(["ncbi_taxonomy"=>"id","molecule"=>"tax_id"])
             ->where(["`molecule_tags`.tag_id" => $id])
             ->limit($offset,$page_size)
+            ->distinct()
             ->select([
                 "`molecule`.id",
                 "`molecule`.name",
