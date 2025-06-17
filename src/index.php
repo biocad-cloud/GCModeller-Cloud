@@ -142,4 +142,17 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * @access *
+     * 
+    */    
+    public function odor($id,$page=1,$page_size=100) {
+        include_once APP_PATH . "/scripts/odor_data.php";
+
+        $page = odor_data::odor_page($id, $page, $page_size);
+        $page["title"] = urldecode($id);
+
+        View::Display($page);
+    }
 }
