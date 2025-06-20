@@ -31,6 +31,13 @@ class App {
     /**
      * @access *
     */
+    public function download() {
+        View::Display();
+    }
+
+    /**
+     * @access *
+    */
     public function phpinfo() {
         echo phpinfo();
     }
