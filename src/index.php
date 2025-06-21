@@ -54,6 +54,17 @@ class App {
     }
 
     /**
+     * @access *
+    */
+    public function kinetics_law($id) {
+        include_once APP_PATH . "/scripts/kinetics_law.php";
+
+        $page_data = kinetics_law::data($id);
+
+        View::Display($page_data);
+    }
+
+    /**
      * View molecule content
      * 
      * @param integer $id the reference id of the molecule object inside the registry system.
