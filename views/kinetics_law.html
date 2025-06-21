@@ -3,6 +3,24 @@
 
 <head>
     ${includes/head.html}
+
+    <style>
+        .value-item {
+            flex-grow: 1;
+            padding-left: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+            border-left: .125rem solid #00a6d5;
+        }
+
+        .key-item {
+            flex-grow: 1;
+            text-align: left;
+            padding-right: .7rem;
+            padding-top: .1rem;
+            padding-bottom: .1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,31 +30,65 @@
         <div class="row">
             <div class="col">
 
-                <h1>Odor - {$title}</h1>
-                
+                <h1>Kinetics Law - {$id}</h1>
+
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="key-item">Entity</td>
+                                    <td class="value-item" style="color:blue">Kinetics Law</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Enzyme</td>
+                                    <td class="value-item">{$uniprot}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">EC Number</td>
+                                    <td class="value-item">{$ec_number}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Temperature</td>
+                                    <td class="value-item">{$temperature}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">pH</td>
+                                    <td class="value-item">
+                                        {$pH}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Buffer</td>
+                                    <td class="value-item">
+                                        {$buffer}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+
                 <table class="table">
                     <thead style="background-color: blue; color:aliceblue;">
                         <tr>
                             <th>
-                                Kinetics ID
+                                Reaction
                             </th>
                             <th>
-                                EC Number
-                            </th>
-                            <th>
-                                Experiment
+                                Note
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <foreach @page>
+                        <foreach @reaction>
                             <tr>
-                                <td><strong><a href='/kinetics_law/@page["id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@page["id"]</a></strong></td>                                
-                                <td>@page["ec_number"]</td>
-                                <td>Temperature: @page["temperature"]<br />
-                                    pH: @page["pH"]<br />
-                                    Buffer: @page["buffer"]</td>
+                                <td><strong><a href='/reaction/@reaction["id"]/' class="text-truncate d-inline-block"
+                                            style="max-width: 350px;">@reaction["name"]</a></strong></td>
+                                <td>@page["note"]</td>
                             </tr>
                         </foreach>
                     </tbody>
