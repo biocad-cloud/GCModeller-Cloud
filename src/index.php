@@ -55,6 +55,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function kinetics_law($id) {
         include_once APP_PATH . "/scripts/kinetics_law.php";
