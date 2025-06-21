@@ -43,6 +43,17 @@ class App {
     }
 
     /**
+     * @access *
+    */
+    public function kinetics($page=1,$page_size=100) {
+        include_once APP_PATH . "/scripts/kinetics_list.php";
+
+        $page = kinetics_list::page_data($page,$page_size);
+        
+        View::Display($page);
+    }
+
+    /**
      * View molecule content
      * 
      * @param integer $id the reference id of the molecule object inside the registry system.

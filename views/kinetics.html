@@ -18,23 +18,25 @@
                     <thead style="background-color: blue; color:aliceblue;">
                         <tr>
                             <th>
-                                Metabolite
+                                Kinetics ID
                             </th>
                             <th>
-                                Formula
+                                EC Number
                             </th>
                             <th>
-                                Odor Description
+                                Experiment
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <foreach @page>
                             <tr>
-                                <td><strong><a href='/molecule/@page["molecule_id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@page["name"]</a></strong></td>                                
-                                <td>@page["formula"]</td>
-                                <td>@page["text"]</td>
+                                <td><strong><a href='/kinetics/@page["id"]/' class="text-truncate d-inline-block"
+                                            style="max-width: 350px;">@page["id"]</a></strong></td>                                
+                                <td>@page["ec_number"]</td>
+                                <td>Temperature: @page["temperature"]<br />
+                                    pH: @page["pH"]<br />
+                                    Buffer: @page["buffer"]</td>
                             </tr>
                         </foreach>
                     </tbody>
