@@ -1,0 +1,52 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    ${includes/head.html}
+</head>
+
+<body>
+    ${includes/nav.html}
+    <main class="container">
+
+        <div class="row">
+            <div class="col">
+
+                <h1>Odor - {$title}</h1>
+                
+                <table class="table">
+                    <thead style="background-color: blue; color:aliceblue;">
+                        <tr>
+                            <th>
+                                Kinetics ID
+                            </th>
+                            <th>
+                                EC Number
+                            </th>
+                            <th>
+                                Experiment
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @page>
+                            <tr>
+                                <td><strong><a href='/kinetics_law/@page["id"]/' class="text-truncate d-inline-block"
+                                            style="max-width: 350px;">@page["id"]</a></strong></td>                                
+                                <td>@page["ec_number"]</td>
+                                <td>Temperature: @page["temperature"]<br />
+                                    pH: @page["pH"]<br />
+                                    Buffer: @page["buffer"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </main>
+
+    ${includes/footer.html}
+</body>
+
+</html>
