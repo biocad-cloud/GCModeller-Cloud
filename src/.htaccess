@@ -25,6 +25,8 @@ Header set Cache-Control: "max-age=604800, must-revalidate"
 Header set Cache-Control: "max-age=0, no-store"
 </FilesMatch>
 
+RewriteRule ^query/kinetics_data/?reactions=([+0-9.]+)$ /query.php?app=kinetics_data&id=$1
+
 # index.php
 RewriteRule ^([a-zA-Z_0-9]+)$ /index.php?app=$1
 RewriteRule ^([a-zA-Z_0-9]+)/$ /index.php?app=$1

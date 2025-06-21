@@ -20,6 +20,15 @@ return [
         'DB_PORT' => '3306'
     ],
 
+    'cad_lab' => [
+        'DB_TYPE' => 'mysql',
+        'DB_HOST' => '192.168.3.15',
+        'DB_NAME' => 'cad_lab',
+        'DB_USER' => 'xieguigang',
+        'DB_PWD'  => '123456',
+        'DB_PORT' => '3306'
+    ],
+
     //密钥
     "AUTHCODE" => 'A2f0qS78ttR9HpqeOT',
     //cookies
