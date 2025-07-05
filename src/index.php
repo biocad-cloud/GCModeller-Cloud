@@ -185,4 +185,20 @@ class App {
 
         View::Display($page);
     }
+
+    /**
+     * redirect to molecule page by uniprot id
+     * 
+     * @access *
+    */
+    public function uniprot($id) {
+        $uniprot_id = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"External Database","term"=>"UniProtKB/Swiss-Prot"])->find();
+        $xref = (new Table(["cad_registry"=>"db_xrefs"]))->where(["db_key"=>$uniprot_id["id"], "xref"=>$id])->find();
+
+        if (Utils::isDbNull($xref)) {
+            RFC7231Error::err404("There is uniprot id is record inside this database");
+        } else {
+            Redirect("/molecule/{$xref["obj_id"]}");
+        }
+    }
 }
