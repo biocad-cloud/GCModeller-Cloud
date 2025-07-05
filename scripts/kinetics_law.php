@@ -12,7 +12,13 @@ class kinetics_law {
             ->where(["term"=>$law_data["ec_number"]])
             ->select("`reaction`.*")
             ;
-        
+        $law_data["sub"] = (new Table(["cad_registry"=>"kinetic_substrate"]))
+            ->left_join("molecule")
+            ->on(["molecule"=>"id","kinetic_substrate"=>"metabolite_id"])
+            ->where(["kinetic_id"=>$id])
+            ->select("`molecule`.*")
+            ;
+
         return $law_data;
     }
 
