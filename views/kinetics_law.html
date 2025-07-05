@@ -43,7 +43,7 @@
                                 </tr>
                                 <tr>
                                     <td class="key-item">Enzyme</td>
-                                    <td class="value-item">{$uniprot}</td>
+                                    <td class="value-item"><a href="/uniprot/{$uniprot}">{$uniprot}</a></td>
                                 </tr>
                                 <tr>
                                     <td class="key-item">EC Number</td>
@@ -93,6 +93,33 @@
                         </foreach>
                     </tbody>
                 </table>
+
+                <h2>Parameters</h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kinetics Parameter</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <foreach @arg>
+                            <tr>
+                                <td>@arg["name"]</td>
+                                <td>@arg["value"]</td>
+                            </tr>
+                        </foreach>
+                    </tbody>
+                </table>
+
+                <h3>Substrates</h3>
+
+                <ul>
+                    <foreach @sub>
+                        <li><a href='/molecule/@sub["id"]'>@sub["name"]</a></li>
+                    </foreach>
+                </ul>
 
             </div>
         </div>
