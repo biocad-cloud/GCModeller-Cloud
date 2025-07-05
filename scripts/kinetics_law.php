@@ -4,7 +4,7 @@ class kinetics_law {
 
     public static function data($id) {
         $law_data = (new Table(["cad_registry"=>"kinetic_law"]))->where(["id"=>$id])->find();
-        $law_data["params"] = json_decode($law_data["params"], true);
+        $law_data["params"] = self::args(json_decode($law_data["params"], true));
         $law_data["json_str"] = json_decode($law_data["json_str"], true);
         $law_data["reaction"] = (new Table(["cad_registry"=>"regulation_graph"]))
             ->left_join("reaction")
@@ -14,6 +14,21 @@ class kinetics_law {
             ;
         
         return $law_data;
+    }
+
+    private static function args($params) {
+        $a = [];
+
+        foreach($params as $name => $val) {
+            if (is_numeric($val)) {
+                $a[] = [
+                    "name" => $name,
+                    "value" => $val
+                ];
+            }
+        }
+
+        return $a;
     }
 
     public static function kinetics_data($reactions) {
