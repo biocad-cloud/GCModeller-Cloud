@@ -8,6 +8,7 @@ class App {
      * BioCAD Cloud Platform
      * 
      * @access *
+     * @uses view
     */
     public function index() {
         include_once APP_PATH . "/scripts/index.php";
@@ -17,6 +18,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function search($q) {
         include_once APP_PATH . "/scripts/search.php";
@@ -30,6 +32,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function download() {
         View::Display();
@@ -44,6 +47,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function kinetics($page=1,$page_size=100) {
         include_once APP_PATH . "/scripts/kinetics_list.php";
@@ -70,6 +74,7 @@ class App {
      * 
      * @param integer $id the reference id of the molecule object inside the registry system.
      * @access *
+     * @uses view
     */
     public function molecule($id) {
         include_once APP_PATH . "/scripts/molecule_info.php";
@@ -82,6 +87,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function organism($id) {
         include_once APP_PATH . "/scripts/taxonomy_info.php";
@@ -96,6 +102,7 @@ class App {
      * Browse Molecule List
      * 
      * @access *
+     * @uses view
     */
     public function molecules($page = 1, $page_size=100, $type = null) {
         include_once APP_PATH . "/scripts/molecule_list.php";
@@ -115,6 +122,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function reaction($id) {
         include_once APP_PATH . "/scripts/reaction_info.php";
@@ -127,6 +135,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function enzyme($id) {
         include_once APP_PATH . "/scripts/enzyme_info.php";
@@ -139,6 +148,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function ontology($id) {
         include_once APP_PATH . "/scripts/ontology_info.php";
@@ -151,6 +161,7 @@ class App {
 
     /**
      * @access *
+     * @uses view
     */
     public function tag($id,$page=1,$page_size=100) {
         include_once APP_PATH . "/scripts/tag_list.php";
@@ -163,6 +174,7 @@ class App {
     
     /**
      * @access *
+     * @uses view
     */
     public function subcellular($id,$page=1,$page_size=100) {
         include_once APP_PATH . "/scripts/subcellular_data.php";
@@ -175,7 +187,7 @@ class App {
 
     /**
      * @access *
-     * 
+     * @uses view
     */    
     public function odor($id,$page=1,$page_size=100) {
         include_once APP_PATH . "/scripts/odor_data.php";
