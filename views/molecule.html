@@ -54,10 +54,13 @@
                                 <tr>
                                     <td class="key-item">Tags</td>
                                     <td class="value-item">
-                                        <foreach @tags>
-                                            <a href='/tag/@tags["id"]'> <span
-                                                    class="badge text-bg-primary">@tags["term"]</span></a>
-                                        </foreach>
+                                        <details>
+                                            <summary></summary>
+                                            <foreach @tags>
+                                                <a href='/tag/@tags["id"]'> <span
+                                                        class="badge text-bg-primary">@tags["term"]</span></a>
+                                            </foreach>
+                                        </details>
                                     </td>
                                 </tr>
                             </tbody>
@@ -67,14 +70,18 @@
 
                 <br />
 
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Function</h2>
 
-                        <p>{$note}
-                        </p>
-                    </section>
-                </div>
+                <details>
+                    <summary></summary>
+                    <div class="bg-body-tertiary" style="padding:25px;">
+                        <section class="hero-container hero-container--side-padding">
+                            <h2 class="hero-container__title big">Function</h2>
+
+                            <p>{$note}
+                            </p>
+                        </section>
+                    </div>
+                </details>
 
                 <br />
 
