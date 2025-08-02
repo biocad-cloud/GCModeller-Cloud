@@ -43,6 +43,10 @@ class search_tool {
                     xref = '$q')";
     }
 
+    private static function name_sql($q) {
+        
+    }
+
     public static function get_result($q) {
         $q = str_replace("'", "", $q);
         $q1 = self::text_sql($q);
