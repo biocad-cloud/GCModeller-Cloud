@@ -44,14 +44,43 @@ class search_tool {
     }
 
     private static function name_sql($q) {
-        
+        return "SELECT 
+            molecule.id,
+            name,
+            ROUND(mass, 4) AS mass,
+            formula,
+            molecule.note,
+            term AS type,
+            MATCH (synonym) AGAINST ('$q' IN BOOLEAN MODE) AS score
+        FROM
+            cad_registry.synonym
+                LEFT JOIN
+            molecule ON molecule.id = obj_id
+                LEFT JOIN
+            vocabulary ON vocabulary.id = type
+        WHERE
+            MATCH (synonym) AGAINST ('$q' IN BOOLEAN MODE)
+        ORDER BY score DESC
+        LIMIT 100";
     }
 
     public static function get_result($q) {
         $q = str_replace("'", "", $q);
         $q1 = self::text_sql($q);
         $q2 = self::xref_sql($q);
-        $sql = "SELECT * FROM (($q1) UNION ($q2)) t1 ORDER BY score DESC";
+        $q3 = self::name_sql($q);
+        $sql = "SELECT id,
+                    MIN(name) AS name,
+                    MIN(mass) AS mass,
+                    MIN(formula) AS formula,
+                    MIN(note) AS note,
+                    MIN(type) AS type,
+                    SUM(score) AS score 
+                FROM (($q1) UNION ($q2) UNION ($q3)) t1 
+                GROUP BY id
+                ORDER BY score DESC
+                LIMIT 100"
+        ;
         $mols = (new Table(["cad_registry"=>"molecule"]))->exec($sql, true);
         $sql = "SELECT 
                 *
