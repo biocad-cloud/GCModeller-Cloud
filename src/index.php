@@ -83,10 +83,13 @@ class App {
 
         if (Utils::isDbNull($id) || Strings::Empty($id, true)) {
             RFC7231Error::err400("invalid molecule reference id!");
+        } else {
+            $id = (int)$id;
         }
 
         $page = molecule_info::get_info($id);
         $page["title"] = $page["name"];
+        $page["struct_data"] = (new Table(["cad_registry" => "sequence_graph"]))->where(["id" => $id])->findfield("sequence");
 
         View::Display($page);
     }

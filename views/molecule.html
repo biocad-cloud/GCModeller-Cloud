@@ -4,6 +4,8 @@
 <head>
     ${includes/head.html}
 
+    <script type="text/javascript" src="/resources/vendor/smiles-drawer.min.js"></script>
+
     <style>
         .value-item {
             flex-grow: 1;
@@ -21,6 +23,8 @@
             padding-bottom: .1rem;
         }
     </style>
+
+    <script id="struct-data" type="plain/text">{$struct_data}</script>
 </head>
 
 <body>
@@ -65,6 +69,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="col">
+                        <canvas id="smiles-canvas" width="400px" height="400px" role="img" focusable="false"
+                            style="padding-right: 15px;"></canvas><br />
                     </div>
                 </div>
 
@@ -212,5 +220,28 @@
 
     ${includes/footer.html}
 </body>
+
+<script>
+    let options = { width: 400, height: 400 };
+    // Initialize the drawer to draw to canvas
+    let smilesDrawer = new SmilesDrawer.Drawer(options);
+    // Alternatively, initialize the SVG drawer:
+    // let svgDrawer = new SmilesDrawer.SvgDrawer(options);
+
+    function rendering(input_value) {
+        // Clean the input (remove unrecognized characters, such as spaces and tabs) and parse it
+        SmilesDrawer.parse(input_value, function (tree) {
+            // Draw to the canvas
+            smilesDrawer.draw(tree, "smiles-canvas", "light", false);
+            // Alternatively, draw to SVG:
+            // svgDrawer.draw(tree, 'output-svg', 'dark', false);
+        });
+    }
+
+    try {
+        // make rendering
+        rendering($ts.text("#struct-data"));
+    } catch { }
+</script>
 
 </html>
