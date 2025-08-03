@@ -70,7 +70,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col">
+                    <div class="col" id="canvas">
                         <canvas id="smiles-canvas" width="450px" height="300px" role="img" focusable="false"
                             style="padding: 5px;"></canvas><br />
                     </div>
@@ -238,10 +238,20 @@
         });
     }
 
-    try {
-        // make rendering
-        rendering($ts.text("#struct-data"));
-    } catch { }
+    if ("{$type}" == "Metabolite") {
+        try {
+            // make rendering
+            rendering($ts.text("#struct-data"));
+        } catch { }
+    } else {
+        let url = "{$type}" == "Nucleic Acid" ? "/resources/images/placeholder_nucleotide.jpg" : "/resources/images/placeholder_protein.png";
+
+        $ts("#canvas").clear();
+        $ts("#canvas").display($ts("<img>", {
+            src: url,            
+            style: "max-height:" + (options.height - 25) + "px;"
+        }));
+    }
 </script>
 
 </html>
