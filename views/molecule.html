@@ -33,10 +33,10 @@
 
         <div class="row">
             <div class="col">
-                <h1>{$name}</h1>
-                <br />
                 <div class="row">
                     <div class="col">
+                        <h1>{$name}</h1>
+                        <br />
                         <table>
                             <tbody>
                                 <tr>
@@ -71,8 +71,8 @@
                         </table>
                     </div>
                     <div class="col">
-                        <canvas id="smiles-canvas" width="400px" height="400px" role="img" focusable="false"
-                            style="padding-right: 15px;"></canvas><br />
+                        <canvas id="smiles-canvas" width="450px" height="300px" role="img" focusable="false"
+                            style="padding: 5px;"></canvas><br />
                     </div>
                 </div>
 
@@ -152,10 +152,10 @@
 
                 <h2>Database CrossReference</h2>
 
-                <table class="table">
+                <table class="table" style="word-break: break-all; width: 100%;">
                     <thead>
                         <tr>
-                            <th>Database Name</th>
+                            <th style="width:15%;">Database Name</th>
                             <th>Xref IDs</th>
                         </tr>
                     </thead>
@@ -222,7 +222,7 @@
 </body>
 
 <script>
-    let options = { width: 400, height: 400 };
+    let options = { width: 450, height: 300 };
     // Initialize the drawer to draw to canvas
     let smilesDrawer = new SmilesDrawer.Drawer(options);
     // Alternatively, initialize the SVG drawer:
