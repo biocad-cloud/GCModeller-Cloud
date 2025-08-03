@@ -79,6 +79,12 @@ class App {
     public function molecule($id) {
         include_once APP_PATH . "/scripts/molecule_info.php";
 
+        $id = Regex::Match($id, "\\d+");
+
+        if (Utils::isDbNull($id) || Strings::Empty($id, true)) {
+            RFC7231Error::err400("invalid molecule reference id!");
+        }
+
         $page = molecule_info::get_info($id);
         $page["title"] = $page["name"];
 
