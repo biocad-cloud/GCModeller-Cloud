@@ -89,7 +89,7 @@ class App {
 
         $page = molecule_info::get_info($id);
         $page["title"] = $page["name"];
-        $page["struct_data"] = (new Table(["cad_registry" => "sequence_graph"]))->where(["id" => $id])->findfield("sequence");
+        $page["struct_data"] = (new Table(["cad_registry" => "sequence_graph"]))->where(["molecule_id" => $id])->findfield("sequence");
 
         View::Display($page);
     }
