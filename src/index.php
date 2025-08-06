@@ -90,6 +90,7 @@ class App {
         $page = molecule_info::get_info($id);
         $page["title"] = $page["name"];
         $page["struct_data"] = (new Table(["cad_registry" => "sequence_graph"]))->where(["molecule_id" => $id])->findfield("sequence");
+        $page["cad_id"] = "BioCAD" . str_pad($id, 11, "0", STR_PAD_LEFT);
 
         View::Display($page);
     }
