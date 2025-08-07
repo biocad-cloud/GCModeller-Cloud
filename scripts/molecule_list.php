@@ -55,6 +55,7 @@ class molecule_list {
             ->on(["ncbi_taxonomy"=>"id","molecule"=>"tax_id"])
             ->limit($offset,$page_size)
             ->select([
+                "CONCAT('BioCAD', LPAD(molecule.id, 11, '0')) AS cad_id",
                 "`molecule`.id",
                 "name",
                 "`vocabulary`.term as type",
@@ -71,6 +72,30 @@ class molecule_list {
                 "tax_id"
             ])
             ;
+        $id = Strings::Join(array_column($data,"id"), ",");
+        $tags = "SELECT 
+        CONCAT('BioCAD', LPAD(molecule_id, 11, '0')) AS cad_id,
+        molecule_id,
+        GROUP_CONCAT(tag) as tags
+    FROM
+        (SELECT DISTINCT
+            molecule_id, CONCAT(' <a href=\"/tag/', tag_id, '\">', term, '</a>') AS tag
+        FROM
+            cad_registry.molecule_tags
+        LEFT JOIN vocabulary ON tag_id = vocabulary.id
+        WHERE
+            molecule_id IN ({$id})
+        LIMIT 1000) t1
+    GROUP BY molecule_id";
+        $tags = (new Table(["cad_registry"=>"molecule_tags"]))->exec($tags, true);
+        $tags = Table::asKeyTable($tags, "cad_id");
+
+        for($i = 0; $i < count($data); $i++) {
+            $mol = $data[$i];
+            $taglist = Utils::ReadValue( $tags, $mol["cad_id"], ["tags"=>""]);
+            $mol["tags"] = $taglist["tags"];
+            $data[$i] = $mol;
+        }
 
         return $data;
     }
