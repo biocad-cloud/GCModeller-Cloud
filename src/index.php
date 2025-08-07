@@ -131,6 +131,19 @@ class App {
     }
 
     /**
+     * @uses view
+     * @access *
+    */
+    public function pathways($page=1,$page_size = 20) {
+        include_once APP_PATH . "/scripts/pathways.php";
+
+        $page = pathways::list($page, $page_size);
+        $page = ["page" => $page];
+
+        View::Display($page);
+    }
+
+    /**
      * @access *
      * @uses view
     */
