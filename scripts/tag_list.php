@@ -6,7 +6,7 @@ class tagdata {
         $truncate_note = 120;
         $offset = ($page -1) * $page_size;
         $tagdata = (new Table(["cad_registry"=>"vocabulary"]))->where(["id"=>$id])->find();
-        $tagdata["page"] = (new Table(["cad_registry"=>"molecule_tags"]))
+        $tagdata["page"] = self::add_tags((new Table(["cad_registry"=>"molecule_tags"]))
             ->left_join("molecule")
             ->on(["molecule"=>"id","molecule_tags"=>"molecule_id"])
             ->left_join("vocabulary")
@@ -32,10 +32,10 @@ class tagdata {
                     ELSE 'Unknown'
                 END AS organism",
                 "tax_id"
-            ])
+            ]))
             ;
 
-        return self::add_tags($tagdata);
+        return $tagdata;
     }
 
     public static function add_tags($data) {
