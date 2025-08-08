@@ -65,11 +65,15 @@ class search_tool {
     }
 
     public static function get_result($q) {
+        include_once __DIR__ . "/tag_list.php";
+
         $q = str_replace("'", "", $q);
         $q1 = self::text_sql($q);
         $q2 = self::xref_sql($q);
         $q3 = self::name_sql($q);
-        $sql = "SELECT id,
+        $sql = "SELECT
+                    CONCAT('BioCAD', LPAD(id, 11, '0')) AS cad_id,
+                    id,
                     MIN(name) AS name,
                     MIN(mass) AS mass,
                     MIN(formula) AS formula,
@@ -93,7 +97,7 @@ class search_tool {
         $rxns = (new Table(["cad_registry"=>"reaction"]))->exec($sql, true);
 
         return [
-            "mol" => $mols,
+            "mol" => tagdata::add_tags($mols),
             "rxn" => $rxns 
         ];
     }

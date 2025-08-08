@@ -24,10 +24,16 @@ class App {
         include_once APP_PATH . "/scripts/search.php";
 
         $q = urldecode($q);
-        $page = search_tool::get_result($q);
-        $page["title"] = "Search Result Of '{$q}'";
+        $is_id = StringHelpers::IsPattern($q, "BioCAD\\d+");
 
-        View::Display($page);
+        if ($is_id) {
+            Redirect("/molecule/{$q}/");
+        } else {
+            $page = search_tool::get_result($q);
+            $page["title"] = "Search Result Of '{$q}'";
+    
+            View::Display($page);
+        }
     }
 
     /**

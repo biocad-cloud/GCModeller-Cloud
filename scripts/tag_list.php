@@ -38,6 +38,9 @@ class tagdata {
         return $tagdata;
     }
 
+    /**
+     * @param $data should contains the molecule id and formatted cad_id as reference key
+    */
     public static function add_tags($data) {
         $id = Strings::Join(array_column($data,"id"), ",");
         $tags = "SELECT 
