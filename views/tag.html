@@ -7,51 +7,61 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
 
-        <div class="row">
-            <div class="col">
+    <main class="main">
 
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
                 <h1>Biological Molecules - {$term}</h1>
-
                 <p>Biological molecules that tagged with the <span style="color: green">{$term}</span> keyword.</p>
 
-                <table class="table">
-                    <thead style="background-color: blue; color:aliceblue;">
-                        <tr>
-                            <th>
-                                Common Name
-                            </th>
-                            <th>
-                                Category
-                            </th>
-                            <th>
-                                Formula
-                            </th>
-                            <th>
-                                Tags
-                            </th>
-                            <th>
-                                Description
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @page>
-                            <tr>
-                                <td><strong><a href='/molecule/@page["id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@page["name"]</a></strong></td>
-                                <td>@page["type"]</td>
-                                <td>@page["formula"]<br/>Molecule Mass: @page["mass"]</td>
-                                <td>@page["tags"]</td>
-                                <td>@page["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Topic</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
 
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
+        <!-- End Page Title -->
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+
+                    <table class="table">
+                        <thead style="background-color: blue; color:aliceblue;">
+                            <tr>
+                                <th>
+                                    Common Name
+                                </th>
+                                <th>
+                                    Tags
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @page>
+                                <tr>
+                                    <td><strong><a href='/molecule/@page["id"]/' class="text-truncate d-inline-block"
+                                                style="max-width: 350px;">@page["name"]</a></strong><br />@page["type"]<br />@page["formula"]
+                                        (@page["mass"])
+                                    </td>
+                                    <td>@page["tags"]</td>
+                                    <td>@page["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+
+                    <div class="container copyright mt-4"
+                        style="padding: 25px;background-color: color-mix(in srgb, var(--default-color), transparent 95%);">
                         <h2 class="hero-container__title big">A Concise Overview</h2>
 
                         <p>
@@ -103,11 +113,15 @@
                             proteins regulate processes, and nucleic acids encode life’s blueprint. Their precise
                             interactions sustain homeostasis, growth, and reproduction. Understanding their roles
                             illuminates both basic biology and applications in biotechnology and medicine.</p>
-                    </section>
+                    </div>
                 </div>
             </div>
+
         </div>
     </main>
+
+    <br />
+    <br />
 
     ${includes/footer.html}
 </body>
