@@ -8,11 +8,12 @@
 <body>
     ${../includes/nav.html}
 
-    <main class="container">
 
-        <div class="row">
-            <div class="col">
+    <main class="main">
 
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
                 <h1>500 Internal Server Error!</h1>
 
                 <p>The server encountered an internal error or misconfiguration and was unable to complete your request.</p>
@@ -20,9 +21,17 @@
                     {$message}
                 </p>
 
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Error</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+        <!-- End Page Title -->
     </main>
+
 
     ${../includes/footer.html}
 </body>

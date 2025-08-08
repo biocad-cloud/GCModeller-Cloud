@@ -8,19 +8,27 @@
 <body>
     ${../includes/nav.html}
 
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
-
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
                 <h1>403 Access Denied!</h1>
 
                 <p>Target resource is not allowed to access based on your current credential!</p>
                 <p>{$message}</p>
 
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Error</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+        <!-- End Page Title -->
     </main>
+
 
     ${../includes/footer.html}
 </body>
