@@ -25,15 +25,37 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
                 <h1>Ontology - {$name}</h1>
-                <br />
+                <p>{$description}</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Ontology</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- End Page Title -->
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Ontology</h2>
+                <div><span class="description-title">Summary</span></div>
+            </div><!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up">
                 <div class="row">
                     <div class="col">
-                        <table>
+                        <table style="font-size: 1.5rem;">
                             <tbody>
                                 <tr>
                                     <td class="key-item">Accession ID</td>
@@ -46,17 +68,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <br />
-
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Description</h2>
-
-                        <p>{$description}
-                        </p>
-                    </section>
                 </div>
 
                 <br />
@@ -86,7 +97,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>                            
+                            <th>Name</th>
                             <th>Function</th>
                         </tr>
                     </thead>
@@ -95,16 +106,16 @@
                             <tr>
                                 <td>
                                     <a href='/molecule/@mol["id"]'>@mol["name"]</a>
-                                </td>                                
+                                </td>
                                 <td>@mol["note"]</td>
                             </tr>
                         </foreach>
                     </tbody>
                 </table>
             </div>
-        </div>
+            ${includes/disclaimer.html}
+        </section><!-- /Starter Section Section -->
 
-        ${includes/disclaimer.html}
     </main>
 
     ${includes/footer.html}
