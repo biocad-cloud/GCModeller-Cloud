@@ -29,193 +29,214 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>{$name} <span style="color:gray;"><i>({$cad_id})</i></span></h1>
+                <p>{$note}</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Biological Molecule</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section">
+
+            <div class="container" data-aos="fade-up">
+
+                <!-- Section Title -->
+                <div class="container" data-aos="fade-up">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="container section-title" data-aos="fade-up">
+                                <h2>Molecule Information</h2>
+                                <div><span class="description-title">Summary</span></div>
+                            </div>
+                            <table style="font-size: 1.5rem;">
+                                <tbody>
+                                    <tr>
+                                        <td class="key-item">Entity</td>
+                                        <td class="value-item" style="color:{$color}">{$type}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Molecule</td>
+                                        <td class="value-item">{$formula} [{$mass}]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Organism</td>
+                                        <td class="value-item">{$organism}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Parent</td>
+                                        <td class="value-item">{$parent}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Tags</td>
+                                        <td class="value-item">
+                                            <details>
+                                                <summary></summary>
+                                                <foreach @tags>
+                                                    <a href='/tag/@tags["id"]'> <span
+                                                            class="badge text-bg-primary">@tags["term"]</span></a>
+                                                </foreach>
+                                            </details>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col" id="canvas">
+                            <canvas id="smiles-canvas" width="450px" height="300px" role="img" focusable="false"
+                                style="padding: 5px;"></canvas><br />
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- End Section Title -->
+
                 <div class="row">
                     <div class="col">
-                        <h1>{$name}  <span style="color:gray;"><i>({$cad_id})</i></span></h1>
-                        <br />
-                        <table>
+
+                        <foreach @synonym>
+                            <h4>Synonym Names [@synonym["lang"]]</h4>
+                            <p>@synonym["names"]</p>
+                        </foreach>
+
+                        <div style="display: {$odor_display};">
+                            <h2>Odor Information</h2>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Odors</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <foreach @odor>
+                                        <tr>
+                                            <td>@odor["term"]</td>
+                                            <td>@odor["odor"]</td>
+                                        </tr>
+                                    </foreach>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h2>Metabolic Network</h2>
+
+                        <div class="row">
+                            <div class="col">
+                                <p>Subcellular Location:
+                                    <foreach @subcellular>
+                                        <a href='/subcellular/@subcellular["id"]'> <span
+                                                class="badge text-bg-primary">@subcellular["name"]</span></a>
+                                    </foreach>
+                                </p>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Reaction Name</th>
+                                    <th>Enzymes</th>
+                                    <th>Equation</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr>
-                                    <td class="key-item">Entity</td>
-                                    <td class="value-item" style="color:{$color}">{$type}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Molecule</td>
-                                    <td class="value-item">{$formula} [{$mass}]</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Organism</td>
-                                    <td class="value-item">{$organism}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Parent</td>
-                                    <td class="value-item">{$parent}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Tags</td>
-                                    <td class="value-item">
-                                        <details>
-                                            <summary></summary>
-                                            <foreach @tags>
-                                                <a href='/tag/@tags["id"]'> <span
-                                                        class="badge text-bg-primary">@tags["term"]</span></a>
-                                            </foreach>
-                                        </details>
-                                    </td>
-                                </tr>
+                                <foreach @reaction>
+                                    <tr>
+                                        <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a><br />
+                                            <p class="text-truncate d-inline-block" style="max-width: 500px;">
+                                                @reaction["note"]
+                                            </p>
+                                        </td>
+                                        <td>@reaction["enzyme"]</td>
+                                        <td>@reaction["equation"]</td>
+                                    </tr>
+                                </foreach>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="col" id="canvas">
-                        <canvas id="smiles-canvas" width="450px" height="300px" role="img" focusable="false"
-                            style="padding: 5px;"></canvas><br />
-                    </div>
-                </div>
 
-                <br />
+                        <h2>Database CrossReference</h2>
 
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Molecule Function</h2>
-
-                        <p>{$note}
-                        </p>
-                    </section>
-                </div>
-
-                <br />
-
-                <foreach @synonym>
-                    <h4>Synonym Names [@synonym["lang"]]</h4>
-                    <p>@synonym["names"]</p>
-                </foreach>
-
-                <div style="display: {$odor_display};">
-                    <h2>Odor Information</h2>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Odors</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <foreach @odor>
+                        <table class="table" style="word-break: break-all; width: 100%;">
+                            <thead>
                                 <tr>
-                                    <td>@odor["term"]</td>
-                                    <td>@odor["odor"]</td>
+                                    <th style="width:15%;">Database Name</th>
+                                    <th>Xref IDs</th>
                                 </tr>
-                            </foreach>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <foreach @db_xref>
+                                    <tr>
+                                        <td>@db_xref["db"]
+                                        </td>
+                                        <td>@db_xref["xref"]</td>
+                                    </tr>
+                                </foreach>
+                            </tbody>
+                        </table>
 
-                <h2>Metabolic Network</h2>
+                        <h2>Related Molecules</h2>
 
-                <div class="row">
-                    <div class="col">
-                        <p>Subcellular Location:
-                            <foreach @subcellular>
-                                <a href='/subcellular/@subcellular["id"]'> <span
-                                        class="badge text-bg-primary">@subcellular["name"]</span></a>
-                            </foreach>
-                        </p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Molecules</th>
+                                    <th>Taxonomy</th>
+                                    <th>Function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <foreach @relates>
+                                    <tr>
+                                        <td><a href='/molecule/@relates["id"]'>@relates["name"]</a> </td>
+                                        <td> <a href='/organism/@relates["tax_id"]'>@relates["taxname"]</a> </td>
+                                        <td>@relates["note"]</td>
+                                    </tr>
+                                </foreach>
+                            </tbody>
+                        </table>
+
+                        <h2>Ontology Information</h2>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ontology Source</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <foreach @ontology>
+                                    <tr>
+                                        <td>@ontology["db_source"]</td>
+                                        <td><a href='/ontology/@ontology["id"]'>@ontology["db_xref"]</a></td>
+                                        <td>@ontology["name"]</td>
+                                    </tr>
+                                </foreach>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reaction Name</th>
-                            <th>Enzymes</th>
-                            <th>Equation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @reaction>
-                            <tr>
-                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a><br />
-                                    <p class="text-truncate d-inline-block" style="max-width: 500px;">@reaction["note"]
-                                    </p>
-                                </td>
-                                <td>@reaction["enzyme"]</td>
-                                <td>@reaction["equation"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Database CrossReference</h2>
-
-                <table class="table" style="word-break: break-all; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th style="width:15%;">Database Name</th>
-                            <th>Xref IDs</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @db_xref>
-                            <tr>
-                                <td>@db_xref["db"]
-                                </td>
-                                <td>@db_xref["xref"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Related Molecules</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Molecules</th>
-                            <th>Taxonomy</th>
-                            <th>Function</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @relates>
-                            <tr>
-                                <td><a href='/molecule/@relates["id"]'>@relates["name"]</a> </td>
-                                <td> <a href='/organism/@relates["tax_id"]'>@relates["taxname"]</a> </td>
-                                <td>@relates["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Ontology Information</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ontology Source</th>
-                            <th>ID</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @ontology>
-                            <tr>
-                                <td>@ontology["db_source"]</td>
-                                <td><a href='/ontology/@ontology["id"]'>@ontology["db_xref"]</a></td>
-                                <td>@ontology["name"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
             </div>
-        </div>
 
-        ${includes/disclaimer.html}
+            ${includes/disclaimer.html}
+
+        </section><!-- /Starter Section Section -->
+
     </main>
 
     ${includes/footer.html}
@@ -232,7 +253,7 @@
         // Clean the input (remove unrecognized characters, such as spaces and tabs) and parse it
         SmilesDrawer.parse(input_value, function (tree) {
             // Draw to the canvas
-            smilesDrawer.draw(tree, "smiles-canvas", "light", false);
+            smilesDrawer.draw(tree, "smiles-canvas", "dark", false);
             // Alternatively, draw to SVG:
             // svgDrawer.draw(tree, 'output-svg', 'dark', false);
         });
@@ -248,7 +269,7 @@
 
         $ts("#canvas").clear();
         $ts("#canvas").display($ts("<img>", {
-            src: url,            
+            src: url,
             style: "max-height:" + (options.height - 25) + "px;"
         }));
     }
