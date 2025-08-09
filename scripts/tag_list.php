@@ -63,7 +63,7 @@ class tagdata {
         for($i = 0; $i < count($data); $i++) {
             $mol = $data[$i];
             $taglist = Utils::ReadValue( $tags, $mol["cad_id"], ["tags"=>""]);
-            $mol["tags"] = $taglist["tags"];
+            $mol["tags"] = $taglist["tags"] == "" ? "None" : $taglist["tags"];
             $data[$i] = $mol;
         }
 
