@@ -7,74 +7,95 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
                 <h1>{$title}</h1>
-
-                <br />
-
-                <h2>Molecules Search</h2>
-
-                <table class="table">
-                    <thead style="background-color: blue; color:aliceblue;">
-                        <tr>
-                            <th>
-                                Common Name
-                            </th>
-                            <th>
-                                Category
-                            </th>
-                            <th>
-                                Formula
-                            </th>
-                            <th>
-                                Tags
-                            </th>
-                            <th>
-                                Description
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @mol>
-                            <tr>
-                                <td><strong><a href='/molecule/@mol["id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@mol["name"]</a></strong></td>
-                                <td>@mol["type"]</td>
-                                <td>@mol["formula"] (@mol["mass"])</td>
-                                <td>@mol["tags"]</td>
-                                <td>@mol["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Reaction Search</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reaction Name</th>                            
-                            <th>Equation</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @rxn>
-                            <tr>
-                                <td><a href='/reaction/@rxn["id"]'>@rxn["name"]</a>
-                                </td>                                
-                                <td>@rxn["equation"]</td>
-                                <td>@rxn["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
+                <p>Make registry term data search.</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Search</li>
+                    </ol>
+                </nav>
             </div>
-        </div>
+        </div><!-- End Page Title -->
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Search Result</h2>
+                <div><span class="description-title">Show Result</span></div>
+            </div><!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up">
+                <div class="row">
+                    <div class="col">
+
+
+
+
+                        <h2>Molecules Search</h2>
+
+                        <table class="table">
+                            <thead style="background-color: blue; color:aliceblue;">
+                                <tr>
+                                    <th>
+                                        Common Name
+                                    </th>
+                                    <th>
+                                        Tags
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <foreach @mol>
+                                    <tr>
+                                        <td><strong><a href='/molecule/@mol["id"]/' class="text-truncate d-inline-block"
+                                                    style="max-width: 350px;">@mol["name"]</a></strong><br />@mol["type"]<br />@mol["formula"]
+                                            (@mol["mass"])</td>
+                                        <td>@mol["tags"]</td>
+                                        <td>@mol["note"]</td>
+                                    </tr>
+                                </foreach>
+                            </tbody>
+                        </table>
+
+                        <h2>Reaction Search</h2>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Reaction Name</th>
+                                    <th>Equation</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <foreach @rxn>
+                                    <tr>
+                                        <td><a href='/reaction/@rxn["id"]'>@rxn["name"]</a>
+                                        </td>
+                                        <td>@rxn["equation"]</td>
+                                        <td>@rxn["note"]</td>
+                                    </tr>
+                                </foreach>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </section><!-- /Starter Section Section -->
+
     </main>
 
     ${includes/footer.html}
