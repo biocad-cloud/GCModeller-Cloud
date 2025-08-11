@@ -80,13 +80,10 @@
                                     <tr>
                                         <td class="key-item">Tags</td>
                                         <td class="value-item">
-                                            <details>
-                                                <summary></summary>
-                                                <foreach @tags>
-                                                    <a href='/tag/@tags["id"]'> <span
-                                                            class="badge text-bg-primary">@tags["term"]</span></a>
-                                                </foreach>
-                                            </details>
+                                            <foreach @tags>
+                                                <a href='/tag/@tags["id"]'> <span
+                                                        class="badge text-bg-primary">@tags["term"]</span></a>
+                                            </foreach>
                                         </td>
                                     </tr>
                                 </tbody>
