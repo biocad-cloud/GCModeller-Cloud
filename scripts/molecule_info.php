@@ -135,11 +135,23 @@ class molecule_info {
 
         for($i=0;$i<count($list);$i++) {
             $link = $list[$i];
-            $link["xref"] = Strings::Join( json_decode($link["xref"]), ",&nbsp;");
+            $url = self::url($link["db"], json_decode($link["xref"]));
+            $link["xref"] = Strings::Join($url, ",&nbsp;");
             $list[$i] = $link;
         }
 
         return $list;
+    }
+
+    private static function url($db, $xrefs) {
+        switch($db) {
+            case "CAS": return array_map(function($id) {
+                return "<a href='https://commonchemistry.cas.org/detail?cas_rn={$id}'>{$id}</a>";
+            }, $xrefs);
+
+            default:
+                return $xrefs;
+        }
     }
 
     public static function load_reaction_net($id) {
