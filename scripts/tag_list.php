@@ -42,6 +42,10 @@ class tagdata {
      * @param $data should contains the molecule id and formatted cad_id as reference key
     */
     public static function add_tags($data) {
+        if (count($data) == 0) {
+            return $data;
+        }
+        
         $id = Strings::Join(array_column($data,"id"), ",");
         $tags = "SELECT 
         CONCAT('BioCAD', LPAD(molecule_id, 11, '0')) AS cad_id,

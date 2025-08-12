@@ -75,4 +75,23 @@ class taxonomy_info {
 
         return $tax;
     }
+
+    public static function metabolites($taxid) {
+        include_once __DIR__ . "/tag_list.php";
+
+        $meta = (new Table(["cad_registry"=>"taxonomy_source"]))
+            ->left_join("molecule")
+            ->on(["molecule"=>"id","taxonomy_source" => "molecule_id"])
+            ->where(["ncbi_taxid"=>$taxid])
+            ->distinct()
+            ->select(["CONCAT('BioCAD', LPAD(molecule.id, 11, '0')) AS cad_id",
+            "`molecule`.id",
+            "name",
+            "molecule.note",
+            "formula",
+            "ROUND(mass, 4) AS mass"])
+            ;
+
+        return tagdata::add_tags($meta);
+    }
 }

@@ -115,6 +115,10 @@ class App {
 
         $page = taxonomy_info::get_info($id);
         $page["title"] = $page["taxname"];
+        $page["metab"] = taxonomy_info::metabolites($id);
+        $page["n_meta"] = Utils::count($page["metab"]);
+        $page["n_prot"] = Utils::count($page["prots"]);
+        $page["n_child"] = Utils::count($page["child"]);
 
         View::Display($page);
     }

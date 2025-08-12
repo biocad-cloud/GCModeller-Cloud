@@ -25,12 +25,33 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
 
-        <div class="row">
-            <div class="col">
-                <h1>Taxonomy - {$taxname}({$rank})</h1>
-                <br />
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>Taxonomy - <i>{$taxname}</i> (<span style="color:gray;">{$rank}</span>)</h1>
+                <p>{$description}</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Organism Taxonomy</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Organism Information</h2>
+                <div><span class="description-title">Summary Information</span></div>
+            </div>
+
+            <div class="container" data-aos="fade-up">
                 <div class="row">
                     <div class="col">
                         <table>
@@ -51,20 +72,21 @@
                                     <td class="key-item">Parent</td>
                                     <td class="value-item">{$parent}</td>
                                 </tr>
+                                <tr>
+                                    <td class="key-item">Number Of Child Taxonomy</td>
+                                    <td class="value-item">{$n_child}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Gene/Proteins</td>
+                                    <td class="value-item">{$n_prot}</td>
+                                </tr>
+                                <tr>
+                                    <td class="key-item">Metabolites</td>
+                                    <td class="value-item">{$n_meta}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <br />
-
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Description</h2>
-
-                        <p>{$description}
-                        </p>
-                    </section>
                 </div>
 
                 <br />
@@ -92,28 +114,64 @@
 
                 <h2>Gene/Proteins</h2>
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>EC Number</th>
-                            <th>Function</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @prots>
+                <details>
+                    <summary>
+                        {$n_prot} gene/proteins.
+                    </summary>
+
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <a href='/molecule/@prots["id"]'>@prots["name"]</a>
-                                </td>
-                                <td>@prots["ec"]</td>
-                                <td>@prots["note"]</td>
+                                <th>Name</th>
+                                <th>EC Number</th>
+                                <th>Function</th>
                             </tr>
-                        </foreach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <foreach @prots>
+                                <tr>
+                                    <td>
+                                        <a href='/molecule/@prots["id"]'>@prots["name"]</a>
+                                    </td>
+                                    <td>@prots["ec"]</td>
+                                    <td>@prots["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+                </details>
+
+                <h2>Metabolites</h2>
+
+                <details>
+                    <summary>
+                        {$n_meta} metabolites.
+                    </summary>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Common Name</th>
+                                <th>Tags</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @metab>
+                                <tr>
+                                    <td><strong><a href='/molecule/@metab["id"]/' class="text-truncate d-inline-block"
+                                                style="max-width: 350px;">@metab["name"]</a></strong><br />@metab["formula"](Molecule Mass: @metab["mass"])</td>                              
+                                    <td>@metab["tags"]</td>
+                                    <td>@metab["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+                </details>
+
             </div>
-        </div>
+
+        </section><!-- /Starter Section Section -->
 
         ${includes/disclaimer.html}
     </main>
