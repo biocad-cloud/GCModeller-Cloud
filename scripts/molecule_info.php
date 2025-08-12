@@ -50,12 +50,12 @@ class molecule_info {
             $mol["reaction"] = self::load_reaction_net($id);
             $mol["odor"] = self::odor_list($id);
             $mol["odor_display"] = "block";
-            $mol["relates"] = [];
+            $mol["relates"] = self::tax_url(self::related_tax($id));
         } else {
             $mol["reaction"] = [];
             $mol["odor"] = [];
             $mol["odor_display"] = "none";
-            $mol["relates"] = self::related_mols($mol["name"]);
+            $mol["relates"] = self::tax_url(self::related_mols($mol["name"]));
         }
 
         $mol["db_xref"] = self::load_db_xrefs($id);
@@ -83,6 +83,28 @@ class molecule_info {
             ;
 
         return $mol;
+    }
+
+    private static function tax_url($taxlist) {
+        if (count($taxlist) == 0) {
+            return "None";
+        } else {
+            $url = array_map(function($tax) {
+                return "<a href=\"/organism/{$tax["tax_id"]}/\">{$tax["taxname"]}</a>";
+            }, $taxlist);
+    
+            return Strings::Join($url, ",&nbsp;");
+        }
+    }
+
+    public static function related_tax($mol_id) {
+        return (new Table(["cad_registry"=>"taxonomy_source"]))
+            ->left_join("ncbi_taxonomy")
+            ->on(["ncbi_taxonomy"=>"id", "taxonomy_source"=> "ncbi_taxid"])
+            ->where(["molecule_id"=>$mol_id])
+            ->distinct()
+            ->select(["ncbi_taxid as tax_id", "taxname", "doi"])
+            ;
     }
 
     public static function related_mols($name) {
