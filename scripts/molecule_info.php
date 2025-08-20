@@ -101,7 +101,7 @@ class molecule_info {
         return (new Table(["cad_registry"=>"taxonomy_source"]))
             ->left_join("ncbi_taxonomy")
             ->on(["ncbi_taxonomy"=>"id", "taxonomy_source"=> "ncbi_taxid"])
-            ->where(["molecule_id"=>$mol_id])
+            ->where(["molecule_id"=>$mol_id,"tax_id" => gt('0')])
             ->distinct()
             ->select(["ncbi_taxid as tax_id", "taxname", "doi"])
             ;
@@ -111,7 +111,7 @@ class molecule_info {
         return (new Table(["cad_registry"=>"molecule"]))
             ->left_join("ncbi_taxonomy")
             ->on(["ncbi_taxonomy"=>"id","molecule"=>"tax_id"])
-            ->where(["name"=>$name])
+            ->where(["name"=>$name,"tax_id" => gt('0')])
             ->order_by("tax_id")
             ->select(["`molecule`.id", "name", "tax_id", "note", "taxname"])
             ;
