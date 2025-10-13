@@ -175,6 +175,10 @@ class molecule_info {
                 return "<a href='/enzyme/{$id}/'>{$id}</a>";
             }, $xrefs);
 
+            case "GO": return array_map(function($id) {
+                return "<a href='/ontology/{$id}/'>{$id}</a>";
+            }, $xrefs);
+
             default:
                 return $xrefs;
         }

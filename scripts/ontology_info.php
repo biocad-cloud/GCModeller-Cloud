@@ -11,7 +11,20 @@ class ontology_info {
             ;
 
         if (Utils::isDbNull($data)) {
-            RFC7231Error::err404("");
+            $data = (new Table(["cad_registry"=>"ontology"]))
+            ->left_join("vocabulary")
+            ->on(["ontology"=>"db_source","vocabulary"=>"id"])
+            ->where(["`ontology`.db_xref"=>$id])
+            ->find(["ontology.*", "term as db_name"])
+            ;
+
+            if (!Utils::isDbNull($data)) {
+                $id = $data["id"];
+            }            
+        }
+
+        if (Utils::isDbNull($data)) {
+            RFC7231Error::err404("not able to find an ontology term which is associated with id '{$id}'.");
         } else {
             $data["parent"] = (new Table(["cad_registry"=>"ontology_tree"]))
                 ->left_join("ontology")
