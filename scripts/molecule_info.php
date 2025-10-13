@@ -171,6 +171,10 @@ class molecule_info {
                 return "<a href='https://commonchemistry.cas.org/detail?cas_rn={$id}'>{$id}</a>";
             }, $xrefs);
 
+            case "EC": return array_map(function($id) {
+                return "<a href='/enzyme/{$id}/'>{$id}</a>";
+            }, $xrefs);
+
             default:
                 return $xrefs;
         }
