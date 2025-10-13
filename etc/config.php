@@ -38,7 +38,7 @@ return [
 
     // 自定义http错误页面的位置，例如404 500 403等
     "RFC7231"       => APP_PATH . "/views/http_errors/",
-    "CACHE"         => True,
+    "CACHE"         => false,
     "APP_NAME"      => "bioCAD",
 	"APP_VERSION"   => "0.222.58-alpha",
     "MVC_VIEW_ROOT" => [        
