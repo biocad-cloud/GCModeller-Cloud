@@ -37,22 +37,42 @@ class App {
 
             if (count($left) >0 && count($right) >0) {
                 $mol_list = array_merge( array_column($left,"molecule_id"), array_column($right,"molecule_id"));
+                $args = (new Table(["cad_registry"=>"kinetic_law"]))
+                    ->left_join("kinetic_substrate")
+                    ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
+                    ->where([
+                        "ec_number" => $ec_number,
+                        "metabolite_id"=> in($mol_list ),
+                        "temperature" => in (25,40)
+                    ])->select(["params", "lambda", "metabolite_id"]);
+
+                for($i =0; $i< count($args); $i++) {
+                    $args[$i]["params"] = json_decode($args[$i]["params"]);
+                }
+
                 $list[$hash["hashcode"]] = [
                     "name" => $rxn["name"],
                     "reaction" => $rxn["equation"],
                     "left" => $left,
                     "right" => $right,
-                    "law" => (new Table(["cad_registry"=>"kinetic_law"]))
-                        ->left_join("kinetic_substrate")
-                        ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
-                        ->where([
-                            "ec_number" => $ec_number,
-                            "metabolite_id"=> in($mol_list )
-                        ])
+                    "law" => $args
                 ];
             }
         }
 
         controller::success($list);
+    }
+
+    /**
+     * @access *
+    */
+    public function molecule($id) {
+        $mol = (new Table(["cad_registry"=>"molecule"]))->where(["id"=>$id])->find(["name","formula"]);
+
+        if (Utils::isDbNull($mol)) {
+            controller::error("no molecule data is associated with the given registry id");
+        } else {
+            controller::success($mol);
+        }
     }
 }
