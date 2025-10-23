@@ -32,12 +32,25 @@ class App {
         foreach($unique_hash as $hash) {
             $first_id = Strings::Split($hash["reactions"],",")[0];
             $rxn = (new Table(["cad_registry"=>"reaction"]))->where(["id" => $first_id])->find();
-            $list[$hash["hashcode"]] = [
-                "name" => $rxn["name"],
-                "reaction" => $rxn["equation"],
-                "left" => (new Table(["cad_registry"=>"reaction_graph"]))->where(["reaction"=>$first_id,"role"=>$left_term["id"]])->select(["molecule_id", "factor"]),
-                "right" => (new Table(["cad_registry"=>"reaction_graph"]))->where(["reaction"=>$first_id,"role"=>$right_term["id"]])->select(["molecule_id", "factor"]),
-            ];
+            $left = (new Table(["cad_registry"=>"reaction_graph"]))->where(["reaction"=>$first_id,"role"=>$left_term["id"]])->select(["molecule_id", "factor"]);
+            $right = (new Table(["cad_registry"=>"reaction_graph"]))->where(["reaction"=>$first_id,"role"=>$right_term["id"]])->select(["molecule_id", "factor"]);
+
+            if (count($left) >0 && count($right) >0) {
+                $mol_list = array_merge( array_column($left,"molecule_id"), array_column($right,"molecule_id"));
+                $list[$hash["hashcode"]] = [
+                    "name" => $rxn["name"],
+                    "reaction" => $rxn["equation"],
+                    "left" => $left,
+                    "right" => $right,
+                    "law" => (new Table(["cad_registry"=>"kinetic_law"]))
+                        ->left_join("kinetic_substrate")
+                        ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
+                        ->where([
+                            "ec_number" => $ec_number,
+                            "metabolite_id"=> in($mol_list )
+                        ])
+                ];
+            }
         }
 
         controller::success($list);
