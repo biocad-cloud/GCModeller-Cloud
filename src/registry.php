@@ -9,13 +9,15 @@ class App {
      * 
      * @access *
     */
-    public function reaction_network($ec_number) {
+    public function reaction_network($ec_number, $simple = false) {
         $term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Regulation Type","term"=>"Enzymatic Catalysis"])->find();
         $reaction_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Entity Type","term"=>"Reaction"])->find();
         $cats = (new Table(["cad_registry"=>"regulation_graph"]))->where(["term" => $ec_number, "role" => $term["id"]])->project("reaction_id");
 
         if (count($cats) == 0) {
             controller::error("no reaction is associated with this ec number", 404);
+        } else {
+            $simple = Conversion::CBool($simple);
         }
 
         $unique_hash = (new Table(["cad_registry"=>"hashcode"]))
@@ -36,21 +38,26 @@ class App {
             $right = (new Table(["cad_registry"=>"reaction_graph"]))->where(["reaction"=>$first_id,"role"=>$right_term["id"]])->select(["molecule_id", "factor"]);
 
             if (count($left) >0 && count($right) >0) {
-                $mol_list = array_merge( array_column($left,"molecule_id"), array_column($right,"molecule_id"));
-                $args = (new Table(["cad_registry"=>"kinetic_law"]))
-                    ->left_join("kinetic_substrate")
-                    ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
-                    ->where([
-                        "ec_number" => $ec_number,
-                        "metabolite_id"=> in($mol_list ),
-                        "temperature" => in (25,40)
-                    ])->select(["params", "lambda", "metabolite_id"]);
-
-                for($i =0; $i< count($args); $i++) {
-                    $args[$i]["params"] = json_decode($args[$i]["params"]);
+                if ($simple) {
+                    $args = [];
+                } else {
+                    $mol_list = array_merge( array_column($left,"molecule_id"), array_column($right,"molecule_id"));
+                    $args = (new Table(["cad_registry"=>"kinetic_law"]))
+                        ->left_join("kinetic_substrate")
+                        ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
+                        ->where([
+                            "ec_number" => $ec_number,
+                            "metabolite_id"=> in($mol_list ),
+                            "temperature" => in (25,40)
+                        ])->select(["params", "lambda", "metabolite_id"]);
+    
+                    for($i =0; $i< count($args); $i++) {
+                        $args[$i]["params"] = json_decode($args[$i]["params"]);
+                    }
                 }
 
                 $list[$hash["hashcode"]] = [
+                    "guid" => $hash["hashcode"],
                     "name" => $rxn["name"],
                     "reaction" => $rxn["equation"],
                     "left" => $left,
