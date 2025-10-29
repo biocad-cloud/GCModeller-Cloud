@@ -25,84 +25,106 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
-                <h1>Enzyme - {$ec_id}</h1>
-                <br />
-                <div class="row">
-                    <div class="col">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="key-item">EC Number</td>
-                                    <td class="value-item">{$ec_id}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <br />
-
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Description</h2>
-
-                        <p>{$note}
-                        </p>
-                    </section>
-                </div>
-
-                <br />
-
-                <h2>Enzymatic Catalysts</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reaction Name</th>
-                            <th>Equation</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @reaction>
-                            <tr>
-                                <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a>
-                                </td>
-                                <td>@reaction["equation"]</td>
-                                <td>@reaction["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Gene/Proteins</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Gene/Protein</th>
-                            <th>Organism</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @protein>
-                            <tr>
-                                <td><a href='/molecule/@protein["id"]'>@protein["name"]</a>
-                                </td>
-                                <td><a href='/organism/@protein["tax_id"]'>@protein["taxname"]</a></td>
-                                <td>@protein["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>Enzyme Molecule</h1>
+                <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda
+                    numquam molestias.</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Enzyme Molecules</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+        <!-- End Page Title -->
 
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <div class="container section-title" data-aos="fade-up">
+                        <h2>Enzyme - {$ec_id}</h2>
+                        <div><span class="description-title"></span></div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="key-item">EC Number</td>
+                                        <td class="value-item">{$ec_id}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="bg-body-tertiary" style="padding:25px;">
+                        <section class="hero-container hero-container--side-padding">
+                            <h2 class="hero-container__title big">Description</h2>
+
+                            <p>{$note}
+                            </p>
+                        </section>
+                    </div>
+
+                    <br />
+
+                    <h2>Enzymatic Catalysts</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reaction Name</th>
+                                <th>Equation</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @reaction>
+                                <tr>
+                                    <td><a href='/reaction/@reaction["id"]'>@reaction["name"]</a>
+                                    </td>
+                                    <td>@reaction["equation"]</td>
+                                    <td>@reaction["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+
+                    <h2>Gene/Proteins</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Gene/Protein</th>
+                                <th>Organism</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @protein>
+                                <tr>
+                                    <td><a href='/molecule/@protein["id"]'>@protein["name"]</a>
+                                    </td>
+                                    <td><a href='/organism/@protein["tax_id"]'>@protein["taxname"]</a></td>
+                                    <td>@protein["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         ${includes/disclaimer.html}
     </main>
 

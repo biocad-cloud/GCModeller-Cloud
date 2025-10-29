@@ -7,41 +7,63 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>Kinetic Laws</h1>
+                <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda
+                    numquam molestias.</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Kinetic Laws</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- End Page Title -->
 
-                <h1>Kinetics List</h1>
-                
-                <table class="table">
-                    <thead style="background-color: blue; color:aliceblue;">
-                        <tr>
-                            <th>
-                                Kinetics ID
-                            </th>
-                            <th>
-                                EC Number
-                            </th>
-                            <th>
-                                Experiment
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @page>
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <div class="container section-title" data-aos="fade-up">
+                        <h2>Kinetic Law List</h2>
+                        <div><span class="description-title">Table of Page Data</span></div>
+                    </div>
+
+                    <table class="table">
+                        <thead style="background-color: blue; color:aliceblue;">
                             <tr>
-                                <td><strong><a href='/kinetics_law/@page["id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@page["id"]</a></strong></td>                                
-                                <td>@page["ec_number"]</td>
-                                <td>Temperature: @page["temperature"]<br />
-                                    pH: @page["pH"]<br />
-                                    Buffer: @page["buffer"]</td>
+                                <th>
+                                    Kinetics ID
+                                </th>
+                                <th>
+                                    EC Number
+                                </th>
+                                <th>
+                                    Experiment
+                                </th>
                             </tr>
-                        </foreach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <foreach @page>
+                                <tr>
+                                    <td><strong><a href='/kinetics_law/@page["id"]/'
+                                                class="text-truncate d-inline-block"
+                                                style="max-width: 350px;">@page["id"]</a></strong></td>
+                                    <td>@page["ec_number"]</td>
+                                    <td>Temperature: @page["temperature"]<br />
+                                        pH: @page["pH"]<br />
+                                        Buffer: @page["buffer"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
 
+                </div>
             </div>
         </div>
     </main>

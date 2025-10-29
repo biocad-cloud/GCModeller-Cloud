@@ -25,102 +25,124 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>Kinetic Law</h1>
+                <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda
+                    numquam molestias.</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Kinetic Law</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- End Page Title -->
 
-                <h1>Kinetics Law - {$id}</h1>
+        <div class="container">
 
-                <br />
-                <div class="row">
-                    <div class="col">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="key-item">Entity</td>
-                                    <td class="value-item" style="color:blue">Kinetics Law</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Enzyme</td>
-                                    <td class="value-item"><a href="/uniprot/{$uniprot}">{$uniprot}</a></td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">EC Number</td>
-                                    <td class="value-item">{$ec_number}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Temperature</td>
-                                    <td class="value-item">{$temperature}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">pH</td>
-                                    <td class="value-item">
-                                        {$pH}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Buffer</td>
-                                    <td class="value-item">
-                                        {$buffer}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="row">
+                <div class="col">
+                    <div class="container section-title" data-aos="fade-up">
+                        <h2>Kinetics Law - {$id}</h2>
+                        <div><span class="description-title"></span></div>
                     </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="key-item">Entity</td>
+                                        <td class="value-item" style="color:blue">Kinetics Law</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Enzyme</td>
+                                        <td class="value-item"><a href="/uniprot/{$uniprot}">{$uniprot}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">EC Number</td>
+                                        <td class="value-item">{$ec_number}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Temperature</td>
+                                        <td class="value-item">{$temperature}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">pH</td>
+                                        <td class="value-item">
+                                            {$pH}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key-item">Buffer</td>
+                                        <td class="value-item">
+                                            {$buffer}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <table class="table">
+                        <thead style="background-color: blue; color:aliceblue;">
+                            <tr>
+                                <th>
+                                    Reaction
+                                </th>
+                                <th>
+                                    Note
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @reaction>
+                                <tr>
+                                    <td><strong><a href='/reaction/@reaction["id"]/'
+                                                class="text-truncate d-inline-block"
+                                                style="max-width: 350px;">@reaction["name"]</a></strong></td>
+                                    <td>@reaction["note"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+
+                    <h2>Parameters</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Kinetics Parameter</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach @params>
+                                <tr>
+                                    <td>@params["name"]</td>
+                                    <td>@params["value"]</td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+
+                    <h3>Substrates</h3>
+
+                    <ul>
+                        <foreach @sub>
+                            <li><a href='/molecule/@sub["id"]'>@sub["name"]</a></li>
+                        </foreach>
+                    </ul>
+
                 </div>
-
-                <br />
-
-                <table class="table">
-                    <thead style="background-color: blue; color:aliceblue;">
-                        <tr>
-                            <th>
-                                Reaction
-                            </th>
-                            <th>
-                                Note
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @reaction>
-                            <tr>
-                                <td><strong><a href='/reaction/@reaction["id"]/' class="text-truncate d-inline-block"
-                                            style="max-width: 350px;">@reaction["name"]</a></strong></td>
-                                <td>@reaction["note"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h2>Parameters</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Kinetics Parameter</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @params>
-                            <tr>
-                                <td>@params["name"]</td>
-                                <td>@params["value"]</td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
-
-                <h3>Substrates</h3>
-
-                <ul>
-                    <foreach @sub>
-                        <li><a href='/molecule/@sub["id"]'>@sub["name"]</a></li>
-                    </foreach>
-                </ul>
-
             </div>
         </div>
     </main>

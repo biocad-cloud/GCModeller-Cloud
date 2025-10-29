@@ -25,74 +25,103 @@
 
 <body>
     ${includes/nav.html}
-    <main class="container">
+    <main class="main">
 
-        <div class="row">
-            <div class="col">
-                <h1>Reaction - {$name}</h1>
-                <br />
-                <div class="row">
-                    <div class="col">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="key-item">Accession ID</td>
-                                    <td class="value-item">{$db_xref}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Enzyme</td>
-                                    <td class="value-item">{$enzyme}</td>
-                                </tr>
-                                <tr>
-                                    <td class="key-item">Equation</td>
-                                    <td class="value-item">{$equation}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <!-- Page Title -->
+        <div class="page-title dark-background" data-aos="fade">
+            <div class="container position-relative">
+                <h1>Biological Reaction</h1>
+                <p>{$equation}</p>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/">Home</a></li>
+                        <li class="current">Biological Reaction</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section">
+
+            <div class="container" data-aos="fade-up">
+
+                <!-- Section Title -->
+                <div class="container" data-aos="fade-up">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="container section-title" data-aos="fade-up">
+                                <h2>Reaction</h2>
+                                <div><span class="description-title">Summary</span></div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="key-item">Accession ID</td>
+                                                <td class="value-item">{$db_xref}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="key-item">Enzyme</td>
+                                                <td class="value-item">{$enzyme}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="key-item">Equation</td>
+                                                <td class="value-item">{$equation}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="bg-body-tertiary" style="padding:25px;">
+                                <section class="hero-container hero-container--side-padding">
+                                    <h2 class="hero-container__title big">Description</h2>
+
+                                    <p>{$note}
+                                    </p>
+                                </section>
+                            </div>
+
+                            <br />
+
+                            <h2>Metabolite List</h2>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Metabolite</th>
+                                        <th>Type</th>
+                                        <th>Formula</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <foreach @graph>
+                                        <tr>
+                                            <td><a href='/molecule/@graph["id"]'>@graph["name"]</a></td>
+                                            <td>@graph["term"]</td>
+                                            <td>@graph["formula"] (@graph["mass"])</td>
+                                            <td>
+                                                @graph["note"]
+                                            </td>
+                                        </tr>
+                                    </foreach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-
-                <br />
-
-                <div class="bg-body-tertiary" style="padding:25px;">
-                    <section class="hero-container hero-container--side-padding">
-                        <h2 class="hero-container__title big">Description</h2>
-
-                        <p>{$note}
-                        </p>
-                    </section>
-                </div>
-
-                <br />
-
-                <h2>Metabolite List</h2>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Metabolite</th>
-                            <th>Type</th>
-                            <th>Formula</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <foreach @graph>
-                            <tr>
-                                <td><a href='/molecule/@graph["id"]'>@graph["name"]</a></td>
-                                <td>@graph["term"]</td>
-                                <td>@graph["formula"] (@graph["mass"])</td>
-                                <td>
-                                    @graph["note"]
-                                </td>
-                            </tr>
-                        </foreach>
-                    </tbody>
-                </table>
             </div>
-        </div>
 
-        ${includes/disclaimer.html}
+            ${includes/disclaimer.html}
+        </section>
+
     </main>
 
     ${includes/footer.html}
