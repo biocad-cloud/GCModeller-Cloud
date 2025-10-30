@@ -74,7 +74,10 @@ class App {
      * @access *
     */
     public function molecule($id) {
-        $mol = (new Table(["cad_registry"=>"molecule"]))->where(["id"=>$id])->find(["name","formula"]);
+        $mol = (new Table(["cad_registry"=>"molecule"]))
+            ->where(["id"=>$id])
+            ->find(["id","name","formula"])
+            ;
 
         if (Utils::isDbNull($mol)) {
             controller::error("no molecule data is associated with the given registry id");
