@@ -94,4 +94,27 @@ class App {
             controller::success($mol);
         }
     }
+
+    /**
+     * get all known operons
+     * 
+     * @access *
+    */
+    public function known_operons() {
+        $list = (new Table(["cad_registry"=>"conserved_cluster"]))
+            ->left_join("cluster_link")
+            ->on(["cluster_link"=>"cluster_id","conserved_cluster"=>"id"])
+            ->where("NOT cluster_id IS NULL")
+            ->group_by("cluster_id")
+            ->select(["cluster_id","MIN(name) AS name","GROUP_CONCAT(DISTINCT gene_id) AS members"])
+            ;
+
+        for($i=0;$i< count($list); $i++) {
+            $operon = $list[$i];
+            $operon["members"] = Strings::Split($operon["members"], ",");
+            $list[$i]=$operon;
+        }
+
+        controller::success($list);
+    }
 }
