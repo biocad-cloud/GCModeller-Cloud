@@ -54,8 +54,8 @@ class App {
                         ])->select(["params", "lambda", "metabolite_id","json_str"]);
     
                     for($i =0; $i< count($args); $i++) {
-                        $pars = json_decode($args[$i]["params"]);
-                        $json = json_decode($args[$i]["json_str"]);
+                        $pars = json_decode($args[$i]["params"], true);
+                        $json = json_decode($args[$i]["json_str"], true);
                         $json = $json["xref"];
                         $parsData = [];
                         $missing = false;
@@ -68,7 +68,7 @@ class App {
                                     $missing = true;
                                 } else {
                                     $idset = (new Table(["cad_registry"=>"db_xrefs"]))
-                                        ->where(["type"=>$metab_term, "xref"=> in($idset)])
+                                        ->where(["type"=>$metab_term["id"], "xref"=> in($idset)])
                                         ->distinct()
                                         ->project("obj_id")
                                         ;
@@ -78,13 +78,15 @@ class App {
                                     if (count($idset) == 0) {
                                         $missing = true;
                                     } else {
-                                        $val = "BioCAD" . str_pad($missing[0], 11, "0", STR_PAD_LEFT);
+                                        $val = "BioCAD" . str_pad($idset[0], 11, "0", STR_PAD_LEFT);
                                     }
                                 }
                             }
 
                             $parsData[$name] = $val;
                         }
+
+                        unset($args[$i]["json_str"]);
 
                         if (!$missing) {
                             $args[$i]["params"] = $parsData;
