@@ -82,6 +82,15 @@ class App {
         if (Utils::isDbNull($mol)) {
             controller::error("no molecule data is associated with the given registry id");
         } else {
+            $mol["db_xrefs"] = (new Table(["cad_registry"=>"db_xrefs"]))
+                ->left_join("vocabulary")
+                ->on(["vocabulary"=>"id","db_xrefs"=>"db_key"])
+                ->where(["obj_id" => $id])
+                ->distinct()
+                ->order_by("dbname")
+                ->select(["term AS dbname", "xref AS xref_id"])
+                ;
+
             controller::success($mol);
         }
     }
