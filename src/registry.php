@@ -13,6 +13,7 @@ class App {
         $term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Regulation Type","term"=>"Enzymatic Catalysis"])->find();
         $reaction_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Entity Type","term"=>"Reaction"])->find();
         $cats = (new Table(["cad_registry"=>"regulation_graph"]))->where(["term" => $ec_number, "role" => $term["id"]])->project("reaction_id");
+        $metab_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Molecule Type","term"=>"Metabolite"])->find();
 
         if (count($cats) == 0) {
             controller::error("no reaction is associated with this ec number", 404);
@@ -42,6 +43,7 @@ class App {
                     $args = [];
                 } else {
                     $mol_list = array_merge( array_column($left,"molecule_id"), array_column($right,"molecule_id"));
+                    $mol_list = array_map('strval', $mol_list);
                     $args = (new Table(["cad_registry"=>"kinetic_law"]))
                         ->left_join("kinetic_substrate")
                         ->on(["kinetic_law"=>"id","kinetic_substrate"=>"kinetic_id"])
@@ -49,10 +51,46 @@ class App {
                             "ec_number" => $ec_number,
                             "metabolite_id"=> in($mol_list ),
                             "temperature" => in (25,40)
-                        ])->select(["params", "lambda", "metabolite_id"]);
+                        ])->select(["params", "lambda", "metabolite_id","json_str"]);
     
                     for($i =0; $i< count($args); $i++) {
-                        $args[$i]["params"] = json_decode($args[$i]["params"]);
+                        $pars = json_decode($args[$i]["params"]);
+                        $json = json_decode($args[$i]["json_str"]);
+                        $json = $json["xref"];
+                        $parsData = [];
+                        $missing = false;
+
+                        foreach($pars as $name => $val) {
+                            if (array_key_exists($val, $json)) {
+                                $idset = $json[$val];
+
+                                if (count($idset) == 0) {
+                                    $missing = true;
+                                } else {
+                                    $idset = (new Table(["cad_registry"=>"db_xrefs"]))
+                                        ->where(["type"=>$metab_term, "xref"=> in($idset)])
+                                        ->distinct()
+                                        ->project("obj_id")
+                                        ;
+                                    $idset = array_map('strval', $idset);
+                                    $idset = array_intersect($idset, $mol_list);
+
+                                    if (count($idset) == 0) {
+                                        $missing = true;
+                                    } else {
+                                        $val = "BioCAD" . str_pad($missing[0], 11, "0", STR_PAD_LEFT);
+                                    }
+                                }
+                            }
+
+                            $parsData[$name] = $val;
+                        }
+
+                        if (!$missing) {
+                            $args[$i]["params"] = $parsData;
+                        } else {
+                            $args[$i] = null;
+                        }                        
                     }
                 }
 
@@ -62,7 +100,7 @@ class App {
                     "reaction" => $rxn["equation"],
                     "left" => $left,
                     "right" => $right,
-                    "law" => $args
+                    "law" => array_filter($args)
                 ];
             }
         }
