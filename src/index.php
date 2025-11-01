@@ -20,6 +20,14 @@ class App {
      * @access *
      * @uses view
     */
+    public function ping() {
+        echo "pang";
+    }
+
+    /**
+     * @access *
+     * @uses view
+    */
     public function search($q) {
         include_once APP_PATH . "/scripts/search.php";
 
