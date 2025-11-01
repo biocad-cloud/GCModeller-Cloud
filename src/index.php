@@ -46,6 +46,26 @@ class App {
 
     /**
      * @access *
+    */
+    public function redirect_obj($hashcode) {
+        $obj = (new Table(["cad_registry"=>"hashcode"]))->where(["hashcode"=>$hashcode])->find();
+
+        if (Utils::isDbNull($obj)) {
+            RFC7231Error::err404("no object is associated with this hashcode!");
+        } else {
+            $rxn = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Entity Type","term"=>"Reaction"])->findfield("id");
+            $url = "";
+
+            if ($rxn == $obj["type_id"]) {
+                $url = "/reaction/{$obj["obj_id"]}";
+            }
+
+            Redirect($url);
+        }
+    }
+
+    /**
+     * @access *
      * @uses view
     */
     public function download() {
