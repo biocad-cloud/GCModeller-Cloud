@@ -63,6 +63,17 @@ class App {
      * @access *
      * @uses view
     */
+    public function operon($id) {
+        include_once APP_PATH . "/scripts/operon.php";
+        $page = operon_data::getByID($id);
+        $page["title"] = $page["name"];
+        View::Display($page);
+    }
+
+    /**
+     * @access *
+     * @uses view
+    */
     public function kinetics($page=1,$page_size=100) {
         include_once APP_PATH . "/scripts/kinetics_list.php";
 
