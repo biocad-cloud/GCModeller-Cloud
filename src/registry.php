@@ -50,7 +50,7 @@ class App {
                         ->where([
                             "ec_number" => $ec_number,
                             "metabolite_id"=> in($mol_list ),
-                            "temperature" => in (25,40)
+                            "temperature" => between(25,40)
                         ])->select(["params", "lambda", "metabolite_id","json_str"]);
     
                     for($i =0; $i< count($args); $i++) {
