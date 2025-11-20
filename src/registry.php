@@ -13,8 +13,7 @@ class App {
         $term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Regulation Type","term"=>"Enzymatic Catalysis"])->find();
         $reaction_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Entity Type","term"=>"Reaction"])->find();
         $cats = (new Table(["cad_registry"=>"regulation_graph"]))->where(["term" => $ec_number, "role" => $term["id"]])->project("reaction_id");
-        $metab_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Molecule Type","term"=>"Metabolite"])->find();
-
+        
         if (count($cats) == 0) {
             controller::error("no reaction is associated with this ec number", 404);
         } else {
@@ -28,9 +27,15 @@ class App {
             ->group_by("hashcode")
             ->select(["hashcode", "GROUP_CONCAT(DISTINCT obj_id) AS reactions"])
             ;
+
+        controller::success($this->load_network($unique_hash, $simple,$ec_number));
+    }
+
+    private function load_network($unique_hash, $simple,$ec_number) {
         $list = [];
         $left_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Compound Role","term"=>"substrate"])->find();
         $right_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Compound Role","term"=>"product"])->find();
+        $metab_term = (new Table(["cad_registry"=>"vocabulary"]))->where(["category"=>"Molecule Type","term"=>"Metabolite"])->find();
 
         foreach($unique_hash as $hash) {
             $first_id = Strings::Split($hash["reactions"],",")[0];
@@ -107,7 +112,29 @@ class App {
             }
         }
 
-        controller::success($list);
+        return $list;
+    }
+
+    public function expand_network($cid) {
+        $unique_hash = (new Table(["cad_registry"=>"hashcode"]))->getDriver()->Fetch("SELECT 
+                hashcode, GROUP_CONCAT(DISTINCT obj_id) AS reactions
+            FROM
+                hashcode
+            WHERE
+                obj_id IN (SELECT DISTINCT
+                        reaction
+                    FROM
+                        cad_registry.reaction_graph
+                            LEFT JOIN
+                        regulation_graph ON regulation_graph.reaction_id = reaction
+                            AND regulation_graph.role = 292
+                    WHERE
+                        molecule_id = $cid AND term IS NULL)
+                    AND hashcode <> ''
+                    AND type_id = 1121
+            GROUP BY hashcode");
+
+        controller::success($this->load_network($unique_hash, true,null));
     }
 
     /**
