@@ -172,6 +172,7 @@ class molecule_info {
             case "GO": return array_map(function($id)  { return "<a href='/ontology/{$id}/'>{$id}</a>"; }, $xrefs);
             case "HMDB": return array_map(function($id)  { return "<a href='https://hmdb.ca/metabolites/{$id}/'>{$id}</a>"; }, $xrefs);
             case "KEGG": return array_map(function($id)  { return "<a href='https://www.kegg.jp/entry/{$id}/'>{$id}</a>"; }, $xrefs);
+            case "chebi": return array_map(function($id) { return "<a href='https://www.ebi.ac.uk/chebi/{$id}'>{$id}</a>"; }, $xrefs);
 
             default:
                 return $xrefs;
