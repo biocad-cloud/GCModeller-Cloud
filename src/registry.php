@@ -184,4 +184,16 @@ class App {
 
         controller::success($list);
     }
+
+    /**
+     * molecule search
+     * 
+     * @param $q a term for make molecule search
+     * @access *
+     * @uses api
+    */
+    public function molecule_search($q) {
+        $q = urldecode($q);
+        
+    }
 }
