@@ -1,7 +1,7 @@
 <?php
 
 define("APP_PATH", dirname(__DIR__));
-define("APP_DEBUG", false);
+define("APP_DEBUG", true);
 
 define("YEAR", date("Y"));
 

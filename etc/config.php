@@ -1,32 +1,36 @@
 <?php
 
 # rename this file to config.php to run this website
+define("mysql_host", "192.168.3.15");
+define("mysql_port", 3306);
+define("mysql_user", "xieguigang");
+define("mysql_passwd", "123456");
 
 // 网站的配置数据
 return [
     'DB_TYPE' => 'mysql',
-    'DB_HOST' => '192.168.3.15',
-    'DB_NAME' => 'cad_registry',
-    'DB_USER' => 'xieguigang',
-    'DB_PWD'  => '123456',
-    'DB_PORT' => '3306',
+    'DB_HOST' => mysql_host,
+    'DB_NAME' => 'cella_lab',
+    'DB_USER' =>  mysql_user,
+    'DB_PWD'  => mysql_passwd,
+    'DB_PORT' => mysql_port,
     
     'cad_registry' => [
         'DB_TYPE' => 'mysql',
-        'DB_HOST' => '192.168.3.15',
+        'DB_HOST' => mysql_host,
         'DB_NAME' => 'cad_registry',
-        'DB_USER' => 'xieguigang',
-        'DB_PWD'  => '123456',
-        'DB_PORT' => '3306'
+        'DB_USER' =>  mysql_user,
+        'DB_PWD'  => mysql_passwd,
+        'DB_PORT' => mysql_port
     ],
 
-    'cad_lab' => [
+    'cella_lab' => [
         'DB_TYPE' => 'mysql',
-        'DB_HOST' => '192.168.3.15',
-        'DB_NAME' => 'cad_lab',
-        'DB_USER' => 'xieguigang',
-        'DB_PWD'  => '123456',
-        'DB_PORT' => '3306'
+        'DB_HOST' => mysql_host,
+        'DB_NAME' => 'cella_lab',
+        'DB_USER' =>  mysql_user,
+        'DB_PWD'  => mysql_passwd,
+        'DB_PORT' => mysql_port
     ],
 
     //密钥
