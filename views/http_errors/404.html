@@ -1,42 +1,48 @@
-<!DOCTYPE html SYSTEM "about:legacy-compat">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+
+<html lang="en">
 
 <head>
     ${../includes/head.html}
 </head>
 
-<body>
+<body class="index-page" data-aos-easing="ease-in-out" data-aos-duration="600" data-aos-delay="0">
+
     ${../includes/nav.html}
 
     <main class="main">
 
-        <!-- Page Title -->
-        <div class="page-title dark-background" data-aos="fade">
-            <div class="container position-relative">
-                <h1>404 Page Not Found!</h1>
+        <br />
+        <br />
+        <br />
 
-                <blockquote>
-                    <span style="color:gray;">{$url}</span>
-                </blockquote>
+        <!-- Features Section -->
+        <section id="features" class="features section">
 
-                <p>We could not find the above page on our servers</p>
-                <p>
-                    {$message}
-                </p>
+            <!-- Section Title -->
+            <div class="container section-title aos-init" data-aos="fade-up">
+                <span class="description-title">404 Page Not Found!</span>
+                <h2>404 Page Not Found!</h2>
+                <p>{$url}</p>
+            </div><!-- End Section Title -->
 
-                <nav class="breadcrumbs">
-                    <ol>
-                        <li><a href="/">Home</a></li>
-                        <li class="current">Error</li>
-                    </ol>
-                </nav>
+            <div class="container aos-init" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="tabs-wrapper" style="height: 100vh;">
+                    <p>We could not find the above page on our servers</p>
+                    <p>
+                        {$message}
+                    </p>
+                </div>
+
             </div>
-        </div>
-        <!-- End Page Title -->
+
+        </section><!-- /Features Section -->
+
     </main>
 
-
     ${../includes/footer.html}
+
 </body>
 
 </html>
