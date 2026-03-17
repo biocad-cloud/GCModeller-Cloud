@@ -20,7 +20,17 @@ class App {
      * @access *
      * @uses view
     */
-    public function experiments() {
+    public function experiment() {
+        View::Display();
+    }
+
+    /**
+     * Cella LAB
+     * 
+     * @access *
+     * @uses view
+    */
+    public function project() {
         View::Display();
     }
 }
