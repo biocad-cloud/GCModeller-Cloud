@@ -1,3 +1,0 @@
-﻿# changelog.bootstrap
-
-

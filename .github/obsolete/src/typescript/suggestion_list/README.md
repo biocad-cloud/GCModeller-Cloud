@@ -1,3 +1,0 @@
-﻿# suggestion_list
-
-

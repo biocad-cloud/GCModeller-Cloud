@@ -1,3 +1,0 @@
-﻿# kegg_organism
-
-
